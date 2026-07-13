@@ -1,0 +1,1532 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RSmart ERP Tool | RAISE SMART ERP Portal</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root{--p:#1a56db;--pl:#eaf1fd;--pd:#0f3e9e;--gold:#c9920e;--goldl:#fdf6e3;--green:#0e9f6e;--greenl:#e6f7f1;--red:#d92626;--redl:#fdeaea;--amber:#c27803;--amberl:#fdf3e3;--ink:#1f2a37;--mut:#6b7280;--line:#e5e7eb;--bg:#f8fafc}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',system-ui,Arial,sans-serif;background:#ffffff;color:var(--ink);font-size:14px}
+.hidden{display:none!important}
+button{cursor:pointer;font-family:inherit}
+input,select,textarea{font-family:inherit;font-size:13.5px;padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:#fff;color:var(--ink);width:100%}
+input:focus,select:focus,textarea:focus{outline:2px solid var(--pl);border-color:var(--p)}
+label{font-size:12px;font-weight:600;color:var(--mut);display:block;margin:10px 0 4px}
+.btn{background:var(--p);color:#fff;border:none;border-radius:8px;padding:9px 16px;font-weight:600;font-size:13.5px}
+.btn:hover{background:var(--pd)}
+.btn:disabled{background:#c7ccd4;cursor:not-allowed}
+.btn2{background:#fff;color:var(--p);border:1.5px solid var(--p);border-radius:8px;padding:8px 15px;font-weight:600;font-size:13px}
+.btn2:hover{background:var(--pl)}
+.btng{background:var(--green);color:#fff;border:none;border-radius:8px;padding:9px 16px;font-weight:600;font-size:13.5px}
+.btnr{background:var(--red);color:#fff;border:none;border-radius:8px;padding:9px 16px;font-weight:600;font-size:13.5px}
+.btngold{background:var(--gold);color:#fff;border:none;border-radius:8px;padding:9px 16px;font-weight:600;font-size:13.5px}
+.bigbtn{padding:26px 20px;font-size:17px;border-radius:14px;width:100%}
+header{display:flex;align-items:center;gap:14px;padding:12px 24px;border-bottom:1px solid var(--line);background:#fff;position:sticky;top:0;z-index:50}
+.logo{width:40px;height:40px;border-radius:10px;background:linear-gradient(135deg,var(--p),#4f83ea);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:19px}
+.brand b{font-size:16.5px}
+.brand div{font-size:11px;color:var(--mut)}
+.rolebadge{margin-left:auto;display:flex;align-items:center;gap:12px}
+.rchip{background:var(--pl);color:var(--pd);font-weight:700;font-size:12px;padding:5px 12px;border-radius:99px}
+.uinfo{text-align:right}.uinfo b{font-size:13.5px}.uinfo div{font-size:11px;color:var(--mut)}
+nav{display:flex;gap:6px;flex-wrap:wrap;padding:10px 24px;border-bottom:1px solid var(--line);background:var(--bg)}
+.navbtn{background:#fff;border:1px solid var(--line);border-radius:99px;padding:7px 15px;font-size:13px;font-weight:600;color:var(--mut)}
+.navbtn.active{background:var(--p);border-color:var(--p);color:#fff}
+.navlock{padding:9px 16px;background:var(--redl);color:var(--red);border-radius:8px;font-weight:700;font-size:13px}
+main{padding:22px 24px;max-width:1280px;margin:0 auto}
+h2{font-size:19px;margin-bottom:4px}
+.sub{color:var(--mut);font-size:13px;margin-bottom:16px}
+h3{font-size:15px;margin-bottom:8px}
+.card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px;margin-bottom:14px}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:14px}
+.grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
+.grid4{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px}
+.stat{background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px}
+.stat .n{font-size:26px;font-weight:800;color:var(--p)}
+.stat .l{font-size:12px;color:var(--mut);font-weight:600}
+.seg{display:inline-flex;background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:3px;gap:2px;margin:0 8px 10px 0;flex-wrap:wrap}
+.segbtn{border:none;background:transparent;padding:7px 14px;border-radius:8px;font-weight:600;font-size:12.5px;color:var(--mut)}
+.segbtn.active{background:var(--p);color:#fff}
+.tbl{width:100%;border-collapse:collapse;font-size:13px}
+.tbl th{text-align:left;padding:8px 10px;background:var(--bg);color:var(--mut);font-size:11.5px;text-transform:uppercase;letter-spacing:.4px;border-bottom:1px solid var(--line)}
+.tbl td{padding:8px 10px;border-bottom:1px solid var(--line)}
+.chip{display:inline-block;padding:3px 10px;border-radius:99px;font-size:11px;font-weight:700}
+.chip-b{background:var(--pl);color:var(--pd)}
+.chip-g{background:var(--greenl);color:var(--green)}
+.chip-gr{background:#f1f2f4;color:var(--mut)}
+.chip-r{background:var(--redl);color:var(--red)}
+.chip-a{background:var(--amberl);color:var(--amber)}
+.chip-gold{background:var(--goldl);color:var(--gold);border:1px solid #e8d49a}
+.goldbar{background:linear-gradient(90deg,#fdf3d7,#fbe9b8);border:1.5px solid #e3c363;border-radius:14px;padding:14px 18px;margin-bottom:14px;display:flex;align-items:center;gap:12px;font-weight:700;color:#8a6408}
+.goldstar{color:var(--gold);font-size:15px}
+.teamcard{border:1.5px solid var(--line);border-radius:14px;padding:16px;background:#fff;position:relative}
+.teamcard.mine{border-color:var(--p);box-shadow:0 0 0 3px var(--pl)}
+.teamcard.grey{opacity:.55;background:var(--bg);pointer-events:auto}
+.teamcard.grey .btn{background:#c7ccd4;pointer-events:none}
+.slotrow{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}
+.slot{font-size:11px;font-weight:600;border:1px dashed #b9c2cf;border-radius:8px;padding:4px 9px;background:var(--bg);color:var(--mut)}
+.slot.filled{border-style:solid;border-color:#bcd0f5;background:var(--pl);color:var(--pd)}
+.member{display:flex;align-items:center;gap:6px;font-size:13px;padding:4px 0;border-bottom:1px dashed #eef0f3}
+.pill{font-size:10.5px;background:var(--bg);border:1px solid var(--line);border-radius:99px;padding:2px 8px;color:var(--mut)}
+.notewarn{background:var(--amberl);border:1px solid #f0ddb0;color:#8a5a06;border-radius:10px;padding:12px 14px;font-size:13px;margin:12px 0;font-weight:600}
+.noteinfo{background:var(--pl);border:1px solid #ccdcf8;color:var(--pd);border-radius:10px;padding:12px 14px;font-size:13px;margin:12px 0}
+.timerbox{text-align:center;padding:20px;border:1.5px solid var(--line);border-radius:14px;background:var(--bg)}
+.timerbig{font-size:52px;font-weight:800;font-variant-numeric:tabular-nums;color:var(--p)}
+.timerbig.late{color:var(--red)}
+.phase{font-weight:700;color:var(--mut);margin-top:4px}
+.palette{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0}
+.pchip{background:var(--pl);color:var(--pd);border:1px solid #bcd0f5;border-radius:99px;padding:7px 14px;font-weight:700;font-size:12.5px;cursor:grab;user-select:none}
+.dslot{min-height:44px;border:2px dashed #b9c2cf;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:12.5px;font-weight:700;color:var(--mut);background:var(--bg);padding:6px}
+.dslot.filled{border-style:solid;border-color:var(--p);background:var(--pl);color:var(--pd);cursor:pointer}
+.dslots{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin:8px 0}
+#toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--ink);color:#fff;padding:12px 22px;border-radius:10px;font-weight:600;font-size:13.5px;z-index:99;box-shadow:0 8px 24px rgba(0,0,0,.25);display:none;max-width:90%}
+.login-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;background:linear-gradient(180deg,#fff 0%,var(--bg) 100%);padding:20px}
+.login-card{width:100%;max-width:520px;background:#fff;border:1px solid var(--line);border-radius:20px;padding:34px;box-shadow:0 20px 60px rgba(16,42,90,.08)}
+.rolegrid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:18px}
+.rolebtn{border:1.5px solid var(--line);background:#fff;border-radius:14px;padding:18px 12px;font-weight:700;font-size:14px;color:var(--ink);text-align:center}
+.rolebtn:hover{border-color:var(--p);background:var(--pl)}
+.rolebtn .ic{font-size:24px;display:block;margin-bottom:6px}
+.demo{background:var(--bg);border:1px dashed #c6cdd8;border-radius:10px;padding:12px;font-size:12px;color:var(--mut);margin-top:18px;line-height:1.7}
+.crumb{font-size:12.5px;color:var(--p);font-weight:700;cursor:pointer;margin-bottom:10px;display:inline-block}
+canvas{max-height:300px}
+.chartcard{background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px}
+.chartcard h4{font-size:13px;color:var(--mut);margin-bottom:10px;text-transform:uppercase;letter-spacing:.4px}
+.stepnum{display:inline-flex;width:24px;height:24px;border-radius:99px;background:var(--p);color:#fff;align-items:center;justify-content:center;font-weight:800;font-size:12px;margin-right:8px}
+@media(max-width:760px){.dslots{grid-template-columns:1fr 1fr}main{padding:14px}nav,header{padding-left:14px;padding-right:14px}}
+</style>
+</head>
+<body>
+<div id="loginScreen"></div>
+<div id="app" class="hidden">
+<header>
+<div class="logo">R</div>
+<div class="brand"><b>RSmart ERP Tool</b><div>RAISE SMART ERP Portal &middot; MBA Business Simulation &amp; Live Projects</div></div>
+<div class="rolebadge">
+<span class="rchip" id="hRole"></span>
+<div class="uinfo"><b id="hName"></b><div id="hSub"></div></div>
+<button class="btn2" onclick="logout()">Logout</button>
+</div>
+</header>
+<nav id="nav"></nav>
+<main id="content"></main>
+</div>
+<div id="toast"></div>
+<script>
+/* ============ RSmart ERP Tool — single-file prototype. All data is in-memory (resets on refresh). ============ */
+var SPECS=['HR','Marketing','Business Analytics','Logistics & Supply Chain Management','Finance'];
+var SPECSHORT={'HR':'HR','Marketing':'MKT','Business Analytics':'BA','Logistics & Supply Chain Management':'LSCM','Finance':'FIN'};
+var REVIEWS=[['R1','Review 1'],['R2','Review 2'],['R3','Review 3'],['DEMO','Demo Day']];
+var TYPES={BS:'Business Simulation',LP:'Live Project'};
+var FIRST=['Aarav','Diya','Vikram','Meera','Arjun','Kavya','Rohan','Ananya','Karthik','Priya','Aditya','Sneha','Rahul','Divya','Suresh','Lakshmi','Naveen','Pooja','Manoj','Riya','Sanjay','Nisha','Deepak','Swathi','Ganesh','Keerthi','Harish','Anjali','Vijay','Ramya','Praveen','Shalini'];
+var LASTS=['Menon','Iyer','Sharma','Reddy','Nair','Pillai','Rao','Das'];
+var PW=['Nova','Zen','Iris','Echo','Onyx','Luna','Vega','Aster'];
+var STAFF=[
+{id:'COORD',pw:'Coord@2026',role:'coordinator',name:'Prof. Kavitha Raman',sub:'Project Coordinator'},
+{id:'DIRECTOR',pw:'Direct@2026',role:'director',name:'Dr. R. Mahalingam',sub:'Director'},
+{id:'ADMIN',pw:'Admin@2026',role:'admin',name:'Admin Office',sub:'Administrator'}
+];
+function makeStudents(){
+var arr=[];var campuses=['RTC','RGU'];
+for(var ci=0;ci<2;ci++){var c=campuses[ci];
+for(var i=0;i<32;i++){var g=ci*32+i;
+var fname=(ci===0)?FIRST[i]:FIRST[31-i];
+var lname=LASTS[(i+ci*3)%8];
+arr.push({sid:c+'26MBA'+String(i+1).padStart(3,'0'),name:fname+' '+lname,campus:c,spec:SPECS[i%5],specs:null,sem:3,pw:PW[g%8]+'@'+(1000+g*37)});
+}
+}
+/* new first-year batch (Semester 1) - they choose their specializations at first login */
+for(var ci2=0;ci2<2;ci2++){var c2=campuses[ci2];
+for(var j=0;j<4;j++){
+arr.push({sid:c2+'27MBA'+String(j+1).padStart(3,'0'),name:FIRST[(j*5+ci2*7+2)%32]+' '+LASTS[(j*3+ci2)%8],campus:c2,spec:'',specs:null,sem:1,pw:'Fresh@'+(2001+ci2*10+j)});
+}
+}
+return arr;
+}
+/* Problem statement definitions: [company, statement, company details] */
+var PDEFS={
+'BS-RTC':[
+['Zoho Corp','Design a market-entry strategy for Zoho’s new AI-powered CRM suite in Southeast Asia.','Chennai-based SaaS major, 15,000+ employees, 55+ products across CRM, finance and HR.'],
+['Titan Company','Reverse the post-festive footfall decline in Tier-2 retail stores through an omnichannel strategy.','TATA Group lifestyle major - watches, jewellery, eyewear; 2,000+ stores across India.'],
+['BigBasket','Optimise the dark-store network to cut last-mile delivery cost by 18% without hurting delivery SLA.','Online grocery leader operating in 30+ cities with 10M+ monthly orders.'],
+['Ashok Leyland','Build the complete go-to-market plan for the new electric light commercial truck range.','Hinduja Group flagship, 2nd largest commercial vehicle maker in India.'],
+['Muthoot Finance','Increase digital gold-loan adoption among rural customers by 40% in 12 months.','Largest gold financing NBFC in India with 4,600+ branches.'],
+['Aravind Eye Care','Reduce patient no-show rates across tele-consultations and outreach camps.','World’s largest eye-care network treating 5M+ patients a year.']],
+'LP-RTC':[
+['KG Fabrics','Develop an export-diversification plan to reduce dependence on the US market.','Coimbatore textile manufacturer and exporter, 3,000+ workforce.'],
+['Sree Annapoorna Foods','Design a central-kitchen supply model to support 10 new cloud-kitchen outlets.','Iconic Coimbatore restaurant chain and food products company.'],
+['Propel Industries','Create a dealer-network expansion and financing model for crushing equipment in East India.','Leading manufacturer of crushing and screening equipment.'],
+['CRI Pumps','Build a predictive after-sales service model to cut pump downtime for OEM customers.','Global pump manufacturer exporting to 120+ countries.'],
+['LMW','Design a talent-retention and upskilling framework for the smart-machining division.','Textile machinery and CNC major headquartered in Coimbatore.'],
+['Suguna Foods','Plan the D2C launch of a branded ready-to-cook poultry range in South India.','One of India’s largest poultry enterprises, present in 18 states.']],
+'BS-RGU':[
+['Infosys BPM','Redesign the workforce-allocation model to lift utilisation by 12% across delivery centres.','Business process management arm of Infosys, 57,000+ employees.'],
+['Tata Power','Create a customer-acquisition strategy for rooftop solar in Tier-2 residential markets.','India’s largest integrated power company.'],
+['Flipkart Health+','Build the launch plan for a subscription-based chronic-care medicine delivery service.','Digital healthcare venture of the Flipkart Group.'],
+['Amul','Design a cold-chain optimisation plan for ice-cream distribution in North-East India.','India’s largest dairy cooperative (GCMMF).'],
+['HDFC Securities','Increase first-year retention of Gen-Z demat customers by 25%.','Full-service broking arm of HDFC Bank.'],
+['IndiGo','Build an ancillary-revenue growth strategy for regional (ATR) routes.','India’s largest airline by market share.']],
+'LP-RGU':[
+['Fabindia','Design a community-artisan sourcing scorecard and expansion plan for two new craft clusters.','Retail platform for products made from traditional techniques; 300+ stores.'],
+['Zepto','Reduce rider idle time by 20% across 40 dark stores using demand micro-forecasting.','Quick-commerce unicorn delivering in 10 minutes.'],
+['Royal Enfield','Plan the accessories & apparel attach-rate improvement program for new bike buyers.','Mid-size motorcycle leader, part of Eicher Motors.'],
+['Marico','Build the rural go-to-market model for a new millet-based breakfast brand.','FMCG major - Parachute, Saffola and more.'],
+['Ola Electric','Design the service-network readiness plan for scooter sales in B & C class towns.','EV manufacturer operating the Ola Futurefactory.'],
+['Lenskart','Create a school & corporate eye-checkup partnership funnel to drive store walk-ins.','Omnichannel eyewear unicorn with 2,000+ stores.']]
+};
+/* ============ GLOBAL STATE ============ */
+var S={
+user:null,role:null,tab:null,
+students:makeStudents(),
+problems:{}, /* key: BS5-RTC etc -> array of 6 problem/team objects */
+mentors:[],mentorBookings:[],
+experts:[],expertBookings:[],
+marks:{}, /* key -> {R1:{teamIdx:{status,entries}}} */
+teamChanges:[],critical:[],
+questions:[], /* admin-posted new problem statements */
+fType:'BS',fNum:5,fCampus:'RTC',fRev:'R1',fSem:'all',viewMode:'team',
+myTeamType:null,bookType:'BS',myNum:5,bookNum:5,bRev:'all',sdSem:1,sdType:'BS',evalAuth:{},
+ame:{active:false},qp:{editing:null,slots:[null,null,null,null,null]},
+editTi:-1,charts:[],chooseKey:null,reviewTimer:null
+};
+function stu(sid){for(var i=0;i<S.students.length;i++){if(S.students[i].sid===sid)return S.students[i];}return {name:sid,sid:sid,spec:'',campus:''};}
+function actKey(t,n,c){return t+n+'-'+c;}
+function actStatus(n){n=+n;return n<=4?'Completed':(n===5?'Ongoing':'Not Yet Started');}
+function semOf(n){return Math.ceil(n/2);}
+/* Build problem/team objects for ongoing activity 5 (per type, per campus) */
+function buildProblems(type,campus){
+var cs=S.students.filter(function(s){return s.campus===campus&&s.sem===3;});
+var defs=PDEFS[type+'-'+campus];
+return defs.map(function(d,t){
+var members;
+if(t<3){members=cs.slice(t*5,t*5+5).map(function(s){return {sid:s.sid,cr:false};});}
+else{members=cs.slice(15+(t-3)*4,15+(t-3)*4+4).map(function(s){return {sid:s.sid,cr:false};});}
+var slots=members.map(function(m){return {spec:stu(m.sid).spec,sid:m.sid};});
+if(t>=3){slots.push({spec:SPECS[[2,3,4][t-3]],sid:null});}
+return {team:'Team '+(t+1),company:d[0],statement:d[1],details:d[2],members:members,slots:slots,tl:t<3?members[0].sid:null};
+});
+}
+['RTC','RGU'].forEach(function(c){['BS','LP'].forEach(function(t){
+S.problems[actKey(t,5,c)]=buildProblems(t,c);
+/* Semester-1 (new batch) challenge sets - one seat per specialization, empty teams */
+S.problems[actKey(t,1,c)+'F']=PDEFS[t+'-'+c].map(function(d,i){
+return {team:'Team '+(i+1),company:d[0],statement:d[1],details:d[2],members:[],slots:SPECS.map(function(sp){return {spec:sp,sid:null};}),tl:null};
+});
+});});
+/* Teams for any activity (past activities reuse the same cohort split as dummy data) */
+function getTeams(t,n,c){
+var base=S.problems[actKey(t,5,c)];
+if(+n===5)return base;
+return pastTeams(t,+n,c);
+}
+/* Past activities (1-4): ALL 32 students of the campus were split into 6 teams (5,5,5,5,6,6).
+The split rotates per activity so every student worked in different teams across BS/LP 1-4. */
+var _pastCache={};
+function pastTeams(t,n,c){
+var ck=t+n+c;
+if(_pastCache[ck])return _pastCache[ck];
+var cs=S.students.filter(function(s){return s.campus===c&&s.sem===3;});
+var off=(n*7+(t==='BS'?0:3))%32;
+var rot=cs.slice(off).concat(cs.slice(0,off));
+var defs=PDEFS[t+'-'+c];
+var sizes=[5,5,5,5,6,6];var teams=[];var idx=0;
+sizes.forEach(function(sz,i){
+var mem=rot.slice(idx,idx+sz).map(function(s){return {sid:s.sid,cr:false};});idx+=sz;
+teams.push({team:'Team '+(i+1),company:defs[i][0]+' ('+TYPES[t]+' '+n+' archive)',statement:defs[i][1],details:'Completed in Semester '+semOf(n)+'.',members:mem,slots:mem.map(function(m){return {spec:stu(m.sid).spec,sid:m.sid};}),tl:mem[0].sid});
+});
+_pastCache[ck]=teams;
+return teams;
+}
+function teamOfUser(t,n,sid){
+var teams=getTeams(t,n,S.user&&S.user.campus?S.user.campus:'RTC');
+for(var i=0;i<teams.length;i++){var m=teams[i].members;
+for(var j=0;j<m.length;j++){if(m[j].sid===sid&&!m[j].cr)return {team:teams[i],ti:i};}
+}
+return null;
+}
+/* current ongoing key/team for the logged-in student (Sem 1 fresh batch vs Sem 3) */
+function curKey(type){return (S.user&&S.user.sem===1)?actKey(type,1,S.user.campus)+'F':actKey(type,5,S.user.campus);}
+function curTeam(type){
+var key=curKey(type);var probs=S.problems[key]||[];
+for(var i=0;i<probs.length;i++){var mm=probs[i].members;
+for(var j=0;j<mm.length;j++){if(mm[j].sid===S.user.sid&&!mm[j].cr)return {team:probs[i],ti:i,key:key};}}
+return null;
+}
+function userSpecs(){return (S.user&&S.user.specs&&S.user.specs.length)?S.user.specs:[S.user.spec];}
+/* ============ SEED DATA ============ */
+S.mentors=[
+{id:1,name:'Dr. Suresh Krishnan',desig:'Professor & Startup Mentor',exp:18,spec:'Marketing',org:'IIM Tiruchirappalli',dates:['2026-07-14','2026-07-18','2026-08-08'],month:'Apr'},
+{id:2,name:'Ms. Revathi Subramanian',desig:'VP - Supply Chain',exp:18,spec:'Logistics & Supply Chain Management',org:'Flipkart',dates:['2026-07-15','2026-07-22'],month:'May'},
+{id:3,name:'Mr. Arvind Menon',desig:'Head - People Analytics',exp:14,spec:'HR',org:'TCS',dates:['2026-07-16','2026-07-20','2026-07-27'],month:'Jun'},
+{id:4,name:'Ms. Deepa Ranganathan',desig:'Director - FP&A',exp:16,spec:'Finance',org:'HUL',dates:['2026-07-17','2026-07-24'],month:'Jul'},
+{id:5,name:'Mr. Naresh Kumar',desig:'Lead Data Scientist',exp:12,spec:'Business Analytics',org:'Mu Sigma',dates:['2026-07-18','2026-07-25'],month:'Jul'}
+];
+/* Experts are tagged with programme (RTC/RGU), type (BS/LP), activity number and review (R1/R2/R3/DEMO).
+Past activities (1-4) carry full dummy history; activity 5 experts are open for booking (Review 1). */
+var EXPOOL=[
+['Mr. Ravi Shankar','Finance & Strategy',22,'ICICI Bank'],
+['Ms. Anitha Balaji','Marketing & D2C Growth',17,'Nykaa'],
+['Mr. Farid Mohammed','Operations & Supply Chain',20,'DHL India'],
+['Ms. Gayathri Devan','HR & Org Design',19,'Infosys'],
+['Mr. Joseph Varghese','Business Analytics & AI',15,'Tiger Analytics'],
+['Ms. Ritu Malhotra','Strategy (Startup Founder)',21,'Zolve (Founder)']
+];
+function pastDate(n,ri){var map={1:'2025-08-',2:'2025-10-',3:'2026-01-',4:'2026-03-'};return map[n]+String(5+ri*4).padStart(2,'0');}
+var _exid=0;
+S.experts=[];
+['RTC','RGU'].forEach(function(c){['BS','LP'].forEach(function(t){
+/* current activity 5 - Review 1, open for booking */
+for(var p=0;p<3;p++){var d=EXPOOL[p];_exid++;
+S.experts.push({id:_exid,panel:p+1,name:d[0],spec:d[1],exp:d[2],company:d[3],cap:2,bookedBy:[],type:t,num:5,campus:c,rev:'R1'});}
+/* past activities 1-4, all four reviews, fully booked history */
+for(var n=1;n<=4;n++){
+REVIEWS.forEach(function(r,ri){
+var teams=pastTeams(t,n,c);
+for(var p2=0;p2<3;p2++){
+var d2=EXPOOL[(p2+n+ri)%6];_exid++;
+var t1=teams[p2*2],t2=teams[p2*2+1];
+var tag1=t1.team+' ('+actKey(t,n,c)+')',tag2=t2.team+' ('+actKey(t,n,c)+')';
+S.experts.push({id:_exid,panel:p2+1,name:d2[0],spec:r[0]==='DEMO'?d2[1]+' - Founder Panel':d2[1],exp:d2[2],company:d2[3],cap:2,bookedBy:[tag1,tag2],type:t,num:n,campus:c,rev:r[0]});
+S.expertBookings.push({key:actKey(t,n,c),team:t1.team,expertId:_exid,by:t1.tl,date:pastDate(n,ri),rev:r[0]});
+S.expertBookings.push({key:actKey(t,n,c),team:t2.team,expertId:_exid,by:t2.tl,date:pastDate(n,ri),rev:r[0]});
+}
+});
+/* past mentor bookings: two teams booked mentors in each past activity */
+var tms=pastTeams(t,n,c);
+[[0,'R1'],[3,'R2']].forEach(function(pair,pi){
+var tm=tms[pair[0]];var mentor=S.mentors[(n+pi+(t==='BS'?0:2))%5];
+S.mentorBookings.push({id:Date.now()+_exid*10+pi,key:actKey(t,n,c),team:tm.team,by:tm.tl,mentorId:mentor.id,date:pastDate(n,pi),rev:pair[1],spec:mentor.spec,problem:tm.company+' - '+tm.statement,questions:'How should we approach the '+TYPES[t].toLowerCase()+' '+n+' problem? Which framework fits best?',calendly:true});
+});
+}
+});});
+function findExpert(t,n,c,rev,panel){
+return S.experts.filter(function(e){return e.type===t&&e.num===n&&e.campus===c&&e.rev===rev&&e.panel===panel;})[0];
+}
+/* past critical resources & team changes (dummy history for BS 1,2,4 and LP 1,2,4) */
+[['BS',1],['BS',2],['BS',4],['LP',1],['LP',2],['LP',4]].forEach(function(x){
+var tms=pastTeams(x[0],x[1],'RTC');
+S.critical.push({sid:tms[0].members[1].sid,from:'Team 1',to:'Team 3',key:actKey(x[0],x[1],'RTC'),date:pastDate(x[1],1),note:'+5 bonus marks (worked for two teams)'});
+});
+S.teamChanges.push({sid:pastTeams('BS',2,'RTC')[2].members[2].sid,from:'Team 3',to:'Team 5',key:'BS2-RTC',date:'2025-10-12',note:'Re-allocated by Admin (past record)'});
+S.teamChanges.push({sid:pastTeams('LP',4,'RTC')[1].members[3].sid,from:'Team 2',to:'Team 6',key:'LP4-RTC',date:'2026-03-09',note:'Admin override - added as 6th member'});
+/* seed marks for completed activities: 1-3 published, 4 saved (awaiting Director) */
+['RTC','RGU'].forEach(function(c){['BS','LP'].forEach(function(t){
+for(var n=1;n<=4;n++){
+var k=actKey(t,n,c);S.marks[k]={};
+REVIEWS.forEach(function(r,ri){
+S.marks[k][r[0]]={};
+getTeams(t,n,c).forEach(function(tm,ti){
+var e={};
+tm.members.forEach(function(m){
+var num=parseInt(m.sid.slice(-3))||1;
+e[m.sid]=60+((num*7+n*13+ri*29+ti*5)%36);
+});
+S.marks[k][r[0]][ti]={status:n<=3?'published':'saved',entries:e};
+});
+});
+}
+});});
+/* seed one critical resource, one team change, sample bookings */
+(function(){
+var p=S.problems['BS5-RTC'];
+var crSid=p[0].members[1].sid;
+p[1].members.push({sid:crSid,cr:true});
+S.critical.push({sid:crSid,from:'Team 1',to:'Team 2',key:'BS5-RTC',date:'2026-07-08',note:'+5 bonus marks (working for two teams)'});
+S.teamChanges.push({sid:S.problems['LP5-RTC'][4].members[3].sid,from:'Team 5',to:'Team 5',key:'LP5-RTC',date:'2026-07-06',note:'Re-allocated by Admin (seed demo record)'});
+S.mentorBookings.push({id:1,key:'BS5-RTC',team:'Team 1',by:p[0].tl,mentorId:1,date:'2026-07-14',rev:'R1',spec:'Marketing',problem:p[0].company+' - '+p[0].statement,questions:'How do we size the SEA market? Which entry mode fits a SaaS product?',calendly:true});
+S.mentorBookings.push({id:2,key:'BS5-RTC',team:'Team 2',by:p[1].tl,mentorId:5,date:'2026-07-18',rev:'R1',spec:'Business Analytics',problem:p[1].company+' - '+p[1].statement,questions:'Which footfall datasets should we analyse first?',calendly:false});
+var curEx=findExpert('BS',5,'RTC','R1',1);
+curEx.bookedBy.push('Team 1 (BS5-RTC)');
+S.expertBookings.push({key:'BS5-RTC',team:'Team 1',expertId:curEx.id,by:p[0].tl,date:'2026-07-12',rev:'R1'});
+/* one sample admin-drafted question for BS6 */
+S.questions.push({id:1,type:'BS',num:6,campus:'RTC',company:'Freshworks',statement:'Design a churn-reduction playbook for SMB customers in the US market.',details:'Chennai-born NASDAQ-listed SaaS company.',slots:['Marketing','Business Analytics','Business Analytics','Finance','HR'],published:false});
+})();
+/* ============ SMALL HELPERS ============ */
+function esc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+function toast(msg){var t=document.getElementById('toast');t.textContent=msg;t.style.display='block';clearTimeout(t._h);t._h=setTimeout(function(){t.style.display='none';},3200);}
+function ctl(k,v){S[k]=(k==='fNum')?+v:v;go(S.tab);}
+function seg(items,key){
+return '<span class="seg">'+items.map(function(it){
+var val=it[0],lab=it[1];
+return '<button class="segbtn'+(String(S[key])===String(val)?' active':'')+'" onclick="ctl(\''+key+'\',\''+val+'\')">'+lab+'</button>';
+}).join('')+'</span>';
+}
+function statusChip(st){
+if(st==='Completed')return '<span class="chip chip-g">Completed &#10003;</span>';
+if(st==='Ongoing')return '<span class="chip chip-b">Ongoing</span>';
+return '<span class="chip chip-gr">Not Yet Started</span>';
+}
+function markChip(st){
+if(st==='published')return '<span class="chip chip-g">Published</span>';
+if(st==='ready')return '<span class="chip chip-a">Ready for Publish</span>';
+if(st==='saved')return '<span class="chip chip-b">Saved &amp; Closed</span>';
+return '<span class="chip chip-gr">No marks</span>';
+}
+function tlStar(sid,tl){return sid===tl?' <span class="goldstar" title="Team Leader">&#9733;</span> <span class="chip chip-gold">Team Leader</span>':'';}
+/* ============ LOGIN ============ */
+var L={role:null,campus:null};
+function renderLogin(){
+document.getElementById('app').classList.add('hidden');
+var el=document.getElementById('loginScreen');el.classList.remove('hidden');
+var inner='';
+if(!L.role){
+inner='<div style="text-align:center"><div class="logo" style="margin:0 auto 12px;width:56px;height:56px;font-size:26px">R</div>'
++'<h2 style="font-size:22px">RSmart ERP Tool</h2><div class="sub">RAISE SMART ERP Portal &middot; MBA Business Simulation &amp; Live Projects</div></div>'
++'<div style="font-weight:700;font-size:13px;color:var(--mut)">SELECT YOUR LOGIN</div>'
++'<div class="rolegrid">'
++'<button class="rolebtn" onclick="pickRole(\'student\')"><span class="ic">&#127891;</span>Student Login</button>'
++'<button class="rolebtn" onclick="pickRole(\'coordinator\')"><span class="ic">&#128188;</span>Project Coordinator</button>'
++'<button class="rolebtn" onclick="pickRole(\'director\')"><span class="ic">&#127963;</span>Director Login</button>'
++'<button class="rolebtn" onclick="pickRole(\'admin\')"><span class="ic">&#9881;</span>Admin Login</button></div>'
++'<div class="demo"><b>Demo credentials</b> (prototype - data resets on refresh)<br>'
++'&#8226; Student (free, can choose a team): <b>RTC26MBA028</b> / <b>Echo@1999</b> &nbsp;|&nbsp; RGU: <b>RGU26MBA028</b> / <b>Echo@3183</b><br>'
++'&#8226; Student (already in Team 1, sees marks): <b>RTC26MBA001</b> / <b>Nova@1000</b><br>'
++'&#8226; NEW 1st-year student (Semester 1 - picks any specializations): <b>RTC27MBA001</b> / <b>Fresh@2001</b><br>'
++'&#8226; Mark Entry now needs Director approval: Director &rarr; Evaluation Control &rarr; Approve &amp; Start.<br>'
++'&#8226; Coordinator: <b>COORD</b> / <b>Coord@2026</b> &nbsp;&#8226; Director: <b>DIRECTOR</b> / <b>Direct@2026</b> &nbsp;&#8226; Admin: <b>ADMIN</b> / <b>Admin@2026</b><br>'
++'&#8226; Full list of all 64 student passwords: Admin login &rarr; Credentials tab.</div>';
+}else if(L.role==='student'&&!L.campus){
+inner='<span class="crumb" onclick="L.role=null;renderLogin()">&larr; Back</span>'
++'<h2>Student Login</h2><div class="sub">Select your programme first. RTC and RGU students have different question sets, selections and marks.</div>'
++'<div class="rolegrid">'
++'<button class="rolebtn" onclick="pickCampus(\'RTC\')"><span class="ic">&#127979;</span>RTC RSmart<br><span style="font-size:11px;color:var(--mut);font-weight:500">RTC Programme Students</span></button>'
++'<button class="rolebtn" onclick="pickCampus(\'RGU\')"><span class="ic">&#127979;</span>RGU RSmart<br><span style="font-size:11px;color:var(--mut);font-weight:500">RGU Programme Students</span></button></div>';
+}else{
+var isStu=L.role==='student';
+inner='<span class="crumb" onclick="'+(isStu?'L.campus=null':'L.role=null')+';renderLogin()">&larr; Back</span>'
++'<h2>'+(isStu?(L.campus+' RSmart Student Login'):(L.role.charAt(0).toUpperCase()+L.role.slice(1)+' Login'))+'</h2>'
++'<div class="sub">'+(isStu?'Login with your Register ID and password.':'Authorized access only.')+'</div>'
++'<label>'+(isStu?'Register ID (e.g. '+L.campus+'26MBA001)':'User ID')+'</label><input id="liId" placeholder="'+(isStu?L.campus+'26MBA0__':'USER ID')+'">'
++'<label>Password</label><input id="liPw" type="password" placeholder="Password" onkeydown="if(event.key===\'Enter\')doLogin()">'
++'<div style="margin-top:16px"><button class="btn" style="width:100%" onclick="doLogin()">Login</button></div>';
+}
+el.innerHTML='<div class="login-wrap"><div class="login-card">'+inner+'</div></div>';
+}
+function pickRole(r){L.role=r;L.campus=null;renderLogin();}
+function pickCampus(c){L.campus=c;renderLogin();}
+function doLogin(){
+var id=document.getElementById('liId').value.trim().toUpperCase();
+var pw=document.getElementById('liPw').value.trim();
+if(L.role==='student'){
+var s=S.students.filter(function(x){return x.sid.toUpperCase()===id&&x.campus===L.campus;})[0];
+if(!s||s.pw!==pw){toast('Invalid Register ID or password for '+L.campus+' RSmart.');return;}
+S.user=s;S.role='student';
+if(!s.specs){renderSpecPicker();return;}
+}else{
+var st=STAFF.filter(function(x){return x.role===L.role&&x.id===id&&x.pw===pw;})[0];
+if(!st){toast('Invalid credentials.');return;}
+S.user=st;S.role=L.role;
+}
+enterApp();
+}
+function renderSpecPicker(){
+var s=S.user;var isFirst=s.sem===1;
+var el=document.getElementById('loginScreen');el.classList.remove('hidden');
+document.getElementById('app').classList.add('hidden');
+var boxes=SPECS.map(function(sp){return '<label style="display:flex;align-items:center;gap:8px;border:1px solid var(--line);border-radius:10px;padding:10px;margin:6px 0;font-size:13.5px;font-weight:600;cursor:pointer"><input type="checkbox" class="spk" value="'+sp+'" style="width:auto" onchange="limitSpecs()"> '+sp+'</label>';}).join('');
+el.innerHTML='<div class="login-wrap"><div class="login-card">'
++'<h2>Welcome, '+esc(s.name)+'</h2>'
++'<div class="sub">'+(isFirst?'Semester 1 (new batch) - one quick question before you enter.':'Semester 3 - choose your specializations for this semester.')+'</div>'
++'<div class="noteinfo">'+(isFirst
+?'Which specialization(s) would you prefer for your challenges (problem statements)? Choose as many as you like - 1, 2, 3 or all 5. Only challenges matching your chosen specialization(s) will be listed in your login.'
+:'You may choose <b>maximum TWO</b> specializations out of five. Only challenges (problem statements) that include your chosen specializations will be listed in your login.')+'</div>'
++boxes
++'<div id="spkWarn" class="notewarn hidden">Maximum 2 specializations for Semester 3 students.</div>'
++'<div style="margin-top:14px"><button class="btn" style="width:100%" onclick="saveSpecs()">Continue to My Portal &rarr;</button></div></div></div>';
+}
+function limitSpecs(){
+if(S.user.sem===1)return;
+var cbs=document.querySelectorAll('.spk');var n=0;
+cbs.forEach(function(cb){if(cb.checked)n++;});
+if(n>=2){cbs.forEach(function(cb){if(!cb.checked)cb.disabled=true;});}
+else{cbs.forEach(function(cb){cb.disabled=false;});}
+}
+function saveSpecs(){
+var chosen=[];document.querySelectorAll('.spk').forEach(function(cb){if(cb.checked)chosen.push(cb.value);});
+if(!chosen.length){toast('Choose at least one specialization.');return;}
+if(S.user.sem!==1&&chosen.length>2){toast('Semester 3 students can choose a maximum of TWO specializations.');return;}
+S.user.specs=chosen;S.user.spec=chosen[0];
+toast('Specializations saved: '+chosen.join(', ')+'. Your challenge list is filtered accordingly.');
+enterApp();
+}
+function logout(){S.user=null;S.role=null;S.myTeamType=null;S.ame={active:false};stopTimer();L={role:null,campus:null};renderLogin();}
+/* ============ APP SHELL ============ */
+var NAVS={
+student:[['sdash','Dashboard'],['lp','Live Project'],['bs','Business Simulation'],['myteam','My Team'],['mentor','Mentor Booking'],['expert','Review Expert Booking'],['smarks','Review & Marks']],
+coordinator:[['cdash','Dashboard'],['mentorentry','Mentor Entry'],['expertentry','Expert Entry'],['cbookings','Bookings Received'],['markentry','Mark Entry'],['questions','Question Posting'],['teamchange','Student Team Change'],['critical','Critical Resource'],['teamsplit','Team Split'],['astumarks','Student Marks']],
+admin:[['adash','Dashboard'],['creds','Credentials']],
+director:[['ddash','Dashboard'],['devalctl','Evaluation Control'],['dpublish','Marks Review & Publish'],['dstumarks','Student Marks']]
+};
+var ROLELBL={student:'STUDENT',coordinator:'PROJECT COORDINATOR',director:'DIRECTOR',admin:'ADMIN'};
+function enterApp(){
+document.getElementById('loginScreen').classList.add('hidden');
+document.getElementById('app').classList.remove('hidden');
+document.getElementById('hRole').textContent=ROLELBL[S.role];
+document.getElementById('hName').textContent=S.user.name;
+document.getElementById('hSub').textContent=S.role==='student'?(S.user.sid+' | '+S.user.campus+' RSmart | Sem '+S.user.sem+' | '+userSpecs().map(function(x){return SPECSHORT[x]||x;}).join(', ')):S.user.sub;
+if(S.role==='student'){S.fCampus=S.user.campus;}
+go(NAVS[S.role][0][0]);
+}
+function renderNav(){
+var nav=document.getElementById('nav');
+if(S.role==='evaluator'){nav.innerHTML='<span class="navlock">Remote evaluation access - this page only</span>';return;}
+if(S.ame.active&&(S.ame.pRunning||S.ame.mRunning)){
+nav.innerHTML='<span class="navlock">&#9888; REVIEW IN PROGRESS - all tabs are locked until marks are saved &amp; closed</span>';
+return;
+}
+nav.innerHTML=NAVS[S.role].map(function(t){
+return '<button class="navbtn'+(S.tab===t[0]?' active':'')+'" onclick="navGo(\''+t[0]+'\')">'+t[1]+'</button>';
+}).join('');
+}
+function navGo(tab){S.chooseKey=null;S.editTi=-1;go(tab);}
+function go(tab){
+if(tab!==S.tab){S.chooseKey=null;S.editTi=-1;}
+S.tab=tab;
+renderNav();
+destroyCharts();
+var fn=ROUTES[tab];
+document.getElementById('content').innerHTML=fn?fn():'<div class="card">Page not found.</div>';
+if(tab==='ddash'&&typeof buildDirectorCharts==='function'){buildDirectorCharts();}
+if(tab==='sdash'&&S.role==='student'&&typeof buildStudentCharts==='function'){buildStudentCharts();}
+}
+function destroyCharts(){S.charts.forEach(function(c){try{c.destroy();}catch(e){}});S.charts=[];}
+function setHTML(html){document.getElementById('content').innerHTML=html;}
+/* ============ STUDENT PAGES ============ */
+function isTLAnywhere(){
+var t1=curTeam('BS'),t2=curTeam('LP');
+return (t1&&t1.team.tl===S.user.sid)||(t2&&t2.team.tl===S.user.sid);
+}
+function sDashboard(){
+var bs=curTeam('BS'),lp=curTeam('LP');
+var pubCount=0;
+['BS','LP'].forEach(function(t){for(var n=1;n<=8;n++){var k=actKey(t,n,S.user.campus);if(!S.marks[k])continue;REVIEWS.forEach(function(r){var rec=(S.marks[k][r[0]]||{});Object.keys(rec).forEach(function(ti){if(rec[ti].status==='published'&&rec[ti].entries[S.user.sid]!=null)pubCount++;});});}});
+var h='<h2>Welcome, '+esc(S.user.name)+'</h2><div class="sub">'+S.user.campus+' RSmart &middot; Semester '+S.user.sem+' (current) &middot; Specialization(s): '+userSpecs().map(esc).join(', ')+'</div>';
+if(isTLAnywhere()){h+='<div class="goldbar"><span style="font-size:22px">&#9733;</span> You are a TEAM LEADER. Mentor Booking and Review Expert Booking are enabled for you.</div>';}
+h+='<div class="grid4">'
++'<div class="stat"><div class="n">Sem '+S.user.sem+'</div><div class="l">Current Semester</div></div>'
++'<div class="stat"><div class="n">'+(S.user.sem===1?'BS 1 / LP 1':'BS 5 / LP 5')+'</div><div class="l">Ongoing Activities</div></div>'
++'<div class="stat"><div class="n">'+(bs?bs.team.team:'-')+'</div><div class="l">My Business Simulation Team</div></div>'
++'<div class="stat"><div class="n">'+(lp?lp.team.team:'-')+'</div><div class="l">My Live Project Team</div></div></div>'
++'<div class="card" style="margin-top:14px"><h3>My Marks Dashboard <span class="chip chip-b">out of 100</span></h3>'
++'<div class="sub">Published marks only - charts, no tables. Filter by semester and by Business Simulation / Live Project; each activity shows Review 1, 2, 3 and Demo Day.</div>'
++seg([[1,'Semester 1'],[2,'Semester 2'],[3,'Semester 3']],'sdSem')
++seg([['BS','Business Simulation'],['LP','Live Project']],'sdType')
++'<div class="grid2"><div class="chartcard"><h4>Review-wise marks (R1 / R2 / R3 / Demo Day) - '+TYPES[S.sdType]+', Semester '+S.sdSem+'</h4><canvas id="cs1"></canvas></div>'
++'<div class="chartcard"><h4>Activity averages - BS vs LP, Semester '+S.sdSem+'</h4><canvas id="cs2"></canvas></div></div>'
++(S.user.sem===1?'<div class="noteinfo">New batch - your charts fill up once your first review marks are published.</div>':'<div class="noteinfo">'+pubCount+' published mark entries available (details in <b>Review &amp; Marks</b>).</div>')
++'</div>'
++'<div class="noteinfo">Semester 1 &amp; 2 completed &middot; Semester 3: BS 5 / LP 5 ongoing, BS 6 / LP 6 not yet started &middot; Semester 4 not yet started. Review flow: Review 1 &rarr; 2 &rarr; 3 &rarr; <b>Demo Day</b> (industry founders). Marks are published 4 times per activity.</div>'
++(bs?'':'<div class="notewarn">You have not chosen a Business Simulation challenge yet. Go to the Business Simulation tab.</div>')
++(lp?'':'<div class="notewarn">You have not chosen a Live Project challenge yet. Go to the Live Project tab.</div>');
+return h;
+}
+function buildStudentCharts(){
+if(!window.Chart)return;
+var acts={1:[1,2],2:[3,4],3:[5,6]}[S.sdSem]||[1,2];
+function mm(t,n,r){
+var mine=teamOfUser(t,n,S.user.sid);if(!mine)return null;
+var k=actKey(t,n,S.user.campus);var rec=(S.marks[k]&&S.marks[k][r])?S.marks[k][r][mine.ti]:null;
+if(!rec||rec.status!=='published')return null;
+var v=rec.entries[S.user.sid];return v==null?null:v;
+}
+function mk(id,cfg){var el=document.getElementById(id);if(el)S.charts.push(new Chart(el,cfg));}
+var cols=['#1a56db','#0e9f6e'];
+mk('cs1',{type:'bar',data:{labels:REVIEWS.map(function(r){return r[1];}),datasets:acts.map(function(n,i){
+return {label:TYPES[S.sdType]+' '+n,data:REVIEWS.map(function(r){return mm(S.sdType,n,r[0])||0;}),backgroundColor:cols[i]};})},
+options:{scales:{y:{beginAtZero:true,max:100}}}});
+function avgFor(t,n){var tot=0,c=0;REVIEWS.forEach(function(r){var v=mm(t,n,r[0]);if(v!=null){tot+=v;c++;}});return c?Math.round(tot/c):0;}
+mk('cs2',{type:'bar',data:{labels:acts.map(function(n){return 'Activity '+n;}),datasets:[
+{label:'Business Simulation',data:acts.map(function(n){return avgFor('BS',n);}),backgroundColor:'#1a56db'},
+{label:'Live Project',data:acts.map(function(n){return avgFor('LP',n);}),backgroundColor:'#0e9f6e'}]},
+options:{scales:{y:{beginAtZero:true,max:100}}}});
+}
+function sActivity(type){
+if(S.chooseKey)return sChoose(type);
+if(S.user.sem===1){
+var fkey=actKey(type,1,S.user.campus)+'F';
+var h1='<h2>'+TYPES[type]+'</h2><div class="sub">'+S.user.campus+' RSmart &middot; Semester 1 (new batch) &middot; Challenges filtered by your specialization(s): '+userSpecs().map(function(x){return SPECSHORT[x]||x;}).join(', ')+'</div>';
+h1+='<div class="grid3"><div class="card"><h3>'+TYPES[type]+' 1</h3><div class="sub" style="margin-bottom:8px">Semester 1 - your batch</div>'+statusChip('Ongoing')
++'<div style="margin-top:12px"><button class="btn" onclick="S.chooseKey=\''+fkey+'\';go(S.tab)">Choose the Challenge &rarr;</button></div></div>';
+for(var n2=2;n2<=8;n2++){h1+='<div class="card" style="opacity:.55;background:var(--bg)"><h3>'+TYPES[type]+' '+n2+'</h3><div class="sub" style="margin-bottom:8px">Semester '+semOf(n2)+'</div>'+statusChip('x')+'</div>';}
+return h1+'</div>';
+}
+var h='<h2>'+TYPES[type]+'</h2><div class="sub">'+S.user.campus+' RSmart &middot; Two '+TYPES[type].toLowerCase()+'s per semester &middot; Subject includes Logistics &amp; Supply Chain Management</div>';
+h+=seg([['all','All Semesters'],['1','Semester 1'],['2','Semester 2'],['3','Semester 3'],['4','Semester 4']],'fSem');
+h+='<div class="grid3">';
+for(var n=1;n<=8;n++){
+if(S.fSem!=='all'&&semOf(n)!==+S.fSem)continue;
+var st=actStatus(n);
+var pubQ=S.questions.filter(function(q){return q.type===type&&q.num===n&&q.campus===S.user.campus&&q.published;}).length;
+var body='<h3>'+TYPES[type]+' '+n+'</h3><div class="sub" style="margin-bottom:8px">Semester '+semOf(n)+'</div>'+statusChip(st);
+if(st==='Ongoing'){body+='<div style="margin-top:12px"><button class="btn" onclick="S.chooseKey=\''+actKey(type,n,S.user.campus)+'\';go(S.tab)">Choose the Challenge &rarr;</button></div>';}
+else if(st==='Completed'){body+='<div style="margin-top:12px;font-size:12.5px;color:var(--mut)">Marks available in Review &amp; Marks tab.</div>';}
+else if(pubQ>0){body+=' <span class="chip chip-a">'+pubQ+' problem statement(s) published - choosing opens soon</span>'
++'<div style="margin-top:12px"><button class="btn2" onclick="S.chooseKey=\''+actKey(type,n,S.user.campus)+'\';go(S.tab)">Preview Problem Statements</button></div>';}
+h+='<div class="card" style="'+(st==='Not Yet Started'&&!pubQ?'opacity:.55;background:var(--bg)':'')+'">'+body+'</div>';
+}
+return h+'</div>';
+}
+function sChoose(type){
+var key=S.chooseKey;var isFresh=/F$/.test(key);var n=+key.match(/\d+/)[0];
+var h='<span class="crumb" onclick="S.chooseKey=null;go(S.tab)">&larr; Back to '+TYPES[type]+'s</span>';
+if(!isFresh&&actStatus(n)==='Not Yet Started'){
+var qs=S.questions.filter(function(q){return q.type===type&&q.num===n&&q.campus===S.user.campus&&q.published;});
+h+='<h2>'+TYPES[type]+' '+n+' - Problem Statements (Preview)</h2><div class="sub">Choosing has not opened yet.</div><div class="grid2">';
+qs.forEach(function(q){h+='<div class="teamcard"><b>'+esc(q.company)+'</b><div style="margin:6px 0">'+esc(q.statement)+'</div><div class="sub">'+esc(q.details)+'</div><div class="slotrow">'+q.slots.map(function(sp){return '<span class="slot">'+SPECSHORT[sp]+'</span>';}).join('')+'</div></div>';});
+return h+'</div>';
+}
+var probs=S.problems[key];var mine=curTeam(type);var my=userSpecs();
+h+='<h2>'+TYPES[type]+' '+n+' - Choose Your Challenge</h2>'
++'<div class="sub">Each challenge takes exactly <b>5 members</b> and each seat is reserved for a specialization fixed by the Coordinator. Once you choose, all other challenges grey out. When 5 members choose the same challenge, they automatically become one team.</div>'
++'<div class="noteinfo">Showing only the challenges that match your chosen specialization(s): <b>'+my.map(esc).join(', ')+'</b>. Challenges without a seat for your specialization(s) are not listed in your page.</div>';
+if(mine){h+='<div class="noteinfo">You have chosen <b>'+esc(mine.team.company)+'</b> ('+mine.team.team+'). All other challenges are locked for you.</div>';}
+h+='<div class="grid2">';
+var shown=0;
+probs.forEach(function(p,ti){
+var isMine=mine&&mine.ti===ti;
+var matches=p.slots.some(function(sl){return my.indexOf(sl.spec)>=0;});
+if(!matches&&!isMine)return; /* challenge not listed for this student's specializations */
+shown++;
+var count=p.members.filter(function(m){return !m.cr;}).length;
+var full=count>=5;
+var cls=isMine?'teamcard mine':((full||mine)?'teamcard grey':'teamcard');
+var members=p.members.map(function(m){var s=stu(m.sid);return '<div class="member">'+esc(s.name)+' <span class="pill">'+s.sid+'</span> <span class="pill">'+SPECSHORT[s.spec]+'</span>'+tlStar(m.sid,p.tl)+(m.cr?' <span class="chip chip-r">Critical Resource</span>':'')+'</div>';}).join('');
+var slots=p.slots.map(function(sl){return '<span class="slot'+(sl.sid?' filled':'')+'">'+SPECSHORT[sl.spec]+(sl.sid?(' - '+esc(stu(sl.sid).name.split(' ')[0])):' - Open')+'</span>';}).join('');
+var action='';
+if(isMine)action='<span class="chip chip-b">YOUR TEAM</span>';
+else if(full)action='<span class="chip chip-gr">TEAM FULL - LOCKED</span>';
+else if(mine)action='<span class="chip chip-gr">Locked (you already chose)</span>';
+else action='<button class="btn" onclick="chooseProblem(\''+key+'\','+ti+')">Choose This Challenge</button>';
+h+='<div class="'+cls+'"><div style="display:flex;justify-content:space-between;align-items:center"><b>'+esc(p.company)+'</b><span class="chip '+(full?'chip-g':'chip-a')+'">'+count+'/5 members</span></div>'
++'<div class="pill" style="margin:4px 0;display:inline-block">'+p.team+'</div>'
++'<div style="margin:6px 0;font-size:13px">'+esc(p.statement)+'</div>'
++'<div class="sub" style="margin-bottom:6px">'+esc(p.details)+'</div>'
++'<div style="font-size:11px;font-weight:700;color:var(--mut)">SPECIALIZATION SEATS (fixed by the Coordinator)</div><div class="slotrow">'+slots+'</div>'
++'<div style="font-size:11px;font-weight:700;color:var(--mut);margin-top:6px">WHO HAS CHOSEN</div>'+(members||'<div class="sub">No one yet.</div>')
++'<div style="margin-top:10px">'+action+'</div></div>';
+});
+h+='</div>';
+if(!shown)h+='<div class="notewarn">No challenges match your chosen specialization(s) right now. New challenges that include your specialization will appear here automatically.</div>';
+return h;
+}
+function chooseProblem(key,ti){
+var type=key.slice(0,2);
+if(curTeam(type)){toast('You have already chosen a challenge for this activity.');return;}
+var p=S.problems[key][ti];
+var my=userSpecs();
+var slot=null;
+for(var i=0;i<p.slots.length;i++){if(!p.slots[i].sid&&my.indexOf(p.slots[i].spec)>=0){slot=p.slots[i];break;}}
+if(!slot){
+var open=p.slots.filter(function(sl){return !sl.sid;}).map(function(sl){return sl.spec;});
+toast(open.length?('Open seat requires: '+open.join(', ')+'. Your specialization(s): '+my.join(', ')+'.'):'This team is already full (5/5).');
+return;
+}
+slot.sid=S.user.sid;
+p.members.push({sid:S.user.sid,cr:false});
+var count=p.members.filter(function(m){return !m.cr;}).length;
+if(count>=5){toast('You joined '+p.company+'. Team is complete (5/5) - '+p.team+' has been formed automatically! Now assign a Team Leader in My Team.');}
+else{toast('You joined '+p.company+' ('+count+'/5).');}
+go(S.tab);
+}
+function sMyTeam(){
+if(!S.myTeamType){
+return '<h2>My Team</h2><div class="sub">Which team do you want to view?</div><div class="grid2" style="max-width:700px">'
++'<button class="btn bigbtn" onclick="S.myTeamType=\'BS\';go(\'myteam\')">Business Simulation<br><span style="font-weight:400;font-size:12.5px">My BS 5 team</span></button>'
++'<button class="btn bigbtn" style="background:var(--green)" onclick="S.myTeamType=\'LP\';go(\'myteam\')">Live Project<br><span style="font-weight:400;font-size:12.5px">My LP 5 team</span></button></div>';
+}
+var type=S.myTeamType;
+var h='<span class="crumb" onclick="S.myTeamType=null;go(\'myteam\')">&larr; Change (Business Simulation / Live Project)</span>'
++'<h2>My Team - '+TYPES[type]+'</h2>';
+if(S.user.sem===1){S.myNum=5;}
+else{
+h+='<div class="sub">Filter by activity - '+TYPES[type]+'s 1-4 show the past teams you worked in.</div>'
++seg([[1,TYPES[type]+' 1'],[2,'2'],[3,'3'],[4,'4'],[5,'5 (Ongoing)']],'myNum');
+}
+var mine=(+S.myNum===5)?curTeam(type):teamOfUser(type,S.myNum,S.user.sid);
+if(+S.myNum!==5){
+if(!mine)return h+'<div class="notewarn">No team record found for you in '+TYPES[type]+' '+S.myNum+'.</div>';
+var pp=mine.team;
+h+='<div class="noteinfo">Past record - '+TYPES[type]+' '+S.myNum+' (Semester '+semOf(S.myNum)+') '+statusChip('Completed')+'</div>'
++'<div class="card"><h3>'+esc(pp.company)+' &middot; '+pp.team+'</h3><div class="sub">'+esc(pp.statement)+'</div>'
++'<table class="tbl"><tr><th>Member</th><th>Register ID</th><th>Specialization</th><th>Role</th></tr>'
++pp.members.map(function(m){var s=stu(m.sid);return '<tr'+(m.sid===S.user.sid?' style="background:var(--pl)"':'')+'><td>'+esc(s.name)+tlStar(m.sid,pp.tl)+'</td><td>'+s.sid+'</td><td>'+SPECSHORT[s.spec]+'</td><td>'+(m.sid===pp.tl?'<span class="chip chip-gold">&#9733; Team Leader</span>':'Member')+'</td></tr>';}).join('')
++'</table></div>';
+return h;
+}
+if(!mine){return h+'<div class="notewarn">You have not chosen a '+TYPES[type]+' challenge yet. Choose one first - your team is created automatically from the 5 members who choose the same challenge.</div>';}
+var p=mine.team;var count=p.members.filter(function(m){return !m.cr;}).length;
+h+='<div class="sub">'+esc(p.company)+' &middot; '+p.team+' &middot; '+count+'/5 members</div>';
+if(p.tl===S.user.sid){h+='<div class="goldbar"><span style="font-size:22px">&#9733;</span> You are the TEAM LEADER of this team. Mentor Booking &amp; Review Expert Booking tabs are enabled for you.</div>';}
+h+='<div class="card"><h3>Problem Statement</h3><div>'+esc(p.statement)+'</div><div class="sub" style="margin-top:4px">'+esc(p.details)+'</div></div>';
+h+='<div class="card"><h3>Team Members</h3>';
+if(!p.tl&&count>=5){h+='<div class="notewarn">&#9733; Your team must now assign ONE Team Leader. All 5 members choose together - click "Assign as Team Leader" on the chosen person.</div>';}
+if(!p.tl&&count<5){h+='<div class="noteinfo">Team Leader assignment opens once the team is complete (5/5).</div>';}
+h+='<table class="tbl"><tr><th>Member</th><th>Register ID</th><th>Specialization</th><th>Role</th><th></th></tr>';
+p.members.forEach(function(m){
+var s=stu(m.sid);
+h+='<tr><td>'+esc(s.name)+tlStar(m.sid,p.tl)+(m.cr?' <span class="chip chip-r">Critical Resource (+bonus)</span>':'')+'</td><td>'+s.sid+'</td><td>'+SPECSHORT[s.spec]+'</td>'
++'<td>'+(m.sid===p.tl?'<span class="chip chip-gold">&#9733; Team Leader</span>':'Member')+'</td>'
++'<td>'+((!p.tl&&count>=5&&!m.cr)?'<button class="btn2" onclick="assignTL(\''+mine.key+'\','+mine.ti+',\''+m.sid+'\')">Assign as Team Leader</button>':'')+'</td></tr>';
+});
+h+='</table></div>';
+return h;
+}
+function assignTL(key,ti,sid){
+var p=S.problems[key][ti];
+if(p.tl){toast('Team Leader already assigned.');return;}
+if(!confirm('Assign '+stu(sid).name+' as Team Leader? (All 5 members confirm this choice together)'))return;
+p.tl=sid;
+toast('All 5 members confirmed: '+stu(sid).name+' is now the Team Leader ★ of '+p.team+'.');
+go(S.tab);
+}
+/* ---- Mentor booking (own tab, TL only) ---- */
+function tlGate(type){
+var mine=curTeam(type);
+if(!mine)return {html:'<div class="notewarn">You are not in a '+TYPES[type]+' team yet. Choose a challenge first.</div>'};
+if(!mine.team.tl)return {html:'<div class="notewarn">Your team ('+esc(mine.team.company)+') has no Team Leader yet. Assign one in My Team - only the TL can book.</div>',mine:mine};
+if(mine.team.tl!==S.user.sid)return {html:'<div class="noteinfo">Only the Team Leader (<b>'+esc(stu(mine.team.tl).name)+'</b> &#9733;) can make bookings for your team. You can view your team\'s bookings below.</div>',mine:mine,view:true};
+return {mine:mine,ok:true};
+}
+function pastBookingView(kind){
+/* read-only history of mentor/expert bookings for the user's team in a past activity */
+var mine=teamOfUser(S.bookType,S.bookNum,S.user.sid);
+var h='<div class="noteinfo">Past record - '+TYPES[S.bookType]+' '+S.bookNum+' (Semester '+semOf(S.bookNum)+') '+statusChip('Completed')+(mine?' &middot; You worked in <b>'+mine.team.team+'</b> ('+esc(mine.team.company)+')':'')+'</div>';
+if(!mine)return h+'<div class="notewarn">No team record found for you in this activity.</div>';
+var key=actKey(S.bookType,S.bookNum,S.user.campus);
+if(kind==='mentor'){
+var bs=S.mentorBookings.filter(function(b){return b.key===key&&b.team===mine.team.team;});
+h+='<div class="card"><h3>Mentor Bookings made by your team</h3>';
+if(!bs.length)h+='<div class="sub">Your team did not book a mentor in this activity.</div>';
+else{h+='<table class="tbl"><tr><th>Mentor</th><th>Date</th><th>During</th><th>Questions Asked</th><th>Calendly</th></tr>'
++bs.map(function(b){var m=S.mentors.filter(function(x){return x.id===b.mentorId;})[0]||{name:'-'};
+return '<tr><td>'+esc(m.name)+'</td><td>'+b.date+'</td><td>'+(b.rev||'-')+'</td><td style="max-width:280px">'+esc(b.questions)+'</td><td>'+(b.calendly?'<span class="chip chip-g">&#10003; Calendly</span>':'-')+'</td></tr>';}).join('')+'</table>';}
+return h+'</div>';
+}
+var eb=S.expertBookings.filter(function(b){return b.key===key&&b.team===mine.team.team;});
+h+='<div class="card"><h3>Review Experts who assessed your team</h3>';
+if(!eb.length)h+='<div class="sub">No expert booking records for your team in this activity.</div>';
+else{h+='<table class="tbl"><tr><th>Review</th><th>Expert</th><th>Panel</th><th>Specialization</th><th>Company</th><th>Date</th></tr>'
++eb.map(function(b){var ex=S.experts.filter(function(x){return x.id===b.expertId;})[0]||{};
+var rl=REVIEWS.filter(function(r){return r[0]===b.rev;})[0];
+return '<tr><td>'+(rl?rl[1]:'-')+'</td><td>'+esc(ex.name||'-')+'</td><td>Panel '+(ex.panel||'-')+'</td><td>'+esc(ex.spec||'-')+'</td><td>'+esc(ex.company||'-')+'</td><td>'+b.date+'</td></tr>';}).join('')+'</table>';}
+return h+'</div>';
+}
+function sMentor(){
+var h='<h2>Mentor Booking</h2><div class="sub">Team Leader only &middot; Book a mentor when your team is not clear about the problem statement. Mentors are entered by the Project Coordinator. Mentor bookings are <b>not limited</b> - book based on the mentor\'s available dates. Use the activity filter to see how past bookings worked.</div>';
+h+=seg([['BS','Business Simulation'],['LP','Live Project']],'bookType');
+if(S.user.sem===1){S.bookNum=5;}
+else{
+h+=seg([[1,'1'],[2,'2'],[3,'3'],[4,'4'],[5,'5 (Ongoing)']],'bookNum');
+if(+S.bookNum!==5)return h+pastBookingView('mentor');
+}
+var g=tlGate(S.bookType);
+if(g.html)h+=g.html;
+if(!g.mine)return h;
+var key=curKey(S.bookType);var teamName=g.mine.team.team;
+var myBookings=S.mentorBookings.filter(function(b){return b.key===key&&b.team===teamName;});
+if(g.ok){
+h+='<div class="grid2"><div class="card"><h3>Available Mentors (entered by Project Coordinator)</h3>';
+if(!S.mentors.length)h+='<div class="sub">No mentors posted yet.</div>';
+S.mentors.forEach(function(m){
+h+='<div class="member" style="display:block;padding:8px 0"><b>'+esc(m.name)+'</b> <span class="pill">'+esc(m.desig)+'</span><br>'
++'<span class="sub">'+esc(m.org)+' &middot; '+m.exp+' yrs &middot; '+esc(m.spec)+'</span><br>'
++'<span style="font-size:11.5px;font-weight:700;color:var(--mut)">AVAILABLE:</span> '+m.dates.map(function(d){return '<span class="pill">'+d+'</span>';}).join(' ')+'</div>';
+});
+h+='</div><div class="card"><h3>Book a Mentor (TL only)</h3>'
++'<label>Mentor</label><select id="mbMentor" onchange="mbDates()">'+S.mentors.map(function(m){return '<option value="'+m.id+'">'+esc(m.name)+' ('+esc(m.spec)+')</option>';}).join('')+'</select>'
++'<label>Available Date</label><select id="mbDate"></select>'
++'<label>Specialization Needed</label><select id="mbSpec">'+SPECS.map(function(s){return '<option>'+s+'</option>';}).join('')+'</select>'
++'<label>Problem Statement</label><input id="mbProb" value="'+esc(g.mine.team.company+' - '+g.mine.team.statement)+'">'
++'<label>What questions are we going to ask?</label><textarea id="mbQ" rows="3" placeholder="List the doubts / questions for the mentor"></textarea>'
++'<div style="margin-top:12px"><button class="btn" onclick="bookMentor(\''+key+'\',\''+teamName+'\')">Book Mentor</button></div></div></div>';
+setTimeout(mbDates,0);
+}
+h+='<div class="card"><h3>My Team\'s Mentor Bookings</h3>';
+if(!myBookings.length)h+='<div class="sub">No bookings yet.</div>';
+else{h+='<table class="tbl"><tr><th>Mentor</th><th>Date</th><th>Specialization</th><th>Questions</th><th>Calendly</th></tr>';
+myBookings.forEach(function(b){
+var m=S.mentors.filter(function(x){return x.id===b.mentorId;})[0]||{name:'?'};
+h+='<tr><td>'+esc(m.name)+'</td><td>'+b.date+'</td><td>'+SPECSHORT[b.spec]||b.spec;
+h+='</td><td style="max-width:260px">'+esc(b.questions)+'</td><td>'
++(b.calendly?'<span class="chip chip-g">&#10003; Added to Calendly</span>':'<button class="btn2" onclick="addCalendly('+b.id+')">Add to Calendly</button>')+'</td></tr>';
+});
+h+='</table>';}
+h+='</div>';
+return h;
+}
+function mbDates(){
+var mid=+document.getElementById('mbMentor').value;
+var m=S.mentors.filter(function(x){return x.id===mid;})[0];
+document.getElementById('mbDate').innerHTML=m.dates.map(function(d){return '<option>'+d+'</option>';}).join('');
+}
+function bookMentor(key,teamName){
+var mid=+document.getElementById('mbMentor').value;
+var q=document.getElementById('mbQ').value.trim();
+if(!q){toast('Please fill in the questions you are going to ask the mentor.');return;}
+S.mentorBookings.push({id:Date.now(),key:key,team:teamName,by:S.user.sid,mentorId:mid,date:document.getElementById('mbDate').value,rev:'R1',spec:document.getElementById('mbSpec').value,problem:document.getElementById('mbProb').value,questions:q,calendly:false});
+toast('Mentor booked! The Project Coordinator has been notified. You can now Add to Calendly.');
+go(S.tab);
+}
+function addCalendly(id){
+var b=S.mentorBookings.filter(function(x){return x.id===id;})[0];
+if(b){b.calendly=true;toast('Schedule added to Calendly - invites sent to the mentor and all team members.');go(S.tab);}
+}
+/* ---- Review Expert booking (own tab, TL only, 0/2 per expert) ---- */
+function sExpert(){
+var h='<h2>Review Expert Booking</h2><div class="sub">Team Leader only &middot; 3 panels &middot; Each expert can be booked by <b>2 teams</b> (0/2). Once 2 teams book an expert, that panel greys out. Experts are posted by the Project Coordinator on the review morning. Use the activity filter to see how past reviews were assessed.</div>';
+h+=seg([['BS','Business Simulation'],['LP','Live Project']],'bookType');
+if(S.user.sem===1){S.bookNum=5;}
+else{
+h+=seg([[1,'1'],[2,'2'],[3,'3'],[4,'4'],[5,'5 (Ongoing)']],'bookNum');
+if(+S.bookNum!==5)return h+pastBookingView('expert');
+}
+var g=tlGate(S.bookType);
+if(g.html)h+=g.html;
+if(!g.mine)return h;
+var key=curKey(S.bookType);var teamName=g.mine.team.team;var tag=teamName+' ('+key+')';
+var myBooking=S.expertBookings.filter(function(b){return b.key===key&&b.team===teamName;})[0];
+if(myBooking){var ex0=S.experts.filter(function(x){return x.id===myBooking.expertId;})[0];
+h+='<div class="noteinfo">Your team has booked <b>'+esc(ex0.name)+'</b> (Panel '+ex0.panel+') for the upcoming review.</div>';}
+var avail=S.experts.filter(function(e){return e.type===S.bookType&&e.num===5&&e.campus===S.user.campus&&e.rev==='R1';});
+h+='<div class="noteinfo">Upcoming: <b>'+TYPES[S.bookType]+' 5 - Review 1</b>. '+avail.length+' expert(s) posted by the Project Coordinator.</div>';
+h+='<div class="grid3">';
+avail.forEach(function(ex){
+var fullEx=ex.bookedBy.length>=ex.cap;
+var isMine=ex.bookedBy.indexOf(tag)>=0;
+h+='<div class="teamcard'+(isMine?' mine':(fullEx?' grey':''))+'">'
++'<span class="chip chip-b">Panel '+ex.panel+'</span> <span class="chip '+(fullEx?'chip-gr':'chip-a')+'">'+ex.bookedBy.length+'/'+ex.cap+' teams</span>'
++'<h3 style="margin-top:8px">'+esc(ex.name)+'</h3>'
++'<div class="sub">'+esc(ex.spec)+'<br>'+ex.exp+' years industry experience<br>Working at: <b>'+esc(ex.company)+'</b></div>'
++'<div style="font-size:11.5px;color:var(--mut)">Booked by: '+(ex.bookedBy.length?ex.bookedBy.map(esc).join(', '):'-')+'</div>'
++'<div style="margin-top:10px">'+(isMine?'<span class="chip chip-g">&#10003; Booked by your team</span>':(fullEx?'<span class="chip chip-gr">FULL - LOCKED</span>':(g.ok&&!myBooking?'<button class="btn" onclick="bookExpert('+ex.id+',\''+key+'\',\''+teamName+'\')">Book This Expert</button>':'<span class="chip chip-gr">'+(myBooking?'Your team already booked':'TL only')+'</span>')))+'</div></div>';
+});
+return h+'</div>';
+}
+function bookExpert(id,key,teamName){
+var ex=S.experts.filter(function(x){return x.id===id;})[0];
+if(ex.bookedBy.length>=ex.cap){toast('This expert is already booked by 2 teams.');return;}
+ex.bookedBy.push(teamName+' ('+key+')');
+S.expertBookings.push({key:key,team:teamName,expertId:id,by:S.user.sid,date:new Date().toISOString().slice(0,10),rev:'R1'});
+toast(ex.name+' booked for '+teamName+'. He/she will review your team.');
+go(S.tab);
+}
+/* ---- Review & Marks (BS + LP filters) ---- */
+function sMarks(){
+var h='<h2>Review &amp; Marks</h2><div class="sub">Marks are published by the Director - 3 reviews + Demo Day, per Business Simulation and per Live Project.</div>';
+h+=seg([['BS','Business Simulation'],['LP','Live Project']],'fType');
+h+=seg([[1,TYPES[S.fType].split(' ')[0]+' 1'],[2,'2'],[3,'3'],[4,'4'],[5,'5 (Ongoing)']],'fNum');
+h+=seg(REVIEWS.map(function(r){return [r[0],r[1]];}),'fRev');
+var key=actKey(S.fType,S.fNum,S.user.campus);
+var mine=teamOfUser(S.fType,S.fNum,S.user.sid);
+if(!mine){return h+'<div class="notewarn">You were not part of a team in '+TYPES[S.fType]+' '+S.fNum+'. (Demo data pre-assigns students 001-027 of each programme to past teams; join a team in the ongoing activity to see live marks.)</div>';}
+var rec=(S.marks[key]&&S.marks[key][S.fRev])?S.marks[key][S.fRev][mine.ti]:null;
+h+='<div class="card"><h3>'+TYPES[S.fType]+' '+S.fNum+' &middot; '+REVIEWS.filter(function(r){return r[0]===S.fRev;})[0][1]+' &middot; '+mine.team.team+'</h3>';
+if(!rec){h+='<div class="sub">No marks entered yet for this review.</div></div>';return h;}
+if(rec.status!=='published'){h+='<div class="noteinfo">Marks have been entered and are awaiting <b>Director publication</b>. They will appear here automatically once the Director clicks Overall Publish.</div></div>';return h;}
+var myMark=rec.entries[S.user.sid];
+var total=0,maxT=0;
+mine.team.members.forEach(function(m){if(rec.entries[m.sid]!=null){total+=rec.entries[m.sid];maxT+=100;}});
+h+='<div class="grid2" style="max-width:640px">'
++'<div class="stat"><div class="n">'+(myMark!=null?myMark+' / 100':'-')+'</div><div class="l">Your individual mark</div></div>'
++'<div class="stat"><div class="n">'+total+' / '+maxT+'</div><div class="l">Overall team mark ('+mine.team.team+')</div></div></div>'
++'<div class="noteinfo" style="margin-top:12px">For privacy, teammates\' individual marks are not shown - only your own mark and the overall team mark are visible.</div></div>';
+return h;
+}
+/* ============ PROJECT COORDINATOR PAGES ============ */
+function cDashboard(){
+return '<h2>Project Coordinator Dashboard</h2><div class="sub">Overall view of mentor &amp; expert management</div>'
++'<div class="grid4">'
++'<div class="stat"><div class="n">'+S.mentors.length+'</div><div class="l">Mentors Entered</div></div>'
++'<div class="stat"><div class="n">'+S.experts.length+'</div><div class="l">Review Experts Posted</div></div>'
++'<div class="stat"><div class="n">'+S.mentorBookings.length+'</div><div class="l">Mentor Bookings by Teams</div></div>'
++'<div class="stat"><div class="n">'+S.expertBookings.length+'</div><div class="l">Expert Bookings by Teams</div></div></div>'
++'<div class="noteinfo" style="margin-top:14px"><b>Review-day routine:</b> On the review day, post the expert details by <b>9:00 AM</b> (Expert Entry tab). Student Team Leaders can then book their panel expert before the 11:00 AM review. Each expert takes exactly 2 teams (0/2).</div>'
++'<div class="notewarn"><b>Centralized evaluation authority:</b> Mark Entry stays locked until the Director clicks <b>Approve &amp; Start Evaluation</b> (Director login &rarr; Evaluation Control). For remote founders, copy the team\'s Remote Evaluation Link from Mark Entry and email it.</div>'
++'<div class="card"><h3>Latest Mentor Bookings</h3>'+(S.mentorBookings.length?('<table class="tbl"><tr><th>Team</th><th>Activity</th><th>Mentor</th><th>Date</th></tr>'+S.mentorBookings.slice(-5).reverse().map(function(b){var m=S.mentors.filter(function(x){return x.id===b.mentorId;})[0]||{name:'?'};return '<tr><td>'+b.team+'</td><td>'+b.key+'</td><td>'+esc(m.name)+'</td><td>'+b.date+'</td></tr>';}).join('')+'</table>'):'<div class="sub">No bookings yet.</div>')+'</div>';
+}
+function cMentorEntry(){
+var h='<h2>Mentor Entry</h2><div class="sub">Only the Project Coordinator can enter mentors. Once saved, the mentor immediately appears in the Student login (Mentor Booking tab, visible to Team Leaders). <b>Include the dates the mentor is available</b> - students book against those dates.</div>';
+h+='<div class="grid2"><div class="card"><h3>Add Mentor</h3>'
++'<label>Name</label><input id="mName" placeholder="e.g. Dr. Priya Venkatesh">'
++'<label>Designation</label><input id="mDesig" placeholder="e.g. VP - Operations">'
++'<label>Experience (years)</label><input id="mExp" type="number" min="1" placeholder="e.g. 15">'
++'<label>Specialization</label><select id="mSpec">'+SPECS.map(function(s){return '<option>'+s+'</option>';}).join('')+'</select>'
++'<label>Working Organization</label><input id="mOrg" placeholder="e.g. Amazon India">'
++'<label>Available Dates (pick a date, then Add - repeat for each free date)</label>'
++'<div style="display:flex;gap:8px"><input id="mDate" type="date" style="flex:1"><button class="btn2" onclick="addMentorDate()">+ Add Date</button></div>'
++'<div class="slotrow" id="mDates"></div>'
++'<div style="margin-top:12px"><button class="btn" onclick="saveMentor()">Save Mentor</button></div></div>'
++'<div class="card"><h3>Mentors Entered ('+S.mentors.length+')</h3>';
+S.mentors.forEach(function(m){
+h+='<div class="member" style="display:block;padding:8px 0"><b>'+esc(m.name)+'</b> <span class="pill">'+esc(m.desig)+'</span><br><span class="sub">'+esc(m.org)+' &middot; '+m.exp+' yrs &middot; '+esc(m.spec)+'</span><br>'
++'<span style="font-size:11.5px;font-weight:700;color:var(--mut)">AVAILABLE:</span> '+m.dates.map(function(d){return '<span class="pill">'+d+'</span>';}).join(' ')+'</div>';
+});
+return h+'</div></div>';
+}
+var _mDates=[];
+function addMentorDate(){
+var v=document.getElementById('mDate').value;
+if(!v){toast('Pick a date first.');return;}
+if(_mDates.indexOf(v)<0)_mDates.push(v);
+document.getElementById('mDates').innerHTML=_mDates.map(function(d){return '<span class="slot filled">'+d+'</span>';}).join('');
+}
+function saveMentor(){
+var n=document.getElementById('mName').value.trim();
+if(!n||!_mDates.length){toast('Enter the mentor name and at least one available date.');return;}
+S.mentors.push({id:Date.now(),name:n,desig:document.getElementById('mDesig').value||'-',exp:+document.getElementById('mExp').value||0,spec:document.getElementById('mSpec').value,org:document.getElementById('mOrg').value||'-',dates:_mDates.slice(),month:'Jul'});
+_mDates=[];
+toast('Mentor saved - now visible to Team Leaders in the Student login.');
+go(S.tab);
+}
+function cExpertEntry(){
+var revLbl=REVIEWS.filter(function(r){return r[0]===S.fRev;})[0][1];
+var h='<h2>Review Expert Entry</h2><div class="sub">Post the panel experts on the review-day morning (by 9:00 AM). Students book from 3 panels; each expert reviews exactly <b>2 teams</b> (0/2, then greyed out). Activities 1-4 show the past expert history.</div>';
+h+=seg([['RTC','RTC RSmart'],['RGU','RGU RSmart']],'fCampus')
++seg([['BS','Business Simulation'],['LP','Live Project']],'fType')
++seg([[1,'1'],[2,'2'],[3,'3'],[4,'4'],[5,'5 (Ongoing)']],'fNum')
++seg(REVIEWS.map(function(r){return [r[0],r[0]==='DEMO'?'Demo Day (Founders)':r[1]];}),'fRev');
+var list=S.experts.filter(function(e){return e.campus===S.fCampus&&e.type===S.fType&&e.num===+S.fNum&&e.rev===S.fRev;});
+var isPast=+S.fNum<5;
+h+='<div class="grid2"><div class="card"><h3>Add Review Expert - '+TYPES[S.fType]+' '+S.fNum+' &middot; '+revLbl+' ('+S.fCampus+')</h3>'
++(isPast?'<div class="notewarn">This activity is COMPLETED - shown for past reference only. Switch the filter to '+TYPES[S.fType]+' 5 to post experts for the ongoing review.</div>':'')
++'<label>Name</label><input id="eName" placeholder="Expert name"'+(isPast?' disabled':'')+'>'
++'<label>Specialization</label><input id="eSpec" placeholder="e.g. Marketing & Growth"'+(isPast?' disabled':'')+'>'
++'<label>Industry Experience (years)</label><input id="eExp" type="number" min="1" placeholder="e.g. 20"'+(isPast?' disabled':'')+'>'
++'<label>Working Company</label><input id="eComp" placeholder="e.g. Deloitte"'+(isPast?' disabled':'')+'>'
++'<label>Panel</label><select id="ePanel"'+(isPast?' disabled':'')+'><option value="1">Panel 1</option><option value="2">Panel 2</option><option value="3">Panel 3</option></select>'
++'<div style="margin-top:12px"><button class="btn" '+(isPast?'disabled ':'')+'onclick="saveExpert()">Post Expert for Booking</button></div></div>'
++'<div class="card"><h3>Experts - '+TYPES[S.fType]+' '+S.fNum+' &middot; '+revLbl+' ('+list.length+')</h3>';
+if(!list.length)h+='<div class="sub">No experts posted for this filter yet.</div>';
+else{h+='<table class="tbl"><tr><th>Panel</th><th>Name</th><th>Specialization</th><th>Exp</th><th>Company</th><th>Booked</th></tr>';
+list.forEach(function(ex){
+h+='<tr><td>Panel '+ex.panel+'</td><td>'+esc(ex.name)+'</td><td>'+esc(ex.spec)+'</td><td>'+ex.exp+' yrs</td><td>'+esc(ex.company)+'</td><td><span class="chip '+(ex.bookedBy.length>=2?'chip-gr':'chip-a')+'">'+ex.bookedBy.length+'/2</span><br><span style="font-size:11px;color:var(--mut)">'+ex.bookedBy.map(esc).join('<br>')+'</span></td></tr>';
+});
+h+='</table>';}
+return h+'</div></div>';
+}
+function saveExpert(){
+var n=document.getElementById('eName').value.trim();
+if(!n){toast('Enter the expert name.');return;}
+S.experts.push({id:Date.now(),panel:+document.getElementById('ePanel').value,name:n,spec:document.getElementById('eSpec').value||'-',exp:+document.getElementById('eExp').value||0,company:document.getElementById('eComp').value||'-',cap:2,bookedBy:[],type:S.fType,num:+S.fNum,campus:S.fCampus,rev:S.fRev});
+toast('Expert posted for '+TYPES[S.fType]+' '+S.fNum+' ('+S.fCampus+') - Team Leaders can now book (0/2).');
+go(S.tab);
+}
+function cBookings(){
+var h='<h2>Bookings Received</h2><div class="sub">You are the point of contact for mentors - every mentor booking by a Team Leader lands here so you can call the mentor and confirm availability. Activities 1-4 = past bookings; 5 = ongoing (currently Review 1).</div>';
+h+=seg([['BS','Business Simulation'],['LP','Live Project']],'fType')
++seg([[1,'1'],[2,'2'],[3,'3'],[4,'4'],[5,'5 (Ongoing)']],'fNum')
++seg([['all','All Reviews'],['R1','Review 1'],['R2','Review 2'],['R3','Review 3'],['DEMO','Demo Day']],'bRev')
++seg([['RTC','RTC RSmart'],['RGU','RGU RSmart']],'fCampus');
+var key=actKey(S.fType,S.fNum,S.fCampus);
+var revOk=function(b){return S.bRev==='all'||b.rev===S.bRev;};
+var mb=S.mentorBookings.filter(function(b){return b.key===key&&revOk(b);});
+h+='<div class="card"><h3>Mentor Bookings - '+TYPES[S.fType]+' '+S.fNum+' ('+S.fCampus+') '+(+S.fNum<5?statusChip('Completed'):statusChip('Ongoing'))+'</h3>';
+if(!mb.length)h+='<div class="sub">No mentor bookings for this filter.</div>';
+else{h+='<table class="tbl"><tr><th>Team</th><th>Booked By (TL)</th><th>Mentor</th><th>Date</th><th>During</th><th>Questions To Ask</th><th>Calendly</th></tr>';
+mb.forEach(function(b){var m=S.mentors.filter(function(x){return x.id===b.mentorId;})[0]||{name:'?'};var by=stu(b.by);
+h+='<tr><td>'+b.team+'</td><td>'+esc(by.name)+' &#9733;<br><span class="pill">'+by.sid+'</span></td><td>'+esc(m.name)+'</td><td><b>'+b.date+'</b></td><td>'+(b.rev||'-')+'</td><td style="max-width:260px">'+esc(b.questions)+'</td><td>'+(b.calendly?'<span class="chip chip-g">&#10003; On Calendly</span>':'<span class="chip chip-gr">Pending</span>')+'</td></tr>';});
+h+='</table>';}
+h+='</div>';
+var eb=S.expertBookings.filter(function(b){return b.key===key&&revOk(b);});
+h+='<div class="card"><h3>Review Expert Bookings - '+TYPES[S.fType]+' '+S.fNum+' ('+S.fCampus+')</h3>';
+if(!eb.length)h+='<div class="sub">No expert bookings for this filter.</div>';
+else{h+='<table class="tbl"><tr><th>Review</th><th>Team</th><th>Expert</th><th>Panel</th><th>Company</th><th>Booked On</th></tr>';
+eb.forEach(function(b){var ex=S.experts.filter(function(x){return x.id===b.expertId;})[0]||{name:'?',panel:'-',company:'-'};
+var rl=REVIEWS.filter(function(r){return r[0]===b.rev;})[0];
+h+='<tr><td>'+(rl?rl[1]:'-')+'</td><td>'+b.team+'</td><td>'+esc(ex.name)+'</td><td>Panel '+ex.panel+'</td><td>'+esc(ex.company)+'</td><td>'+b.date+'</td></tr>';});
+h+='</table>';}
+return h+'</div>';
+}
+/* ============ ADMIN PAGES ============ */
+function aDashboard(){
+var totalProblems=Object.keys(S.problems).reduce(function(a,k){return a+S.problems[k].length;},0)+S.questions.length;
+var savedCount=0;Object.keys(S.marks).forEach(function(k){REVIEWS.forEach(function(r){var o=S.marks[k][r[0]]||{};Object.keys(o).forEach(function(ti){if(o[ti].status==='saved')savedCount++;});});});
+return '<h2>Admin Dashboard</h2><div class="sub">Accounts &amp; credentials. Mark entry, question posting, team change, critical resource, team split and student marks are now handled in the <b>Project Coordinator</b> login; evaluation start authority stays with the <b>Director</b>.</div>'
++'<div class="grid4">'
++'<div class="stat"><div class="n">64</div><div class="l">Students (32 RTC + 32 RGU)</div></div>'
++'<div class="stat"><div class="n">'+totalProblems+'</div><div class="l">Problem Statements Posted</div></div>'
++'<div class="stat"><div class="n">'+S.teamChanges.length+'</div><div class="l">Team Changes Made</div></div>'
++'<div class="stat"><div class="n">'+S.critical.length+'</div><div class="l">Critical Resources Deployed</div></div>'
++'<div class="stat"><div class="n">'+savedCount+'</div><div class="l">Mark Sheets Saved (awaiting Director)</div></div>'
++'<div class="stat"><div class="n">BS 5 / LP 5</div><div class="l">Ongoing (Semester 3)</div></div></div>'
++'<div class="noteinfo" style="margin-top:14px"><b>Demo Day mark entry:</b> experts &amp; founders enter marks on this Admin login only. 25 min presentation + 10 min Q&amp;A; marks can be entered from the first second; auto save &amp; close at the 35th minute (or Save &amp; Close earlier).</div>';
+}
+/* ---- Mark Entry ---- */
+function fmtT(s){var m=Math.floor(s/60),x=s%60;return (m<10?'0':'')+m+':'+(x<10?'0':'')+x;}
+function aMarkEntry(){
+if(S.ame.active)return aSession();
+var a=S.ame;
+var h='<h2>Mark Entry</h2><div class="sub">For Reviews 1-3 and Demo Day. Experts &amp; founders enter <b>student-wise individual marks</b>. Presentation (25 min) and Mark Entry (10 min) run on separate timers. Opening requires the Director\'s approval (centralized authority).</div>';
+h+='<div class="card"><h3><span class="stepnum">1</span>Choose the activity type</h3><div class="grid2" style="max-width:700px">'
++'<button class="btn bigbtn'+(a.type==='LP'?'':' ')+'" style="'+(a.type==='LP'?'':'opacity:'+(a.type?'.45':'1'))+'" onclick="S.ame.type=\'LP\';go(\'markentry\')">Live Project</button>'
++'<button class="btn bigbtn" style="background:var(--green);'+(a.type==='BS'?'':'opacity:'+(a.type?'.45':'1'))+'" onclick="S.ame.type=\'BS\';go(\'markentry\')">Business Simulation</button></div></div>';
+if(!a.type)return h;
+h+='<div class="card"><h3><span class="stepnum">2</span>Currently ongoing: <span class="chip chip-b">'+TYPES[a.type]+' 5 (Semester 3)</span> - choose programme &amp; review type</h3>'
++seg([['RTC','RTC RSmart'],['RGU','RGU RSmart']],'fCampus')
++'<div class="grid4" style="margin-top:8px">'+REVIEWS.map(function(r){
+return '<button class="'+(a.review===r[0]?'btn':'btn2')+'" onclick="S.ame.review=\''+r[0]+'\';go(\'markentry\')">'+r[1]+(r[0]==='DEMO'?' (Founders)':'')+'</button>';
+}).join('')+'</div></div>';
+if(!a.review)return h;
+var eKey=actKey(a.type,5,S.fCampus)+'-'+a.review;
+if(!S.evalAuth[eKey]){
+return h+'<div class="notewarn">&#128274; <b>LOCKED</b> - Evaluation for '+TYPES[a.type]+' 5 &middot; '+REVIEWS.filter(function(r){return r[0]===a.review;})[0][1]+' ('+S.fCampus+') has not been started by the Director. The Director must click <b>Approve &amp; Start Evaluation</b> (Director login &rarr; Evaluation Control); only then this Mark Entry opens. This is the centralized evaluation authority.</div>';
+}
+var teams=getTeams(a.type,5,S.fCampus);
+h+='<div class="noteinfo">&#9989; Evaluation approved by the Director. For founders attending <b>remotely</b>: copy a team\'s Remote Evaluation Link and email it to them - the link opens ONLY that team\'s mark entry page (nothing else is accessible).</div>';
+h+='<div class="card"><h3><span class="stepnum">3</span>Select the presenting team</h3><div class="grid3">';
+teams.forEach(function(t,ti){
+var rec=(S.marks[actKey(a.type,5,S.fCampus)]&&S.marks[actKey(a.type,5,S.fCampus)][a.review])?S.marks[actKey(a.type,5,S.fCampus)][a.review][ti]:null;
+var locked=!!rec; /* once the expert saves, the card greys out - no edits, no re-entry (only the Director can edit) */
+h+='<div class="teamcard'+(locked?' grey':'')+'"><b>'+t.team+'</b> '+(rec?markChip(rec.status):'<span class="chip chip-gr">Not assessed</span>')+'<div class="sub" style="margin:6px 0">'+esc(t.company)+'</div>'
++(locked?'<span class="chip chip-gr">&#128274; Marks saved &amp; closed - locked. Only the Director can edit.</span>':'<button class="btn" onclick="openSession('+ti+')">Open Mark Entry &rarr;</button><div style="margin-top:6px"><button class="btn2" onclick="copyEvalLink('+ti+')">&#128279; Copy Remote Evaluation Link</button></div>')+'</div>';
+});
+return h+'</div></div>';
+}
+function openSession(ti){
+S.ame={active:true,type:S.ame.type,review:S.ame.review,ti:ti,campus:S.fCampus,pRemaining:1500,mRemaining:600,pRunning:false,pDone:false,mRunning:false};
+go('markentry');
+}
+function aSession(){
+var a=S.ame;var t=getTeams(a.type,5,a.campus)[a.ti];
+var revLbl=REVIEWS.filter(function(r){return r[0]===a.review;})[0][1];
+var running=a.pRunning||a.mRunning;
+var h='<h2>'+TYPES[a.type]+' 5 &middot; '+revLbl+' &middot; '+t.team+' ('+a.campus+' RSmart)</h2>';
+if(!running&&S.role!=='evaluator')h+='<span class="crumb" onclick="stopTimer();S.ame={active:false,type:S.ame.type,review:S.ame.review};go(\'markentry\')">&larr; Back (choose another team)</span>';
+h+='<div class="card" style="border-color:#bcd0f5;background:var(--pl)"><h3>&#128203; Problem Statement (for the reviewing experts &amp; founders)</h3>'
++'<b>'+esc(t.company)+'</b><div style="margin:6px 0">'+esc(t.statement)+'</div><div class="sub">'+esc(t.details)+'</div></div>';
+h+='<div class="grid2">'
++'<div class="timerbox"><div style="font-weight:800;color:var(--mut);letter-spacing:.5px">PRESENTATION &middot; 25 MINUTES</div>'
++'<div class="timerbig" id="ptmr">'+fmtT(Math.max(a.pRemaining,0))+'</div>'
++'<div style="margin-top:10px">'+(a.pRunning
+?'<button class="btnr" onclick="stopPresentation()">&#9632; Stop Presentation (finished early)</button>'
+:(a.pDone?'<span class="chip chip-g">&#10003; Presentation completed</span>'
+:'<button class="btng bigbtn" style="max-width:260px" onclick="startPresentation()">&#9654; Start Presentation</button>'))+'</div></div>'
++'<div class="timerbox"><div style="font-weight:800;color:var(--mut);letter-spacing:.5px">MARK ENTRY &middot; 10 MINUTES</div>'
++'<div class="timerbig'+(a.mRunning?' late':'')+'" id="mtmr">'+fmtT(Math.max(a.mRemaining,0))+'</div>'
++'<div style="margin-top:10px">'+(a.mRunning
+?'<button class="btn2" onclick="demoFF()">(demo) fast-forward to last 30 sec</button>'
+:'<button class="btn bigbtn" style="max-width:260px" onclick="startMarkEntry()">&#9997; Start Mark Entry</button>')+'</div></div></div>'
++'<div class="notewarn">&#9888; <b>Note:</b> <b>Start Presentation</b> runs the 25-minute window - stop it early if the team finishes before time. The student-wise mark grid opens ONLY when <b>Start Mark Entry</b> is clicked; a 10-minute countdown begins and if marks are not saved within 10 minutes the page <b>AUTO-SAVES &amp; CLOSES</b> with whatever is entered. You may also Save &amp; Close earlier. All other tabs stay locked while a timer runs.</div>';
+if(a.mRunning){
+var key=actKey(a.type,5,a.campus);
+var existing=(S.marks[key]&&S.marks[key][a.review])?S.marks[key][a.review][a.ti]:null;
+h+='<div class="card"><h3>Student-wise Marks (out of 100)</h3><table class="tbl"><tr><th>Student</th><th>Register ID</th><th>Specialization</th><th>Mark / 100</th></tr>';
+t.members.forEach(function(m){
+var st2=stu(m.sid);var v=existing&&existing.entries[m.sid]!=null?existing.entries[m.sid]:'';
+h+='<tr><td>'+esc(st2.name)+tlStar(m.sid,t.tl)+(m.cr?' <span class="chip chip-r">Critical Resource (+bonus)</span>':'')+'</td><td>'+st2.sid+'</td><td>'+(SPECSHORT[st2.spec]||'-')+'</td>'
++'<td style="width:130px"><input type="number" min="0" max="100" id="mark_'+m.sid+'" value="'+v+'" placeholder="0-100"></td></tr>';
+});
+h+='</table><div style="margin-top:14px"><button class="btng" onclick="saveSession(false)">&#128190; Save Marks &amp; Close</button></div></div>';
+}else{
+h+='<div class="noteinfo">The student-wise mark grid will appear here when <b>Start Mark Entry</b> is clicked (10-minute window).</div>';
+}
+return h;
+}
+function startPresentation(){S.ame.pRunning=true;ensureTimer();sessRefresh();}
+function stopPresentation(){S.ame.pRunning=false;S.ame.pDone=true;sessRefresh();}
+function startMarkEntry(){var a=S.ame;a.pRunning=false;a.pDone=true;a.mRunning=true;ensureTimer();sessRefresh();}
+function sessRefresh(){
+if(S.role==='evaluator'){document.getElementById('content').innerHTML=aSession();}
+else{go('markentry');}
+}
+function ensureTimer(){if(!S.reviewTimer)S.reviewTimer=setInterval(tick,1000);}
+function tick(){
+var a=S.ame;if(!a.active)return;
+if(a.pRunning){
+a.pRemaining--;
+var el=document.getElementById('ptmr');if(el)el.textContent=fmtT(Math.max(a.pRemaining,0));
+if(a.pRemaining<=0){a.pRunning=false;a.pDone=true;sessRefresh();}
+}
+if(a.mRunning){
+a.mRemaining--;
+var el2=document.getElementById('mtmr');if(el2)el2.textContent=fmtT(Math.max(a.mRemaining,0));
+if(a.mRemaining<=0){saveSession(true);}
+}
+}
+function demoFF(){if(S.ame.active&&S.ame.mRunning){S.ame.mRemaining=30;toast('Demo: mark-entry timer moved to the last 30 seconds - watch the auto save & close.');}}
+function stopTimer(){if(S.reviewTimer){clearInterval(S.reviewTimer);S.reviewTimer=null;}}
+function copyEvalLink(ti){
+var a=S.ame;
+var link=location.href.split('#')[0]+'#eval='+encodeURIComponent([a.type,a.review,S.fCampus,ti,'ok'].join('|'));
+var done=function(){toast('Remote evaluation link copied. Email it to the founder/expert - it opens ONLY this team\'s mark entry page (same timers, nothing else accessible).');};
+if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(link).then(done,function(){window.prompt('Copy this remote evaluation link:',link);});}
+else{window.prompt('Copy this remote evaluation link:',link);}
+}
+function saveSession(auto){
+var a=S.ame;if(!a.active)return;
+stopTimer();
+var key=actKey(a.type,5,a.campus);var t=getTeams(a.type,5,a.campus)[a.ti];
+if(!S.marks[key])S.marks[key]={};
+if(!S.marks[key][a.review])S.marks[key][a.review]={};
+var entries={};
+t.members.forEach(function(m){
+var el=document.getElementById('mark_'+m.sid);
+var v=el?parseInt(el.value):NaN;
+entries[m.sid]=isNaN(v)?0:Math.max(0,Math.min(100,v));
+});
+S.marks[key][a.review][a.ti]={status:'saved',entries:entries};
+S.ame={active:false};
+if(S.role==='evaluator'){
+document.getElementById('content').innerHTML='<div class="card" style="max-width:560px;margin:40px auto;text-align:center"><h2>&#9989; Thank you!</h2><div class="sub" style="margin-top:8px">'+(auto?'The 10-minute window ended - marks were auto-saved &amp; closed.':'Marks saved &amp; closed.')+' They are now with the Director for review &amp; publishing. You may close this window.</div></div>';
+return;
+}
+toast(auto?'10 minutes over - marks AUTO-SAVED & CLOSED. Sent to the Director for review & publishing.':'Marks saved & closed. Sent to the Director for review & publishing.');
+go('markentry');
+}
+/* ---- Question Posting (drag & drop specializations) ---- */
+function aQuestions(){
+var ed=S.qp.editing?S.questions.filter(function(q){return q.id===S.qp.editing;})[0]:null;
+var h='<h2>Question Posting</h2><div class="sub">Post new problem statements for Business Simulations and Live Projects. Drag the 5 specialization seats - only students of those specializations can choose the problem. <b>Each problem statement is saved independently</b> (editing one never changes another).</div>';
+h+='<div class="grid2"><div class="card"><h3>'+(ed?'Edit Problem Statement':'New Problem Statement')+'</h3>'
++'<div style="display:flex;gap:8px"><div style="flex:1"><label>Type</label><select id="qType"><option value="BS"'+((ed?ed.type:'BS')==='BS'?' selected':'')+'>Business Simulation</option><option value="LP"'+((ed?ed.type:'')==='LP'?' selected':'')+'>Live Project</option></select></div>'
++'<div style="flex:1"><label>Number</label><select id="qNum">'+[5,6,7,8].map(function(n){return '<option'+((ed?ed.num:6)===n?' selected':'')+'>'+n+'</option>';}).join('')+'</select></div>'
++'<div style="flex:1"><label>Programme</label><select id="qCampus"><option'+((ed?ed.campus:'RTC')==='RTC'?' selected':'')+'>RTC</option><option'+((ed?ed.campus:'')==='RGU'?' selected':'')+'>RGU</option></select></div></div>'
++'<label>Company Name</label><input id="qCompany" value="'+(ed?esc(ed.company):'')+'" placeholder="e.g. Freshworks">'
++'<label>Problem Statement</label><textarea id="qStatement" rows="2" placeholder="The business problem the team must solve">'+(ed?esc(ed.statement):'')+'</textarea>'
++'<label>Company Details</label><textarea id="qDetails" rows="2" placeholder="Short background about the company">'+(ed?esc(ed.details):'')+'</textarea>'
++'<label>Specialization Seats - drag &amp; drop 5 seats (a specialization may repeat, e.g. BA twice)</label>'
++'<div class="palette">'+SPECS.map(function(sp){return '<span class="pchip" draggable="true" ondragstart="dragSpec(event,\''+sp+'\')" onclick="clickSpec(\''+sp+'\')">'+SPECSHORT[sp]+' - '+sp+'</span>';}).join('')+'</div>'
++'<div class="dslots" id="qSlots"></div>'
++'<div style="margin-top:12px;display:flex;gap:8px"><button class="btn" onclick="saveQuestion()">'+(ed?'Update Problem Statement':'Add Problem Statement')+'</button>'
++(ed?'<button class="btn2" onclick="S.qp={editing:null,slots:[null,null,null,null,null]};go(\'questions\')">Cancel Edit</button>':'')+'</div></div>';
+/* drafts list */
+h+='<div class="card"><h3>Posted Problem Statements ('+S.questions.length+')</h3>';
+if(!S.questions.length)h+='<div class="sub">Nothing posted yet.</div>';
+S.questions.forEach(function(q){
+h+='<div class="member" style="display:block;padding:10px 0"><b>'+esc(q.company)+'</b> <span class="pill">'+q.type+' '+q.num+'</span> <span class="pill">'+q.campus+'</span> '+(q.published?'<span class="chip chip-g">Published</span>':'<span class="chip chip-a">Draft</span>')
++'<div style="margin:4px 0;font-size:12.5px">'+esc(q.statement)+'</div>'
++'<div class="slotrow">'+q.slots.map(function(sp){return '<span class="slot filled">'+SPECSHORT[sp]+'</span>';}).join('')+'</div>'
++'<button class="btn2" onclick="editQuestion('+q.id+')">&#9998; Edit</button> '
++'<button class="btn2" style="color:var(--red);border-color:var(--red)" onclick="delQuestion('+q.id+')">Delete</button></div>';
+});
+var drafts=S.questions.filter(function(q){return !q.published;}).length;
+h+='<div style="margin-top:14px"><button class="btng" '+(drafts?'':'disabled ')+'onclick="publishQuestions()">&#128640; Overall Publish - push all drafts to Student login ('+drafts+')</button></div>'
++'<div class="sub" style="margin-top:6px">After you give all problem statements, one Overall Publish makes them visible to students in one go.</div></div></div>';
+setTimeout(renderQSlots,0);
+return h;
+}
+function renderQSlots(){
+var el=document.getElementById('qSlots');if(!el)return;
+el.innerHTML=S.qp.slots.map(function(sp,i){
+return '<div class="dslot'+(sp?' filled':'')+'" ondragover="event.preventDefault()" ondrop="dropSpec(event,'+i+')" onclick="clearSlot('+i+')" title="'+(sp?'Click to clear':'Drop a specialization here')+'">'+(sp?SPECSHORT[sp]:'Seat '+(i+1))+'</div>';
+}).join('');
+}
+function dragSpec(ev,sp){ev.dataTransfer.setData('text/plain',sp);}
+function dropSpec(ev,i){ev.preventDefault();var sp=ev.dataTransfer.getData('text/plain');if(SPECS.indexOf(sp)>=0){S.qp.slots[i]=sp;renderQSlots();}}
+function clickSpec(sp){for(var i=0;i<5;i++){if(!S.qp.slots[i]){S.qp.slots[i]=sp;renderQSlots();return;}}toast('All 5 seats are filled - click a seat to clear it.');}
+function clearSlot(i){if(S.qp.slots[i]){S.qp.slots[i]=null;renderQSlots();}}
+function saveQuestion(){
+var company=document.getElementById('qCompany').value.trim();
+var stmt=document.getElementById('qStatement').value.trim();
+if(!company||!stmt){toast('Enter the company name and problem statement.');return;}
+if(S.qp.slots.filter(Boolean).length<5){toast('Drag & drop all 5 specialization seats.');return;}
+var data={type:document.getElementById('qType').value,num:+document.getElementById('qNum').value,campus:document.getElementById('qCampus').value,company:company,statement:stmt,details:document.getElementById('qDetails').value.trim(),slots:S.qp.slots.slice()};
+if(S.qp.editing){
+var q=S.questions.filter(function(x){return x.id===S.qp.editing;})[0];
+Object.keys(data).forEach(function(k){q[k]=data[k];});
+toast('Problem statement updated (only this one - others untouched).');
+}else{
+data.id=Date.now();data.published=false;S.questions.push(data);
+toast('Problem statement added as draft. Add more, then Overall Publish.');
+}
+S.qp={editing:null,slots:[null,null,null,null,null]};
+go('questions');
+}
+function editQuestion(id){
+var q=S.questions.filter(function(x){return x.id===id;})[0];
+S.qp={editing:id,slots:q.slots.slice()};
+go('questions');
+}
+function delQuestion(id){
+if(!confirm('Delete this problem statement?'))return;
+S.questions=S.questions.filter(function(x){return x.id!==id;});
+go('questions');
+}
+function publishQuestions(){
+var n=0;S.questions.forEach(function(q){if(!q.published){q.published=true;n++;}});
+toast(n+' problem statement(s) published to the Student login.');
+go('questions');
+}
+/* ---- Student Team Change ---- */
+function aTeamChange(){
+if(S.tcFrom==null)S.tcFrom=0;if(S.tcTo==null)S.tcTo=1;
+var h='<h2>Student Team Change</h2><div class="sub">Re-allocate a student to another team. <b>Students can only form teams of 5; only the Admin can add a 6th member to a team.</b> Teams already at 6 cannot take more - even Admin.</div>'
++'<div class="noteinfo">Currently ongoing: <b>Business Simulation 5</b> and <b>Live Project 5</b> (Semester 3). Team changes are possible only for the ongoing activity; 1-4 are past reference.</div>';
+h+=seg([['BS','Business Simulation'],['LP','Live Project']],'fType')
++seg([[1,'1'],[2,'2'],[3,'3'],[4,'4'],[5,'5 (Ongoing)']],'fNum')
++seg([['RTC','RTC RSmart'],['RGU','RGU RSmart']],'fCampus');
+if(+S.fNum<5){
+var pkey=actKey(S.fType,S.fNum,S.fCampus);
+h+='<div class="notewarn">'+TYPES[S.fType]+' '+S.fNum+' is COMPLETED - teams shown for reference only, no changes possible.</div><div class="grid3">';
+getTeams(S.fType,S.fNum,S.fCampus).forEach(function(t){
+h+='<div class="teamcard grey"><b>'+t.team+'</b> <span class="chip chip-gr">'+t.members.length+' members</span><div class="sub">'+esc(t.company)+'</div>'
++t.members.map(function(m){return '<div class="member">'+esc(stu(m.sid).name)+tlStar(m.sid,t.tl)+'</div>';}).join('')+'</div>';
+});
+h+='</div><div class="card"><h3>Team Change Log - '+TYPES[S.fType]+' '+S.fNum+'</h3>';
+var plog=S.teamChanges.filter(function(c){return c.key===pkey;});
+if(!plog.length)h+='<div class="sub">No team changes were made in this activity.</div>';
+else{h+='<table class="tbl"><tr><th>Date</th><th>Student</th><th>From</th><th>To</th><th>Note</th></tr>';
+plog.forEach(function(c){h+='<tr><td>'+c.date+'</td><td>'+esc(stu(c.sid).name)+'</td><td>'+c.from+'</td><td>'+c.to+'</td><td>'+esc(c.note||'')+'</td></tr>';});
+h+='</table>';}
+return h+'</div>';
+}
+var key=actKey(S.fType,5,S.fCampus);var teams=S.problems[key];
+var from=teams[S.tcFrom]||teams[0];
+h+='<div class="card"><div class="grid3">'
++'<div><label>From Team</label><select onchange="S.tcFrom=+this.value;go(\'teamchange\')">'+teams.map(function(t,i){return '<option value="'+i+'"'+(i===S.tcFrom?' selected':'')+'>'+t.team+' - '+esc(t.company)+' ('+t.members.length+')</option>';}).join('')+'</select></div>'
++'<div><label>Student to Move</label><select id="tcSid">'+from.members.map(function(m){var s=stu(m.sid);return '<option value="'+m.sid+'">'+esc(s.name)+' ('+s.sid+')'+(m.cr?' [CR]':'')+'</option>';}).join('')+'</select></div>'
++'<div><label>To Team</label><select onchange="S.tcTo=+this.value;go(\'teamchange\')">'+teams.map(function(t,i){return '<option value="'+i+'"'+(i===S.tcTo?' selected':'')+'>'+t.team+' - '+esc(t.company)+' ('+t.members.length+')</option>';}).join('')+'</select></div></div>'
++'<div style="margin-top:12px"><button class="btn" onclick="doTeamChange()">&#8644; Move Student</button></div></div>';
+h+='<div class="grid3">';
+teams.forEach(function(t,i){
+h+='<div class="teamcard"><b>'+t.team+'</b> <span class="chip '+(t.members.length>=6?'chip-r':(t.members.length>=5?'chip-g':'chip-a'))+'">'+t.members.length+' members</span><div class="sub">'+esc(t.company)+'</div>'
++t.members.map(function(m){var s=stu(m.sid);return '<div class="member">'+esc(s.name)+tlStar(m.sid,t.tl)+(m.cr?' <span class="chip chip-r">CR</span>':'')+'</div>';}).join('')+'</div>';
+});
+h+='</div><div class="card"><h3>Team Change Log</h3>';
+if(!S.teamChanges.length)h+='<div class="sub">No changes yet.</div>';
+else{h+='<table class="tbl"><tr><th>Date</th><th>Student</th><th>From</th><th>To</th><th>Activity</th><th>Note</th></tr>';
+S.teamChanges.slice().reverse().forEach(function(c){h+='<tr><td>'+c.date+'</td><td>'+esc(stu(c.sid).name)+'<br><span class="pill">'+c.sid+'</span></td><td>'+c.from+'</td><td>'+c.to+'</td><td>'+c.key+'</td><td>'+esc(c.note||'')+'</td></tr>';});
+h+='</table>';}
+return h+'</div>';
+}
+function doTeamChange(){
+var key=actKey(S.fType,5,S.fCampus);var teams=S.problems[key];
+var sid=document.getElementById('tcSid').value;
+var from=teams[S.tcFrom],to=teams[S.tcTo];
+if(S.tcFrom===S.tcTo){toast('Choose two different teams.');return;}
+if(to.members.length>=6){toast('This team already has 6 members - even the Admin cannot exceed 6.');return;}
+var note=to.members.length>=5?'Admin override - added as 6th member':'Re-allocated by Admin';
+from.members=from.members.filter(function(m){return m.sid!==sid;});
+from.slots.forEach(function(sl){if(sl.sid===sid)sl.sid=null;});
+if(from.tl===sid)from.tl=null;
+to.members.push({sid:sid,cr:false});
+to.slots.push({spec:stu(sid).spec,sid:sid});
+S.teamChanges.push({sid:sid,from:from.team,to:to.team,key:key,date:new Date().toISOString().slice(0,10),note:note});
+toast(stu(sid).name+' moved from '+from.team+' to '+to.team+'. '+note+'.');
+go('teamchange');
+}
+/* ---- Critical Resource Deploying ---- */
+function aCritical(){
+var h='<h2>Critical Resource Deploying</h2><div class="sub">Deploy a strong student to support a low-potential team. The critical resource <b>works for two teams</b> (own team + supported team, which grows to 6 members) and earns <b>extra marks</b>.</div>'
++'<div class="noteinfo">Currently ongoing: <b>Business Simulation 5</b> and <b>Live Project 5</b> (Semester 3). Deploying is possible only for the ongoing activity; 1-4 show past deployments.</div>';
+h+=seg([['BS','Business Simulation'],['LP','Live Project']],'fType')
++seg([[1,'1'],[2,'2'],[3,'3'],[4,'4'],[5,'5 (Ongoing)']],'fNum')
++seg([['RTC','RTC RSmart'],['RGU','RGU RSmart']],'fCampus');
+var fkey=actKey(S.fType,S.fNum,S.fCampus);
+if(+S.fNum===5){
+var teams=S.problems[fkey];
+var opts='';
+teams.forEach(function(t,ti){t.members.forEach(function(m){if(!m.cr){var s=stu(m.sid);opts+='<option value="'+ti+'|'+m.sid+'">'+esc(s.name)+' ('+s.sid+') - from '+t.team+'</option>';}});});
+h+='<div class="card"><div class="grid3">'
++'<div><label>Critical Resource (student)</label><select id="crPick">'+opts+'</select></div>'
++'<div><label>Deploy To Team (the team needing support)</label><select id="crTo">'+teams.map(function(t,i){return '<option value="'+i+'">'+t.team+' - '+esc(t.company)+' ('+t.members.length+')</option>';}).join('')+'</select></div>'
++'<div style="align-self:end"><button class="btn" onclick="deployCR()">&#128640; Deploy Critical Resource</button></div></div>'
++'<div class="noteinfo">The student stays in their own team AND is added to the supported team as its 6th member, tagged <span class="chip chip-r">Critical Resource</span> with +5 bonus marks.</div></div>';
+}else{
+h+='<div class="notewarn">'+TYPES[S.fType]+' '+S.fNum+' is COMPLETED - past deployments shown for reference only.</div>';
+}
+var log=S.critical.filter(function(c){return c.key===fkey;});
+h+='<div class="card"><h3>Deployed Critical Resources - '+TYPES[S.fType]+' '+S.fNum+' ('+S.fCampus+')</h3>';
+if(!log.length)h+='<div class="sub">No critical resource was deployed in this activity.</div>';
+else{h+='<table class="tbl"><tr><th>Date</th><th>Student</th><th>Own Team</th><th>Supporting</th><th>Activity</th><th>Benefit</th></tr>';
+log.slice().reverse().forEach(function(c){h+='<tr><td>'+c.date+'</td><td>'+esc(stu(c.sid).name)+'<br><span class="pill">'+c.sid+'</span></td><td>'+c.from+'</td><td>'+c.to+'</td><td>'+c.key+'</td><td>'+esc(c.note)+'</td></tr>';});
+h+='</table>';}
+return h+'</div>';
+}
+function deployCR(){
+var key=actKey(S.fType,5,S.fCampus);var teams=S.problems[key];
+var v=document.getElementById('crPick').value.split('|');
+var fromTi=+v[0],sid=v[1],toTi=+document.getElementById('crTo').value;
+if(fromTi===toTi){toast('Deploy to a DIFFERENT team than the student\'s own team.');return;}
+var to=teams[toTi];
+if(to.members.length>=6){toast('That team already has 6 members.');return;}
+if(to.members.some(function(m){return m.sid===sid;})){toast('This student is already in that team.');return;}
+to.members.push({sid:sid,cr:true});
+to.slots.push({spec:stu(sid).spec,sid:sid});
+S.critical.push({sid:sid,from:teams[fromTi].team,to:to.team,key:key,date:new Date().toISOString().slice(0,10),note:'+5 bonus marks (working for two teams)'});
+toast(stu(sid).name+' deployed as Critical Resource to '+to.team+' (now '+to.members.length+' members, +5 bonus).');
+go('critical');
+}
+/* ---- Team Split (view) ---- */
+function aTeamSplit(){
+var h='<h2>Team Split</h2><div class="sub">How the teams have split themselves problem-statement-wise (auto-created when 5 members choose the same problem).</div>'
++'<div class="noteinfo">Currently ongoing: <b>'+TYPES[S.fType]+' 5</b> (Semester 3). Use the activity filter for past team splits (1-4).</div>';
+h+=seg([['BS','Business Simulation'],['LP','Live Project']],'fType')
++seg([[1,'1'],[2,'2'],[3,'3'],[4,'4'],[5,'5 (Ongoing)']],'fNum')
++seg([['RTC','RTC RSmart'],['RGU','RGU RSmart']],'fCampus');
+var teams=getTeams(S.fType,S.fNum,S.fCampus);
+var isPast=+S.fNum<5;
+if(isPast)h+='<div class="notewarn">Past team split - '+TYPES[S.fType]+' '+S.fNum+' (Semester '+semOf(S.fNum)+', completed). All 32 students were split into 6 teams.</div>';
+h+='<div class="grid3">';
+teams.forEach(function(t){
+var count=t.members.filter(function(m){return !m.cr;}).length;
+h+='<div class="teamcard'+(isPast?' grey':'')+'"><b>'+t.team+'</b> <span class="chip '+(count>=5?'chip-g':'chip-a')+'">'+count+(isPast?' members':'/5')+(t.members.length>count?' +CR':'')+'</span>'
++'<div class="sub">'+esc(t.company)+'</div>'
++t.members.map(function(m){var s=stu(m.sid);return '<div class="member">'+esc(s.name)+' <span class="pill">'+s.sid+'</span> <span class="pill">'+SPECSHORT[s.spec]+'</span>'+tlStar(m.sid,t.tl)+(m.cr?' <span class="chip chip-r">CR</span>':'')+'</div>';}).join('')
++(t.tl||isPast?'':'<div class="sub" style="margin-top:6px">No Team Leader yet.</div>')+'</div>';
+});
+return h+'</div>';
+}
+/* ---- Student Marks (admin copy of Director-published marks) ---- */
+function marksTableFor(role){
+var h=seg([['BS','Business Simulation'],['LP','Live Project']],'fType')
++seg([[1,'1'],[2,'2'],[3,'3'],[4,'4'],[5,'5']],'fNum')
++seg(REVIEWS.map(function(r){return [r[0],r[1]];}),'fRev')
++seg([['RTC','RTC RSmart'],['RGU','RGU RSmart']],'fCampus')
++seg([['team','Team Mark View'],['individual','Individual Mark View']],'viewMode');
+var key=actKey(S.fType,S.fNum,S.fCampus);
+var recs=(S.marks[key]&&S.marks[key][S.fRev])?S.marks[key][S.fRev]:{};
+var teams=getTeams(S.fType,S.fNum,S.fCampus);
+var anyPub=Object.keys(recs).some(function(ti){return recs[ti].status==='published';});
+if(!anyPub)return h+'<div class="notewarn">No PUBLISHED marks for this filter yet. Marks appear here automatically the moment the Director clicks Overall Publish.</div>';
+if(S.viewMode==='team'){
+h+='<div class="grid2">';
+teams.forEach(function(t,ti){
+var rec=recs[ti];if(!rec||rec.status!=='published')return;
+var vals=t.members.map(function(m){return rec.entries[m.sid]||0;});
+var avg=vals.length?Math.round(vals.reduce(function(a,b){return a+b;},0)/vals.length):0;
+h+='<div class="card"><h3>'+t.team+' <span class="chip chip-b">Team Avg: '+avg+'/100</span></h3><div class="sub">'+esc(t.company)+'</div>'
++'<table class="tbl"><tr><th>Student</th><th>Mark</th></tr>'
++t.members.map(function(m){var s=stu(m.sid);return '<tr><td>'+esc(s.name)+tlStar(m.sid,t.tl)+(m.cr?' <span class="chip chip-r">CR +5</span>':'')+'</td><td><b>'+(rec.entries[m.sid]!=null?rec.entries[m.sid]:'-')+'</b></td></tr>';}).join('')
++'</table></div>';
+});
+h+='</div>';
+}else{
+h+='<div class="card"><table class="tbl"><tr><th>Student</th><th>Register ID</th><th>Team</th><th>Mark / 100</th></tr>';
+teams.forEach(function(t,ti){
+var rec=recs[ti];if(!rec||rec.status!=='published')return;
+t.members.forEach(function(m){var s=stu(m.sid);
+h+='<tr><td>'+esc(s.name)+tlStar(m.sid,t.tl)+'</td><td>'+s.sid+'</td><td>'+t.team+'</td><td><b>'+(rec.entries[m.sid]!=null?rec.entries[m.sid]:'-')+'</b></td></tr>';});
+});
+h+='</table></div>';
+}
+return h;
+}
+function aStudentMarks(){
+return '<h2>Student Marks (Published Copy)</h2><div class="sub">A copy of every mark published by the Director - team-wise and individual - lands here automatically for office records (Coordinator login).</div>'+marksTableFor('admin');
+}
+/* ---- Credentials ---- */
+function aCreds(){
+var h='<h2>Credentials</h2><div class="sub">All 64 individual student logins (each with a different password) + staff logins.</div>';
+h+=seg([['RTC','RTC RSmart (32)'],['RGU','RGU RSmart (32)']],'fCampus');
+h+='<div class="card"><h3>Staff Logins</h3><table class="tbl"><tr><th>Role</th><th>User ID</th><th>Password</th></tr>'
++STAFF.map(function(s){return '<tr><td>'+s.sub+'</td><td><b>'+s.id+'</b></td><td>'+s.pw+'</td></tr>';}).join('')+'</table></div>';
+h+='<div class="card"><h3>'+S.fCampus+' RSmart Students</h3><table class="tbl"><tr><th>#</th><th>Name</th><th>Register ID</th><th>Specialization</th><th>Password</th></tr>';
+S.students.filter(function(s){return s.campus===S.fCampus;}).forEach(function(s,i){
+h+='<tr><td>'+(i+1)+'</td><td>'+esc(s.name)+'</td><td><b>'+s.sid+'</b></td><td>'+SPECSHORT[s.spec]+'</td><td>'+s.pw+'</td></tr>';
+});
+return h+'</table></div>';
+}
+/* ============ DIRECTOR PAGES ============ */
+function dDashboard(){
+var lbl=TYPES[S.fType]+' '+S.fNum+' ('+S.fCampus+')';
+return '<h2>Director Dashboard</h2><div class="sub">Everything at a glance - pure data visualization, no tabular columns. Filter by type, activity (1-4 = completed history) and programme; every chart follows the filter.</div>'
++seg([['BS','Business Simulation'],['LP','Live Project']],'fType')
++seg([[1,'1'],[2,'2'],[3,'3'],[4,'4'],[5,'5 (Ongoing)']],'fNum')
++seg([['RTC','RTC RSmart'],['RGU','RGU RSmart']],'fCampus')
++'<h3 style="margin:8px 0">&#127942; Marks Dashboard - '+lbl+'</h3>'
++'<div class="grid2">'
++'<div class="chartcard"><h4>Average Mark by Specialization (who scored high?)</h4><canvas id="chM1"></canvas></div>'
++'<div class="chartcard"><h4>Average Mark by Challenge / Company (which industry performed?)</h4><canvas id="chM2"></canvas></div>'
++'<div class="chartcard"><h4>Review-wise Progress (Review 1 &rarr; Demo Day)</h4><canvas id="chM3"></canvas></div>'
++'<div class="chartcard"><h4>Top 10 Students - Mark Comparison</h4><canvas id="chM4"></canvas></div>'
++'</div>'
++'<div class="noteinfo" id="dInsight"></div>'
++'<h3 style="margin:16px 0 8px">&#9881; Process Dashboard</h3>'
++'<div class="grid2">'
++'<div class="chartcard"><h4>Mentor Bookings by Team - '+lbl+'</h4><canvas id="ch1"></canvas></div>'
++'<div class="chartcard"><h4>Team Performance Radar - Avg Marks, '+lbl+'</h4><canvas id="ch4"></canvas></div>'
++'<div class="chartcard"><h4>Expert Bookings per Review - '+lbl+'</h4><canvas id="ch5"></canvas></div>'
++'<div class="chartcard"><h4>Team Changes &amp; Critical Resources - '+lbl+'</h4><canvas id="ch6"></canvas></div>'
++'<div class="chartcard"><h4>Mentors Added per Month (Project Coordinator)</h4><canvas id="ch2"></canvas></div>'
++'<div class="chartcard"><h4>Problem Statements Posted (Admin)</h4><canvas id="ch3"></canvas></div>'
++'</div>'
++'<div class="noteinfo" style="margin-top:14px">Critical resources in '+lbl+': '+(S.critical.filter(function(c){return c.key===actKey(S.fType,S.fNum,S.fCampus);}).map(function(c){return '<b>'+esc(stu(c.sid).name)+'</b> ('+c.from+' &rarr; supporting '+c.to+')';}).join(' &middot; ')||'none')+'</div>';
+}
+function buildDirectorCharts(){
+if(!window.Chart){document.getElementById('content').insertAdjacentHTML('beforeend','<div class="notewarn">Charts library (Chart.js CDN) could not load - please check the internet connection.</div>');return;}
+var teams=['Team 1','Team 2','Team 3','Team 4','Team 5','Team 6'];
+var C=['#1a56db','#0e9f6e','#c9920e','#d92626','#7e3af2','#0694a2'];
+var k=actKey(S.fType,S.fNum,S.fCampus);
+function mk(id,cfg){var el=document.getElementById(id);if(el)S.charts.push(new Chart(el,cfg));}
+var mCounts=teams.map(function(t){return S.mentorBookings.filter(function(b){return b.team===t&&b.key===k;}).length;});
+mk('ch1',{type:'pie',data:{labels:teams,datasets:[{data:mCounts,backgroundColor:C}]},options:{plugins:{legend:{position:'right'}}}});
+var months=['Apr','May','Jun','Jul'];
+mk('ch2',{type:'bar',data:{labels:months,datasets:[{label:'Mentors added',data:months.map(function(m){return S.mentors.filter(function(x){return x.month===m;}).length;}),backgroundColor:'#1a56db'}]},options:{scales:{y:{beginAtZero:true,ticks:{stepSize:1}}}}});
+var bsCount=24+S.questions.filter(function(q){return q.type==='BS';}).length;
+var lpCount=24+S.questions.filter(function(q){return q.type==='LP';}).length;
+mk('ch3',{type:'doughnut',data:{labels:['Business Simulation','Live Project'],datasets:[{data:[bsCount,lpCount],backgroundColor:['#1a56db','#0e9f6e']}]},options:{plugins:{legend:{position:'right'}}}});
+var radar=teams.map(function(t,ti){
+var tot=0,n=0;REVIEWS.forEach(function(r){var rec=S.marks[k]&&S.marks[k][r[0]]?S.marks[k][r[0]][ti]:null;if(rec){Object.keys(rec.entries).forEach(function(sid){tot+=rec.entries[sid];n++;});}});
+return n?Math.round(tot/n):0;});
+mk('ch4',{type:'radar',data:{labels:teams,datasets:[{label:'Avg mark /100 - '+TYPES[S.fType]+' '+S.fNum+' ('+S.fCampus+')',data:radar,backgroundColor:'rgba(26,86,219,.15)',borderColor:'#1a56db'}]},options:{scales:{r:{beginAtZero:true,max:100}}}});
+var revLbls=REVIEWS.map(function(r){return r[1];});
+var ebCounts=REVIEWS.map(function(r){return S.expertBookings.filter(function(b){return b.key===k&&b.rev===r[0];}).length;});
+mk('ch5',{type:'bar',data:{labels:revLbls,datasets:[{label:'Teams that booked an expert',data:ebCounts,backgroundColor:'#c9920e'}]},options:{scales:{y:{beginAtZero:true,ticks:{stepSize:1}}}}});
+var tc=teams.map(function(t){return S.teamChanges.filter(function(c){return c.to===t&&c.key===k;}).length;});
+var cr=teams.map(function(t){return S.critical.filter(function(c){return c.to===t&&c.key===k;}).length;});
+mk('ch6',{type:'bar',data:{labels:teams,datasets:[{label:'Team changes (into team)',data:tc,backgroundColor:'#1a56db'},{label:'Critical resources deployed',data:cr,backgroundColor:'#d92626'}]},options:{scales:{y:{beginAtZero:true,ticks:{stepSize:1}}}}});
+/* ---- MARKS DASHBOARD ---- */
+var teamsData=getTeams(S.fType,S.fNum,S.fCampus);
+var specSum={},specN={},stuSum={},stuN={};
+var teamAvg=teamsData.map(function(t,ti){
+var tot=0,nn=0;
+REVIEWS.forEach(function(r){var rec=S.marks[k]&&S.marks[k][r[0]]?S.marks[k][r[0]][ti]:null;
+if(rec){t.members.forEach(function(m){var v=rec.entries[m.sid];if(v!=null){tot+=v;nn++;
+var sp=stu(m.sid).spec;if(sp){specSum[sp]=(specSum[sp]||0)+v;specN[sp]=(specN[sp]||0)+1;}
+stuSum[m.sid]=(stuSum[m.sid]||0)+v;stuN[m.sid]=(stuN[m.sid]||0)+1;}});}});
+return nn?Math.round(tot/nn):0;});
+var revAvg=REVIEWS.map(function(r){var tot=0,nn=0;var o=S.marks[k]&&S.marks[k][r[0]]?S.marks[k][r[0]]:{};
+Object.keys(o).forEach(function(ti){var e=o[ti].entries;Object.keys(e).forEach(function(sid){tot+=e[sid];nn++;});});
+return nn?Math.round(tot/nn):0;});
+var specLabels=SPECS.filter(function(sp){return specN[sp];});
+mk('chM1',{type:'bar',data:{labels:specLabels.map(function(sp){return SPECSHORT[sp];}),datasets:[{label:'Avg mark /100',data:specLabels.map(function(sp){return Math.round(specSum[sp]/specN[sp]);}),backgroundColor:'#1a56db'}]},options:{scales:{y:{beginAtZero:true,max:100}}}});
+mk('chM2',{type:'bar',data:{labels:teamsData.map(function(t){return t.company.split(' (')[0];}),datasets:[{label:'Team avg /100',data:teamAvg,backgroundColor:'#0e9f6e'}]},options:{indexAxis:'y',scales:{x:{beginAtZero:true,max:100}}}});
+mk('chM3',{type:'line',data:{labels:REVIEWS.map(function(r){return r[1];}),datasets:[{label:'Batch average /100',data:revAvg,borderColor:'#c9920e',backgroundColor:'rgba(201,146,14,.15)',fill:true}]},options:{scales:{y:{beginAtZero:true,max:100}}}});
+var tops=Object.keys(stuSum).map(function(sid){return [sid,Math.round(stuSum[sid]/stuN[sid])];}).sort(function(x,y){return y[1]-x[1];}).slice(0,10);
+mk('chM4',{type:'bar',data:{labels:tops.map(function(x){return stu(x[0]).name;}),datasets:[{label:'Avg mark /100',data:tops.map(function(x){return x[1];}),backgroundColor:'#7e3af2'}]},options:{indexAxis:'y',scales:{x:{beginAtZero:true,max:100}}}});
+var insEl=document.getElementById('dInsight');
+if(insEl){
+var bestSpec='',bestSpecV=-1;
+specLabels.forEach(function(sp){var v=Math.round(specSum[sp]/specN[sp]);if(v>bestSpecV){bestSpecV=v;bestSpec=sp;}});
+var bestTeamI=0;teamAvg.forEach(function(v,i){if(v>teamAvg[bestTeamI])bestTeamI=i;});
+var trend=revAvg[3]>=revAvg[0]?'improving from Review 1 to Demo Day':'dipping after Review 1 - needs mentor attention';
+insEl.innerHTML=bestSpec
+?('<b>Insights:</b> '+esc(bestSpec)+' students scored highest (avg '+bestSpecV+'/100) &middot; Best-performing challenge: <b>'+esc(teamsData[bestTeamI].company.split(' (')[0])+'</b> ('+teamsData[bestTeamI].team+', avg '+teamAvg[bestTeamI]+'/100) &middot; Batch trend: '+trend+'.')
+:'No marks yet for this filter - insights appear once marks are entered and saved.';
+}
+}
+/* ---- Evaluation Control (centralized authority) ---- */
+function dEvalCtl(){
+var h='<h2>Evaluation Control <span class="chip chip-gold">Centralized Authority</span></h2>'
++'<div class="sub">Only the Director can start an evaluation. Approving a review here enables the Mark Entry (Start Presentation / Start Mark Entry timers) on the <b>Project Coordinator</b> login and activates the remote evaluation links for founders.</div>';
+['RTC','RGU'].forEach(function(c){
+h+='<div class="card"><h3>'+c+' RSmart &middot; Ongoing: Business Simulation 5 &amp; Live Project 5</h3><table class="tbl"><tr><th>Activity</th>'+REVIEWS.map(function(r){return '<th>'+r[1]+'</th>';}).join('')+'</tr>';
+['BS','LP'].forEach(function(t){
+h+='<tr><td><b>'+TYPES[t]+' 5</b></td>';
+REVIEWS.forEach(function(r){
+var eKey=actKey(t,5,c)+'-'+r[0];
+h+='<td>'+(S.evalAuth[eKey]
+?'<span class="chip chip-g">&#9989; Started</span><br><button class="btn2" style="margin-top:4px" onclick="dToggleEval(\''+eKey+'\')">Revoke</button>'
+:'<button class="btng" onclick="dToggleEval(\''+eKey+'\')">Approve &amp; Start</button>')+'</td>';
+});
+h+='</tr>';
+});
+h+='</table></div>';
+});
+return h;
+}
+function dToggleEval(eKey){
+S.evalAuth[eKey]=!S.evalAuth[eKey];
+toast(S.evalAuth[eKey]?'Evaluation STARTED ('+eKey+') - the Project Coordinator can now open Mark Entry.':'Evaluation authority revoked ('+eKey+').');
+go('devalctl');
+}
+/* ---- Marks Review & Publish ---- */
+function dPublish(){
+var h='<h2>Marks Review &amp; Publish</h2><div class="sub">Marks saved &amp; closed on the Admin login arrive here automatically. Publishing is <b>review-wise</b>: Review 1 is published on Review-1 day, Review 2 four days later, and so on - each has its own Overall Publish. Only the Director can edit marks or enter missing marks.</div>';
+h+=seg([['BS','Business Simulation'],['LP','Live Project']],'fType')
++seg([[1,'1'],[2,'2'],[3,'3'],[4,'4 (dummy - try me)'],[5,'5 (Ongoing)']],'fNum')
++seg(REVIEWS.map(function(r){return [r[0],r[1]];}),'fRev')
++seg([['RTC','RTC RSmart'],['RGU','RGU RSmart']],'fCampus');
+var key=actKey(S.fType,S.fNum,S.fCampus);
+if(!S.marks[key])S.marks[key]={};
+if(!S.marks[key][S.fRev])S.marks[key][S.fRev]={};
+var recs=S.marks[key][S.fRev];
+var teams=getTeams(S.fType,S.fNum,S.fCampus);
+var revLbl=REVIEWS.filter(function(r){return r[0]===S.fRev;})[0][1];
+var withMarks=0,ready=0,published=0;
+teams.forEach(function(t,ti){var r=recs[ti];if(r){withMarks++;if(r.status==='ready')ready++;if(r.status==='published')published++;}});
+h+='<div class="grid2">';
+teams.forEach(function(t,ti){
+var rec=recs[ti];
+var editing=S.editTi===ti;
+h+='<div class="card"><h3>'+t.team+' '+(rec?markChip(rec.status):markChip(''))+'</h3><div class="sub">'+esc(t.company)+'</div>';
+if(!rec){
+h+='<div class="sub">No marks entered by the experts for this team.</div><button class="btn2" onclick="dCreate('+ti+')">&#9998; Enter Marks (Director)</button>';
+}else{
+h+='<table class="tbl"><tr><th>Student</th><th>Mark / 100</th></tr>';
+t.members.forEach(function(m){var s=stu(m.sid);
+h+='<tr><td>'+esc(s.name)+tlStar(m.sid,t.tl)+(m.cr?' <span class="chip chip-r">CR +5</span>':'')+'</td><td style="width:120px">'
++(editing?'<input type="number" min="0" max="100" id="dm_'+ti+'_'+m.sid+'" value="'+(rec.entries[m.sid]!=null?rec.entries[m.sid]:'')+'">':'<b>'+(rec.entries[m.sid]!=null?rec.entries[m.sid]:'-')+'</b>')+'</td></tr>';});
+h+='</table><div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap">';
+if(rec.status!=='published'){
+if(editing)h+='<button class="btng" onclick="dSaveEdit('+ti+')">Save Changes</button><button class="btn2" onclick="S.editTi=-1;go(\'dpublish\')">Cancel</button>';
+else h+='<button class="btn2" onclick="dEdit('+ti+')">&#9998; Edit Marks</button>'
++(rec.status==='saved'?'<button class="btn" onclick="dReady('+ti+')">&#10003; Confirm &amp; Ready for Publish</button>':'<span class="chip chip-a">Ready - waiting for Overall Publish</span>');
+}else h+='<span class="chip chip-g">Published to students &#10003;</span>';
+h+='</div>';
+}
+h+='</div>';
+});
+h+='</div>';
+var canPublish=withMarks>0&&ready>0&&(ready+published===withMarks);
+h+='<div class="card" style="border-color:#bcd0f5;background:var(--pl)"><h3>&#128640; Overall Publish - '+TYPES[S.fType]+' '+S.fNum+' &middot; '+revLbl+' ('+S.fCampus+')</h3>'
++'<div class="sub">'+withMarks+' team(s) with marks &middot; '+ready+' ready &middot; '+published+' already published. Confirm every team (Ready for Publish) first; the Overall Publish then releases '+revLbl+' marks for ALL teams at the same time to their individual student logins (and to the Admin copy).</div>'
++'<button class="btng" '+(canPublish?'':'disabled ')+'onclick="dPublishAll()">Overall Publish '+revLbl+' Marks to Students</button></div>';
+return h;
+}
+function dCreate(ti){
+var key=actKey(S.fType,S.fNum,S.fCampus);var t=getTeams(S.fType,S.fNum,S.fCampus)[ti];
+var e={};t.members.forEach(function(m){e[m.sid]=0;});
+S.marks[key][S.fRev][ti]={status:'saved',entries:e};
+S.editTi=ti;go('dpublish');
+}
+function dEdit(ti){S.editTi=ti;go('dpublish');}
+function dSaveEdit(ti){
+var key=actKey(S.fType,S.fNum,S.fCampus);var t=getTeams(S.fType,S.fNum,S.fCampus)[ti];
+var rec=S.marks[key][S.fRev][ti];
+t.members.forEach(function(m){
+var el=document.getElementById('dm_'+ti+'_'+m.sid);
+if(el){var v=parseInt(el.value);rec.entries[m.sid]=isNaN(v)?0:Math.max(0,Math.min(100,v));}
+});
+S.editTi=-1;
+toast('Marks updated by Director for '+t.team+'.');
+go('dpublish');
+}
+function dReady(ti){
+var key=actKey(S.fType,S.fNum,S.fCampus);
+S.marks[key][S.fRev][ti].status='ready';
+toast(getTeams(S.fType,S.fNum,S.fCampus)[ti].team+' marked READY. It will go live only with the Overall Publish.');
+go('dpublish');
+}
+function dPublishAll(){
+var key=actKey(S.fType,S.fNum,S.fCampus);var recs=S.marks[key][S.fRev];
+var revLbl=REVIEWS.filter(function(r){return r[0]===S.fRev;})[0][1];
+if(!confirm('Overall Publish '+revLbl+' marks ('+TYPES[S.fType]+' '+S.fNum+', '+S.fCampus+') to all student logins?'))return;
+var n=0;Object.keys(recs).forEach(function(ti){if(recs[ti].status==='ready'||recs[ti].status==='published'){if(recs[ti].status!=='published')n++;recs[ti].status='published';}});
+toast(revLbl+' marks published! '+n+' team(s) - now visible in every student\'s individual login and in the Admin Student Marks copy.');
+go('dpublish');
+}
+function dStudentMarks(){
+return '<h2>Student Marks (Published)</h2><div class="sub">Every published mark, review-wise - switch between Team Mark and Individual Mark views.</div>'+marksTableFor('director');
+}
+/* ============ ROUTES & BOOT (v2 - past data + filters update) ============ */
+var ROUTES={
+sdash:sDashboard,lp:function(){return sActivity('LP');},bs:function(){return sActivity('BS');},
+myteam:sMyTeam,mentor:sMentor,expert:sExpert,smarks:sMarks,
+cdash:cDashboard,mentorentry:cMentorEntry,expertentry:cExpertEntry,cbookings:cBookings,
+adash:aDashboard,markentry:aMarkEntry,questions:aQuestions,teamchange:aTeamChange,critical:aCritical,teamsplit:aTeamSplit,astumarks:aStudentMarks,creds:aCreds,
+ddash:dDashboard,devalctl:dEvalCtl,dpublish:dPublish,dstumarks:dStudentMarks
+};
+function bootEval(){
+var m=(location.hash||'').match(/^#eval=(.+)$/);
+if(!m)return false;
+var parts=decodeURIComponent(m[1]).split('|');
+if(parts.length<5||parts[4]!=='ok')return false;
+S.role='evaluator';S.user={name:'External Evaluator',sub:'Founder / Expert Panel'};
+S.fCampus=parts[2];
+S.evalAuth[actKey(parts[0],5,parts[2])+'-'+parts[1]]=true;
+S.ame={active:true,type:parts[0],review:parts[1],ti:+parts[3],campus:parts[2],pRemaining:1500,mRemaining:600,pRunning:false,pDone:false,mRunning:false};
+document.getElementById('loginScreen').classList.add('hidden');
+document.getElementById('app').classList.remove('hidden');
+document.getElementById('hRole').textContent='EXTERNAL EVALUATOR';
+document.getElementById('hName').textContent=S.user.name;
+document.getElementById('hSub').textContent='Remote evaluation link (single-page access)';
+document.getElementById('nav').innerHTML='<span class="navlock">Remote evaluation access - this page only. (Full version verifies the evaluator\'s registered email ID.)</span>';
+document.getElementById('content').innerHTML=aSession();
+return true;
+}
+if(!bootEval())renderLogin();
+</script>
+</body>
+</html>
