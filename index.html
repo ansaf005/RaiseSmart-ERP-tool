@@ -227,13 +227,13 @@ for(var ci=0;ci<2;ci++){var c=campuses[ci];
 for(var i=0;i<32;i++){var g=ci*32+i;
 var fname=(ci===0)?FIRST[i]:FIRST[31-i];
 var lname=LASTS[(i+ci*3)%8];
-arr.push({sid:c+'26MBA'+String(i+1).padStart(3,'0'),name:fname+' '+lname,campus:c,spec:SPECS[i%5],specs:null,sem:3,pw:PW[g%8]+'@'+(1000+g*37)});
+arr.push({sid:c+'2026MBA'+String(i+1).padStart(3,'0'),name:fname+' '+lname,campus:c,spec:SPECS[i%5],specs:null,sem:3,pw:PW[g%8]+'@'+(1000+g*37)});
 }
 }
 /* new first-year batch (Semester 1) - they choose their specializations at first login */
 for(var ci2=0;ci2<2;ci2++){var c2=campuses[ci2];
 for(var j=0;j<4;j++){
-arr.push({sid:c2+'27MBA'+String(j+1).padStart(3,'0'),name:FIRST[(j*5+ci2*7+2)%32]+' '+LASTS[(j*3+ci2)%8],campus:c2,spec:'',specs:null,sem:1,pw:'Fresh@'+(2001+ci2*10+j)});
+arr.push({sid:c2+'2027MBA'+String(j+1).padStart(3,'0'),name:FIRST[(j*5+ci2*7+2)%32]+' '+LASTS[(j*3+ci2)%8],campus:c2,spec:'',specs:null,sem:1,pw:'Fresh@'+(2001+ci2*10+j)});
 }
 }
 return arr;
