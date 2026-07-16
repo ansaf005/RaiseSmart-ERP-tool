@@ -908,7 +908,7 @@ h+=seg([['BS','Business Simulation'],['LP','Live Project']],'fType');
 if(S.user&&S.user.sem<=2&&S.fNum!=1)S.fNum=1; h+=seg((S.user&&S.user.sem<=2)?[[1,TYPES[S.fType]+' 1 (Ongoing)'],[2,'2'],[3,'3'],[4,'4'],[5,'5'],[6,'6'],[7,'7'],[8,'8']]:[[1,TYPES[S.fType].split(' ')[0]+' 1'],[2,'2'],[3,'3'],[4,'4'],[5,'5 (Ongoing)']],'fNum');
 h+=seg(REVIEWS.map(function(r){return [r[0],r[1]];}),'fRev');
 var key=actKey(S.fType,S.fNum,S.user.campus);
-var mine=teamOfUser(S.fType,S.fNum,S.user.sid);
+var ongoingNum=(S.user&&S.user.sem<=2)?1:5; var mine=(+S.fNum===ongoingNum)?curTeam(S.fType):teamOfUser(S.fType,S.fNum,S.user.sid);
 if(!mine){ if(S.user&&S.user.sem<=2&&S.fNum>1) return h+'<div class="notewarn">(Not yet started)</div>'; return h+'<div class="notewarn">You have not joined a team in '+TYPES[S.fType]+' '+S.fNum+' yet.</div>';}
 var rec=(S.marks[key]&&S.marks[key][S.fRev])?S.marks[key][S.fRev][mine.ti]:null;
 h+='<div class="card"><h3>'+TYPES[S.fType]+' '+S.fNum+' &middot; '+REVIEWS.filter(function(r){return r[0]===S.fRev;})[0][1]+' &middot; '+mine.team.team+'</h3>';
