@@ -909,7 +909,7 @@ if(S.user&&S.user.sem<=2&&S.fNum!=1)S.fNum=1; h+=seg((S.user&&S.user.sem<=2)?[[1
 h+=seg(REVIEWS.map(function(r){return [r[0],r[1]];}),'fRev');
 var key=actKey(S.fType,S.fNum,S.user.campus);
 var mine=teamOfUser(S.fType,S.fNum,S.user.sid);
-if(!mine){ if(S.user&&S.user.sem<=2&&S.fNum>1) return h+'<div class="notewarn">(Not yet started)</div>'; return h+'<div class="notewarn">You were not part of a team in '+TYPES[S.fType]+' '+S.fNum+'. (Demo data pre-assigns students 001-027 of each programme to past teams; join a team in the ongoing activity to see live marks.)</div>';}
+if(!mine){ if(S.user&&S.user.sem<=2&&S.fNum>1) return h+'<div class="notewarn">(Not yet started)</div>'; return h+'<div class="notewarn">You have not joined a team in '+TYPES[S.fType]+' '+S.fNum+' yet.</div>';}
 var rec=(S.marks[key]&&S.marks[key][S.fRev])?S.marks[key][S.fRev][mine.ti]:null;
 h+='<div class="card"><h3>'+TYPES[S.fType]+' '+S.fNum+' &middot; '+REVIEWS.filter(function(r){return r[0]===S.fRev;})[0][1]+' &middot; '+mine.team.team+'</h3>';
 if(!rec){h+='<div class="sub">No marks entered yet for this review.</div></div>';return h;}
