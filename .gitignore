@@ -1,0 +1,13 @@
+# Temporary AI scripts & logs
+*.py
+*.pyc
+*.txt
+*.docx
+rewrite_html.js
+
+# Node
+node_modules/
+npm-debug.log
+
+# Env
+.env
