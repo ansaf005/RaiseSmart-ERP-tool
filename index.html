@@ -603,7 +603,7 @@ h+='<div class="grid4">'
 +'<div class="chartcard"><h4>Activity averages - BS vs LP, Semester '+S.sdSem+'</h4><canvas id="cs2"></canvas></div></div>'
 +(S.user.sem===1?'<div class="noteinfo">New batch - your charts fill up once your first review marks are published.</div>':'<div class="noteinfo">'+pubCount+' published mark entries available (details in <b>Review &amp; Marks</b>).</div>')
 +'</div>'
-+'<div class="noteinfo">Semester 1 &amp; 2 completed &middot; Semester 3: BS 5 / LP 5 ongoing, BS 6 / LP 6 not yet started &middot; Semester 4 not yet started. Review flow: Review 1 &rarr; 2 &rarr; 3 &rarr; <b>Demo Day</b> (industry founders). Marks are published 4 times per activity.</div>'
++(S.user.sem<=2 ? '<div class="noteinfo">Semester 1: BS 1 / LP 1 ongoing, BS 2 / LP 2 not yet started &middot; Semester 2, 3 &amp; 4 not yet started. Review flow: Review 1 &rarr; 2 &rarr; 3 &rarr; <b>Demo Day</b> (industry founders). Marks are published 4 times per activity.</div>' : '<div class="noteinfo">Semester 1 &amp; 2 completed &middot; Semester 3: BS 5 / LP 5 ongoing, BS 6 / LP 6 not yet started &middot; Semester 4 not yet started. Review flow: Review 1 &rarr; 2 &rarr; 3 &rarr; <b>Demo Day</b> (industry founders). Marks are published 4 times per activity.</div>')
 +(bs?'':'<div class="notewarn">You have not chosen a Business Simulation challenge yet. Go to the Business Simulation tab.</div>')
 +(lp?'':'<div class="notewarn">You have not chosen a Live Project challenge yet. Go to the Live Project tab.</div>');
 return h;
