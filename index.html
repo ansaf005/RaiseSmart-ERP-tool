@@ -912,7 +912,7 @@ var ongoingNum=(S.user&&S.user.sem<=2)?1:5; var mine=(+S.fNum===ongoingNum)?curT
 if(!mine){ if(S.user&&S.user.sem<=2&&S.fNum>1) return h+'<div class="notewarn">(Not yet started)</div>'; return h+'<div class="notewarn">You have not joined a team in '+TYPES[S.fType]+' '+S.fNum+' yet.</div>';}
 var rec=(S.marks[key]&&S.marks[key][S.fRev])?S.marks[key][S.fRev][mine.ti]:null;
 h+='<div class="card"><h3>'+TYPES[S.fType]+' '+S.fNum+' &middot; '+REVIEWS.filter(function(r){return r[0]===S.fRev;})[0][1]+' &middot; '+mine.team.team+'</h3>';
-if(!rec){h+='<div class="sub">No marks entered yet for this review.</div></div>';return h;}
+if(!rec){h+='<div class="sub">'+TYPES[S.fType]+' '+S.fNum+' is currently ongoing. Marks will be visible here once they are published by the Director after completion.</div></div>';return h;}
 if(rec.status!=='published'){h+='<div class="noteinfo">Marks have been entered and are awaiting <b>Director publication</b>. They will appear here automatically once the Director clicks Overall Publish.</div></div>';return h;}
 var myMark=rec.entries[S.user.sid];
 var total=0,maxT=0;
