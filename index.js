@@ -1,187 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>RSmart ERP Tool | RAISE SMART ERP Portal</title>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
-:root{--p:#8e24aa;--pl:#f3e5f5;--pd:#6a1b9a;--gold:#c9920e;--goldl:#fdf6e3;--green:#0e9f6e;--greenl:#e6f7f1;--red:#d92626;--redl:#fdeaea;--amber:#f57c00;--amberl:#fff3e0;--ink:#111827;--mut:#4b5563;--line:#e5e7eb;--bg:#f3f2f1;--shadow:0 1px 3px rgba(0,0,0,0.05), 0 1px 2px rgba(0,0,0,0.03);--shadow-hover:0 4px 6px -1px rgba(0,0,0,0.05), 0 2px 4px -1px rgba(0,0,0,0.03)}
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Inter',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--ink);font-size:14px;line-height:1.5;font-weight:400;-webkit-font-smoothing:antialiased}
-.hidden{display:none!important}
-button{cursor:pointer;font-family:inherit;transition:all 0.2s ease}
-input,select,textarea{font-family:inherit;font-size:13.5px;padding:10px 12px;border:1px solid var(--line);border-radius:8px;background:#f9fafb;color:var(--ink);width:100%;transition:all 0.2s ease}
-input:focus,select:focus,textarea:focus{outline:none;border-color:var(--p);background:#fff;box-shadow:0 0 0 3px var(--pl)}
-label{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;color:var(--mut);display:block;margin:12px 0 6px}
-.btn{background:var(--p);color:#fff;border:none;border-radius:8px;padding:10px 18px;font-weight:600;font-size:13.5px;box-shadow:var(--shadow)}
-.btn:hover{background:var(--pd);box-shadow:var(--shadow-hover);transform:translateY(-1px)}
-.btn:disabled{background:#e5e7eb;color:#9ca3af;cursor:not-allowed;box-shadow:none;transform:none}
-.btn2{background:#fff;color:var(--p);border:1px solid var(--line);border-radius:8px;padding:9px 17px;font-weight:600;font-size:13px;box-shadow:var(--shadow)}
-.btn2:hover{background:#f9fafb;border-color:var(--p);color:var(--pd);box-shadow:var(--shadow-hover)}
-.btng{background:var(--green);color:#fff;border:none;border-radius:8px;padding:10px 18px;font-weight:600;font-size:13.5px;box-shadow:var(--shadow)}
-.btnr{background:var(--red);color:#fff;border:none;border-radius:8px;padding:10px 18px;font-weight:600;font-size:13.5px;box-shadow:var(--shadow)}
-.btngold{background:var(--gold);color:#fff;border:none;border-radius:8px;padding:10px 18px;font-weight:600;font-size:13.5px;box-shadow:var(--shadow)}
-.bigbtn{padding:20px 20px;font-size:15px;border-radius:12px;width:100%;display:flex;flex-direction:column;align-items:center;justify-content:center}
-header{display:flex;align-items:center;gap:14px;padding:12px 24px;border-bottom:1px solid var(--line);background:rgba(255,255,255,0.95);backdrop-filter:blur(8px);position:sticky;top:0;z-index:50;box-shadow:0 1px 2px rgba(0,0,0,0.03)}
-.brand b{font-size:16px;font-weight:700;letter-spacing:-0.2px}
-.brand div{font-size:11px;color:var(--mut);font-weight:500;margin-top:2px}
-.rolebadge{margin-left:auto;display:flex;align-items:center;gap:16px}
-.rchip{background:var(--pl);color:var(--pd);font-weight:600;font-size:11.5px;padding:6px 12px;border-radius:99px;letter-spacing:0.3px;text-transform:uppercase}
-.uinfo{text-align:right}.uinfo b{font-size:13px;font-weight:600}.uinfo div{font-size:11px;color:var(--mut);font-weight:500}
-nav{display:flex;gap:8px;flex-wrap:wrap;padding:12px 24px;border-bottom:1px solid var(--line);background:#fff}
-.navbtn{background:transparent;border:none;border-radius:6px;padding:8px 12px;font-size:13.5px;font-weight:500;color:var(--mut);transition:all 0.2s}
-.navbtn:hover{background:#f3f4f6;color:var(--ink)}
-.navbtn.active{background:#f3f4f6;color:var(--ink);font-weight:600}
-.navlock{padding:8px 12px;background:var(--redl);color:var(--red);border-radius:6px;font-weight:600;font-size:13px}
-main{padding:32px 24px;max-width:1280px;margin:0 auto}
-h2{font-size:22px;margin-bottom:6px;font-weight:700;letter-spacing:-0.5px;color:var(--ink)}
-.sub{color:var(--mut);font-size:13.5px;margin-bottom:20px;line-height:1.5}
-h3{font-size:16px;margin-bottom:12px;font-weight:600;letter-spacing:-0.2px}
-.card{background:#fff;border:1px solid var(--line);border-radius:12px;padding:24px;margin-bottom:20px;box-shadow:var(--shadow)}
-.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:20px}
-.grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:20px}
-.grid4{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px}
-.stat{background:#fff;border:1px solid var(--line);border-radius:12px;padding:20px;box-shadow:var(--shadow);display:flex;flex-direction:column}
-.stat .n{font-size:32px;font-weight:800;color:var(--p);letter-spacing:-1px}
-.stat .l{font-size:12px;color:var(--mut);font-weight:600;text-transform:uppercase;letter-spacing:0.5px;margin-top:4px}
-.seg{display:inline-flex;background:#f3f4f6;border-radius:8px;padding:4px;gap:2px;margin:0 12px 16px 0;flex-wrap:wrap}
-.segbtn{border:none;background:transparent;padding:8px 16px;border-radius:6px;font-weight:500;font-size:13px;color:var(--mut)}
-.segbtn:hover{color:var(--ink)}
-.segbtn.active{background:#fff;color:var(--ink);font-weight:600;box-shadow:0 1px 2px rgba(0,0,0,0.06)}
-.tbl{width:100%;border-collapse:collapse;font-size:13.5px}
-.tbl th{text-align:left;padding:12px 14px;background:#f9fafb;color:var(--mut);font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;border-bottom:2px solid var(--line)}
-.tbl td{padding:12px 14px;border-bottom:1px solid var(--line);vertical-align:middle}
-.tbl tr:hover td{background:#f9fafb}
-.chip{display:inline-block;padding:4px 10px;border-radius:6px;font-size:11.5px;font-weight:600;letter-spacing:0.2px}
-.chip-b{background:var(--pl);color:var(--pd)}
-.chip-g{background:var(--greenl);color:var(--green)}
-.chip-gr{background:#f3f4f6;color:var(--mut)}
-.chip-r{background:var(--redl);color:var(--red)}
-.chip-a{background:var(--amberl);color:var(--amber)}
-.chip-gold{background:var(--goldl);color:var(--gold);border:1px solid #e8d49a}
-.goldbar{background:linear-gradient(90deg,#fdf6e3,#fbe9b8);border:1px solid #e3c363;border-radius:12px;padding:16px 20px;margin-bottom:20px;display:flex;align-items:center;gap:12px;font-weight:600;color:#8a6408;box-shadow:var(--shadow)}
-.goldstar{color:var(--gold);font-size:18px}
-.teamcard{border:1px solid var(--line);border-radius:12px;padding:20px;background:#fff;position:relative;box-shadow:var(--shadow);transition:all 0.2s ease}
-.teamcard:hover{box-shadow:var(--shadow-hover);transform:translateY(-2px)}
-.teamcard.mine{border-color:var(--p);box-shadow:0 0 0 1px var(--p), var(--shadow)}
-.teamcard.grey{opacity:.6;background:#f9fafb;box-shadow:none;transform:none}
-.teamcard.grey .btn{background:#e5e7eb;color:#9ca3af;pointer-events:none}
-.slotrow{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
-.slot{font-size:11.5px;font-weight:500;border:1px dashed #cbd5e1;border-radius:6px;padding:6px 10px;background:#f8fafc;color:var(--mut)}
-.slot.filled{border-style:solid;border-color:var(--pl);background:var(--pl);color:var(--pd);font-weight:600}
-.member{display:flex;align-items:center;gap:8px;font-size:13.5px;padding:8px 0;border-bottom:1px solid #f1f5f9}
-.member:last-child{border-bottom:none}
-.pill{font-size:11px;background:#f1f5f9;border-radius:6px;padding:3px 8px;color:var(--mut);font-weight:500}
-.notewarn{background:#fffbeb;border:1px solid #fde68a;color:#92400e;border-radius:10px;padding:14px 16px;font-size:13.5px;margin:16px 0;font-weight:500;display:flex;gap:10px}
-.noteinfo{background:#eff6ff;border:1px solid #bfdbfe;color:#1e40af;border-radius:10px;padding:14px 16px;font-size:13.5px;margin:16px 0;font-weight:500}
-.timerbox{text-align:center;padding:24px;border:1px solid var(--line);border-radius:12px;background:#fff;box-shadow:var(--shadow)}
-.timerbig{font-size:56px;font-weight:800;font-variant-numeric:tabular-nums;color:var(--p);letter-spacing:-2px}
-.timerbig.late{color:var(--red)}
-.phase{font-weight:600;color:var(--mut);margin-top:8px;text-transform:uppercase;letter-spacing:0.5px;font-size:12px}
-.palette{display:flex;gap:10px;flex-wrap:wrap;margin:12px 0}
-.pchip{background:var(--pl);color:var(--pd);border:1px solid transparent;border-radius:99px;padding:8px 16px;font-weight:600;font-size:13px;cursor:grab;user-select:none;transition:all 0.2s}
-.pchip:hover{background:var(--pd);color:#fff;transform:translateY(-1px);box-shadow:var(--shadow)}
-.dslot{min-height:48px;border:2px dashed #cbd5e1;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:500;color:var(--mut);background:#f8fafc;padding:8px;transition:all 0.2s}
-.dslot.filled{border-style:solid;border-color:var(--pl);background:var(--pl);color:var(--pd);cursor:pointer;font-weight:600}
-.dslots{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin:12px 0}
-#toast{position:fixed;bottom:32px;left:50%;transform:translateX(-50%);background:#1f2937;color:#fff;padding:14px 24px;border-radius:8px;font-weight:500;font-size:14px;z-index:99;box-shadow:0 10px 15px -3px rgba(0,0,0,0.1);display:none;max-width:90%}
-.login-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;background:radial-gradient(circle at top left, #f3e5f5, transparent 50%), radial-gradient(circle at bottom right, #e0e7ff, transparent 50%), #f8fafc;padding:24px}
-.login-card{width:100%;max-width:480px;background:#fff;border:1px solid var(--line);border-radius:16px;padding:40px;box-shadow:0 10px 25px -5px rgba(0,0,0,0.05),0 8px 10px -6px rgba(0,0,0,0.01)}
-.rolegrid{display:grid;grid-template-columns:1fr;gap:16px;margin-top:24px}
-.rolebtn{border:1px solid var(--line);background:#fff;border-radius:12px;padding:20px 16px;font-weight:600;font-size:14.5px;color:var(--ink);text-align:center;box-shadow:var(--shadow)}
-.rolebtn:hover{border-color:var(--p);background:#fcf9fd;color:var(--p);box-shadow:var(--shadow-hover);transform:translateY(-2px)}
-.rolebtn .ic{font-size:28px;display:block;margin-bottom:10px}
-.demo{background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:16px;font-size:12.5px;color:var(--mut);margin-top:24px;line-height:1.6}
-.crumb{font-size:13px;color:var(--p);font-weight:600;cursor:pointer;margin-bottom:16px;display:inline-block;padding:4px 8px;border-radius:6px;transition:background 0.2s}
-.crumb:hover{background:var(--pl)}
-canvas{max-height:300px}
-.chartcard{background:#fff;border:1px solid var(--line);border-radius:12px;padding:24px;box-shadow:var(--shadow)}
-.chartcard h4{font-size:12px;color:var(--mut);margin-bottom:16px;font-weight:600;text-transform:uppercase;letter-spacing:0.5px}
-.stepnum{display:inline-flex;width:24px;height:24px;border-radius:6px;background:var(--pl);color:var(--pd);align-items:center;justify-content:center;font-weight:700;font-size:12px;margin-right:10px}
-@media(max-width:760px){.dslots{grid-template-columns:1fr 1fr}main{padding:20px 16px}nav,header{padding-left:16px;padding-right:16px}}
 
-body {
-  background: linear-gradient(135deg, #f8fafc 0%, #eef2ff 50%, #faf5ff 100%) !important;
-  background-attachment: fixed !important;
-  position: relative;
-}
-body::before {
-  content: "";
-  position: fixed;
-  top: 0; left: 0; right: 0; bottom: 0;
-  background-image: linear-gradient(rgba(138, 43, 226, 0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(138, 43, 226, 0.04) 1px, transparent 1px);
-  background-size: 60px 60px;
-  z-index: -2;
-  pointer-events: none;
-}
-body::after {
-  content: "";
-  position: fixed;
-  width: 100vw;
-  height: 100vh;
-  top: 0; left: 0;
-  background: radial-gradient(circle at 10% 20%, rgba(166, 77, 255, 0.07) 0%, transparent 40%), radial-gradient(circle at 90% 80%, rgba(138, 43, 226, 0.07) 0%, transparent 40%);
-  animation: float-bg-glow 15s ease-in-out infinite alternate;
-  z-index: -1;
-  pointer-events: none;
-}
-@keyframes float-bg-glow {
-  0% { transform: scale(1) translate(0, 0); }
-  100% { transform: scale(1.1) translate(-20px, 20px); }
-}
-.login-wrap {
-  background: transparent !important;
-  position: relative;
-}
-.login-wrap::before {
-  content: "";
-  position: absolute;
-  width: 700px;
-  height: 700px;
-  background: radial-gradient(circle, rgba(166, 77, 255, 0.12) 0%, transparent 60%);
-  z-index: 0;
-  pointer-events: none;
-  animation: pulse-login-glow 8s ease-in-out infinite alternate;
-}
-@keyframes pulse-login-glow {
-  0% { transform: scale(0.9); opacity: 0.8; }
-  100% { transform: scale(1.1); opacity: 1; }
-}
-.login-card {
-  background: rgba(255, 255, 255, 0.82) !important;
-  backdrop-filter: blur(16px) !important;
-  -webkit-backdrop-filter: blur(16px) !important;
-  border: 1px solid rgba(255, 255, 255, 0.6) !important;
-  box-shadow: 0 20px 40px -10px rgba(138, 43, 226, 0.15), 0 8px 16px -8px rgba(0,0,0,0.05) !important;
-  position: relative;
-  z-index: 10;
-}
-
-.login-wrap {
-  background: url('erp_bg.png') center/cover no-repeat fixed !important;
-}
-</style>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-</head>
-<body>
-<div id="loginScreen"></div>
-<div id="app" class="hidden">
-<header>
-<img src="logo.png" style="width:200px; height:auto; margin-right:16px; object-fit:contain" />
-<div class="brand"><b>RSmart ERP Tool</b><div>RAISE SMART ERP Portal &middot; MBA Business Simulation &amp; Live Projects</div></div>
-<div class="rolebadge">
-<span class="rchip" id="hRole"></span>
-<div class="uinfo"><b id="hName"></b><div id="hSub"></div></div>
-<button class="btn2" onclick="logout()">Logout</button>
-</div>
-</header>
-<nav id="nav"></nav>
-<main id="content"></main>
-</div>
-<div id="toast"></div>
-<script>
 /* ============ RSmart ERP Tool — single-file prototype. All data is in-memory (resets on refresh). ============ */
 
 const SUPABASE_URL = 'https://ylosjvorcypzomsaxyzz.supabase.co';
@@ -278,7 +95,7 @@ mentors:[],mentorBookings:[],
 experts:[],expertBookings:[],
 marks:{}, /* key -> {R1:{teamIdx:{status,entries}}} */
 teamChanges:[],critical:[],
-questions:[], /* admin-posted new challenges */
+questions:[], /* admin-posted new problem statements */
 fType:'BS',fNum:5,fCampus:'RTC',fRev:'R1',fSem:'all',viewMode:'team',
 myTeamType:null,bookType:'BS',myNum:5,bookNum:5,bRev:'all',sdSem:1,sdType:'BS',evalAuth:{},
 ame:{active:false},qp:{editing:null,slots:[null,null,null,null,null]},
@@ -447,7 +264,7 @@ return '<button class="segbtn'+(String(S[key])===String(val)?' active':'')+'" on
 }).join('')+'</span>';
 }
 function statusChip(st){
-if(st==='Completed')return '<span class="chip chip-g">Completed </span>';
+if(st==='Completed')return '<span class="chip chip-g">Completed &#10003;</span>';
 if(st==='Ongoing')return '<span class="chip chip-b">Ongoing</span>';
 return '<span class="chip chip-gr">Not Yet Started</span>';
 }
@@ -457,7 +274,7 @@ if(st==='ready')return '<span class="chip chip-a">Ready for Publish</span>';
 if(st==='saved')return '<span class="chip chip-b">Saved &amp; Closed</span>';
 return '<span class="chip chip-gr">No marks</span>';
 }
-function tlStar(sid,tl){return sid===tl?' <span class="goldstar" title="Team Leader"></span> <span class="chip chip-gold">Team Leader</span>':'';}
+function tlStar(sid,tl){return sid===tl?' <span class="goldstar" title="Team Leader">&#9733;</span> <span class="chip chip-gold">Team Leader</span>':'';}
 /* ============ LOGIN ============ */
 var L={role:null,campus:null};
 function renderLogin(){
@@ -465,20 +282,20 @@ document.getElementById('app').classList.add('hidden');
 var el=document.getElementById('loginScreen');el.classList.remove('hidden');
 var inner='';
 if(!L.role){
-inner='<div style="text-align:center"><img src="logo.png" style="width:320px; height:auto; margin:0 auto 20px auto; display:block; object-fit:contain" />'
+inner='<div style="text-align:center"><div class="logo" style="margin:0 auto 12px;width:56px;height:56px;font-size:26px">R</div>'
 +'<h2 style="font-size:22px">RSmart ERP Tool</h2><div class="sub">RAISE SMART ERP Portal &middot; MBA Business Simulation &amp; Live Projects</div></div>'
 +'<div style="font-weight:700;font-size:13px;color:var(--mut)">SELECT YOUR LOGIN</div>'
 +'<div class="rolegrid">'
-+'<button class="rolebtn" onclick="pickRole(\'student\')">Student Login</button>'
-+'<button class="rolebtn" onclick="pickRole(\'coordinator\')">Project Coordinator</button>'
-+'<button class="rolebtn" onclick="pickRole(\'director\')">Director Login</button>'
++'<button class="rolebtn" onclick="pickRole(\'student\')"><span class="ic">&#127891;</span>Student Login</button>'
++'<button class="rolebtn" onclick="pickRole(\'coordinator\')"><span class="ic">&#128188;</span>Project Coordinator</button>'
++'<button class="rolebtn" onclick="pickRole(\'director\')"><span class="ic">&#127963;</span>Director Login</button>'
 +'</div>';
 }else if(L.role==='student'&&!L.campus){
 inner='<span class="crumb" onclick="L.role=null;renderLogin()">&larr; Back</span>'
 +'<h2>Student Login</h2><div class="sub">Select your programme first. RTC and RGU students have different question sets, selections and marks.</div>'
 +'<div class="rolegrid">'
-+'<button class="rolebtn" onclick="pickCampus(\'RTC\')"><span class="ic"></span>RTC RSmart<br><span style="font-size:11px;color:var(--mut);font-weight:500">RTC Programme Students</span></button>'
-+'<button class="rolebtn" onclick="pickCampus(\'RGU\')"><span class="ic"></span>RGU RSmart<br><span style="font-size:11px;color:var(--mut);font-weight:500">RGU Programme Students</span></button></div>';
++'<button class="rolebtn" onclick="pickCampus(\'RTC\')"><span class="ic">&#127979;</span>RTC RSmart<br><span style="font-size:11px;color:var(--mut);font-weight:500">RTC Programme Students</span></button>'
++'<button class="rolebtn" onclick="pickCampus(\'RGU\')"><span class="ic">&#127979;</span>RGU RSmart<br><span style="font-size:11px;color:var(--mut);font-weight:500">RGU Programme Students</span></button></div>';
 }else{
 var isStu=L.role==='student';
 inner='<span class="crumb" onclick="'+(isStu?'L.campus=null':'L.role=null')+';renderLogin()">&larr; Back</span>'
@@ -516,8 +333,8 @@ el.innerHTML='<div class="login-wrap"><div class="login-card">'
 +'<h2>Welcome, '+esc(s.name)+'</h2>'
 +'<div class="sub">'+(isFirst?'Semester 1 (new batch) - one quick question before you enter.':'Semester 3 - choose your specializations for this semester.')+'</div>'
 +'<div class="noteinfo">'+(isFirst
-?'Which specialization(s) would you prefer for your challenges (challenges)? Choose as many as you like - 1, 2, 3 or all 5. Only challenges matching your chosen specialization(s) will be listed in your login.'
-:'You may choose <b>maximum TWO</b> specializations out of five. Only challenges (challenges) that include your chosen specializations will be listed in your login.')+'</div>'
+?'Which specialization(s) would you prefer for your challenges (problem statements)? Choose as many as you like - 1, 2, 3 or all 5. Only challenges matching your chosen specialization(s) will be listed in your login.'
+:'You may choose <b>maximum TWO</b> specializations out of five. Only challenges (problem statements) that include your chosen specializations will be listed in your login.')+'</div>'
 +boxes
 +'<div id="spkWarn" class="notewarn hidden">Maximum 2 specializations for Semester 3 students.</div>'
 +'<div style="margin-top:14px"><button class="btn" style="width:100%" onclick="saveSpecs()">Continue to My Portal &rarr;</button></div></div></div>';
@@ -541,7 +358,7 @@ function logout(){S.user=null;S.role=null;S.myTeamType=null;S.ame={active:false}
 /* ============ APP SHELL ============ */
 var NAVS={
 student:[['sdash','Dashboard'],['lp','Live Project'],['bs','Business Simulation'],['myteam','My Team'],['mentor','Mentor Booking'],['expert','Review Expert Booking'],['smarks','Review & Marks']],
-coordinator:[['cdash','Dashboard'],['mentorentry','Mentor Entry'],['expertentry','Expert Entry'],['cbookings','Bookings Received'],['markentry','Mark Entry'],['questions','Challenge Posting'],['teamchange','Student Team Change'],['critical','Critical Resource'],['teamsplit','Team Split'],['astumarks','Student Marks']],
+coordinator:[['cdash','Dashboard'],['mentorentry','Mentor Entry'],['expertentry','Expert Entry'],['cbookings','Bookings Received'],['markentry','Mark Entry'],['questions','Question Posting'],['teamchange','Student Team Change'],['critical','Critical Resource'],['teamsplit','Team Split'],['astumarks','Student Marks']],
 admin:[['adash','Dashboard'],['creds','Credentials']],
 director:[['ddash','Dashboard'],['devalctl','Evaluation Control'],['dpublish','Marks Review & Publish'],['dstumarks','Student Marks']]
 };
@@ -589,7 +406,7 @@ var bs=curTeam('BS'),lp=curTeam('LP');
 var pubCount=0;
 ['BS','LP'].forEach(function(t){for(var n=1;n<=8;n++){var k=actKey(t,n,S.user.campus);if(!S.marks[k])continue;REVIEWS.forEach(function(r){var rec=(S.marks[k][r[0]]||{});Object.keys(rec).forEach(function(ti){if(rec[ti].status==='published'&&rec[ti].entries[S.user.sid]!=null)pubCount++;});});}});
 var h='<h2>Welcome, '+esc(S.user.name)+'</h2><div class="sub">'+S.user.campus+' RSmart &middot; Semester '+S.user.sem+' (current) &middot; Specialization(s): '+userSpecs().map(esc).join(', ')+'</div>';
-if(isTLAnywhere()){h+='<div class="goldbar"><span style="font-size:22px"></span> You are a TEAM LEADER. Mentor Booking and Review Expert Booking are enabled for you.</div>';}
+if(isTLAnywhere()){h+='<div class="goldbar"><span style="font-size:22px">&#9733;</span> You are a TEAM LEADER. Mentor Booking and Review Expert Booking are enabled for you.</div>';}
 h+='<div class="grid4">'
 +'<div class="stat"><div class="n">Sem '+S.user.sem+'</div><div class="l">Current Semester</div></div>'
 +'<div class="stat"><div class="n">'+(S.user.sem<=2?'BS 1 / LP 1':'BS 5 / LP 5')+'</div><div class="l">Ongoing Activities</div></div>'
@@ -635,7 +452,7 @@ var fkey=actKey(type,1,S.user.campus)+'F';
 var h1='<h2>'+TYPES[type]+'</h2><div class="sub">'+S.user.campus+' RSmart &middot; Semester 1 (new batch) &middot; Challenges filtered by your specialization(s): '+userSpecs().map(function(x){return SPECSHORT[x]||x;}).join(', ')+'</div>';
 h1+='<div class="grid3"><div class="card"><h3>'+TYPES[type]+' 1</h3><div class="sub" style="margin-bottom:8px">Semester 1 - your batch</div>'+statusChip('Ongoing')
 +'<div style="margin-top:12px"><button class="btn" onclick="S.chooseKey=\''+fkey+'\';if(window.syncState) window.syncState(); go(S.tab)">Choose the Challenge &rarr;</button></div></div>';
-for(var n2=2;n2<=8;n2++){h1+='<div class="card" style="opacity:.6;background:#fff"><h3>'+TYPES[type]+' '+n2+'</h3><div class="sub" style="margin-bottom:8px">Semester '+semOf(n2)+'</div>'+statusChip('x')+'</div>';}
+for(var n2=2;n2<=8;n2++){h1+='<div class="card" style="opacity:.55;background:var(--bg)"><h3>'+TYPES[type]+' '+n2+'</h3><div class="sub" style="margin-bottom:8px">Semester '+semOf(n2)+'</div>'+statusChip('x')+'</div>';}
 return h1+'</div>';
 }
 var h='<h2>'+TYPES[type]+'</h2><div class="sub">'+S.user.campus+' RSmart &middot; Two '+TYPES[type].toLowerCase()+'s per semester &middot; Subject includes Logistics &amp; Supply Chain Management</div>';
@@ -646,14 +463,11 @@ if(S.fSem!=='all'&&semOf(n)!==+S.fSem)continue;
 var st=actStatus(n);
 var pubQ=S.questions.filter(function(q){return q.type===type&&q.num===n&&q.campus===S.user.campus&&q.published;}).length;
 var body='<h3>'+TYPES[type]+' '+n+'</h3><div class="sub" style="margin-bottom:8px">Semester '+semOf(n)+'</div>'+statusChip(st);
-if(st==='Ongoing'){
-            if(S.evalAuth.chooseAppr) body+='<div style="margin-top:12px"><button class="btn" onclick="S.chooseKey=\''+actKey(type,n,S.user.campus)+'\';if(window.syncState) window.syncState(); go(S.tab)">Choose the Challenge &rarr;</button></div>';
-            else body+='<div class="noteinfo" style="margin-top:12px">Challenge choosing is locked by Director.</div>';
-        }
+if(st==='Ongoing'){body+='<div style="margin-top:12px"><button class="btn" onclick="S.chooseKey=\''+actKey(type,n,S.user.campus)+'\';if(window.syncState) window.syncState(); go(S.tab)">Choose the Challenge &rarr;</button></div>';}
 else if(st==='Completed'){body+='<div style="margin-top:12px;font-size:12.5px;color:var(--mut)">Marks available in Review &amp; Marks tab.</div>';}
-else if(pubQ>0){body+=' <span class="chip chip-a">'+pubQ+' challenge(s) published - choosing opens soon</span>'
-+'<div style="margin-top:12px"><button class="btn2" onclick="S.chooseKey=\''+actKey(type,n,S.user.campus)+'\';if(window.syncState) window.syncState(); go(S.tab)">Preview Challenges</button></div>';}
-h+='<div class="card" style="'+(st==='Completed'?'background:#e5e7eb':(st==='Ongoing'?'background:#e6f7f1;border-color:#0e9f6e':'opacity:.6;background:#fff'))+'">'+body+'</div>';
+else if(pubQ>0){body+=' <span class="chip chip-a">'+pubQ+' problem statement(s) published - choosing opens soon</span>'
++'<div style="margin-top:12px"><button class="btn2" onclick="S.chooseKey=\''+actKey(type,n,S.user.campus)+'\';if(window.syncState) window.syncState(); go(S.tab)">Preview Problem Statements</button></div>';}
+h+='<div class="card" style="'+(st==='Not Yet Started'&&!pubQ?'opacity:.55;background:var(--bg)':'')+'">'+body+'</div>';
 }
 return h+'</div>';
 }
@@ -662,7 +476,7 @@ var key=S.chooseKey;var isFresh=/F$/.test(key);var n=+key.match(/\d+/)[0];
 var h='<span class="crumb" onclick="S.chooseKey=null;if(window.syncState) window.syncState(); go(S.tab)">&larr; Back to '+TYPES[type]+'s</span>';
 if(!isFresh&&actStatus(n)==='Not Yet Started'){
 var qs=S.questions.filter(function(q){return q.type===type&&q.num===n&&q.campus===S.user.campus&&q.published;});
-h+='<h2>'+TYPES[type]+' '+n+' - Challenges (Preview)</h2><div class="sub">Choosing has not opened yet.</div><div class="grid2">';
+h+='<h2>'+TYPES[type]+' '+n+' - Problem Statements (Preview)</h2><div class="sub">Choosing has not opened yet.</div><div class="grid2">';
 qs.forEach(function(q){h+='<div class="teamcard"><b>'+esc(q.company)+'</b><div style="margin:6px 0">'+esc(q.statement)+'</div><div class="sub">'+esc(q.details)+'</div><div class="slotrow">'+q.slots.map(function(sp){return '<span class="slot">'+SPECSHORT[sp]+'</span>';}).join('')+'</div></div>';});
 return h+'</div>';
 }
@@ -740,23 +554,23 @@ var pp=mine.team;
 h+='<div class="noteinfo">Past record - '+TYPES[type]+' '+S.myNum+' (Semester '+semOf(S.myNum)+') '+statusChip('Completed')+'</div>'
 +'<div class="card"><h3>'+esc(pp.company)+' &middot; '+pp.team+'</h3><div class="sub">'+esc(pp.statement)+'</div>'
 +'<table class="tbl"><tr><th>Member</th><th>Register ID</th><th>Specialization</th><th>Role</th></tr>'
-+pp.members.map(function(m){var s=stu(m.sid);return '<tr'+(m.sid===S.user.sid?' style="background:var(--pl)"':'')+'><td>'+esc(s.name)+tlStar(m.sid,pp.tl)+'</td><td>'+s.sid+'</td><td>'+SPECSHORT[s.spec]+'</td><td>'+(m.sid===pp.tl?'<span class="chip chip-gold"> Team Leader</span>':'Member')+'</td></tr>';}).join('')
++pp.members.map(function(m){var s=stu(m.sid);return '<tr'+(m.sid===S.user.sid?' style="background:var(--pl)"':'')+'><td>'+esc(s.name)+tlStar(m.sid,pp.tl)+'</td><td>'+s.sid+'</td><td>'+SPECSHORT[s.spec]+'</td><td>'+(m.sid===pp.tl?'<span class="chip chip-gold">&#9733; Team Leader</span>':'Member')+'</td></tr>';}).join('')
 +'</table></div>';
 return h;
 }
 if(!mine){return h+'<div class="notewarn">You have not chosen a '+TYPES[type]+' challenge yet. Choose one first - your team is created automatically from the 5 members who choose the same challenge.</div>';}
 var p=mine.team;var count=p.members.filter(function(m){return !m.cr;}).length;
 h+='<div class="sub">'+esc(p.company)+' &middot; '+p.team+' &middot; '+count+'/5 members</div>';
-if(p.tl===S.user.sid){h+='<div class="goldbar"><span style="font-size:22px"></span> You are the TEAM LEADER of this team. Mentor Booking &amp; Review Expert Booking tabs are enabled for you.</div>';}
-h+='<div class="card"><h3>Challenge</h3><div>'+esc(p.statement)+'</div><div class="sub" style="margin-top:4px">'+esc(p.details)+'</div></div>';
+if(p.tl===S.user.sid){h+='<div class="goldbar"><span style="font-size:22px">&#9733;</span> You are the TEAM LEADER of this team. Mentor Booking &amp; Review Expert Booking tabs are enabled for you.</div>';}
+h+='<div class="card"><h3>Problem Statement</h3><div>'+esc(p.statement)+'</div><div class="sub" style="margin-top:4px">'+esc(p.details)+'</div></div>';
 h+='<div class="card"><h3>Team Members</h3>';
-if(!p.tl&&count>=5){h+='<div class="notewarn"> Your team must now assign ONE Team Leader. All 5 members choose together - click "Assign as Team Leader" on the chosen person.</div>';}
+if(!p.tl&&count>=5){h+='<div class="notewarn">&#9733; Your team must now assign ONE Team Leader. All 5 members choose together - click "Assign as Team Leader" on the chosen person.</div>';}
 if(!p.tl&&count<5){h+='<div class="noteinfo">Team Leader assignment opens once the team is complete (5/5).</div>';}
 h+='<table class="tbl"><tr><th>Member</th><th>Register ID</th><th>Specialization</th><th>Role</th><th></th></tr>';
 p.members.forEach(function(m){
 var s=stu(m.sid);
 h+='<tr><td>'+esc(s.name)+tlStar(m.sid,p.tl)+(m.cr?' <span class="chip chip-r">Critical Resource (+bonus)</span>':'')+'</td><td>'+s.sid+'</td><td>'+SPECSHORT[s.spec]+'</td>'
-+'<td>'+(m.sid===p.tl?'<span class="chip chip-gold"> Team Leader</span>':'Member')+'</td>'
++'<td>'+(m.sid===p.tl?'<span class="chip chip-gold">&#9733; Team Leader</span>':'Member')+'</td>'
 +'<td>'+((!p.tl&&count>=5&&!m.cr)?'<button class="btn2" onclick="assignTL(\''+mine.key+'\','+mine.ti+',\''+m.sid+'\')">Assign as Team Leader</button>':'')+'</td></tr>';
 });
 h+='</table></div>';
@@ -767,7 +581,7 @@ var p=S.problems[key][ti];
 if(p.tl){toast('Team Leader already assigned.');return;}
 if(!confirm('Assign '+stu(sid).name+' as Team Leader? (All 5 members confirm this choice together)'))return;
 p.tl=sid;
-toast('All 5 members confirmed: '+stu(sid).name+' is now the Team Leader  of '+p.team+'.');
+toast('All 5 members confirmed: '+stu(sid).name+' is now the Team Leader ★ of '+p.team+'.');
 if(window.syncState) window.syncState(); go(S.tab);
 }
 /* ---- Mentor booking (own tab, TL only) ---- */
@@ -775,7 +589,7 @@ function tlGate(type){
 var mine=curTeam(type);
 if(!mine)return {html:'<div class="notewarn">You are not in a '+TYPES[type]+' team yet. Choose a challenge first.</div>'};
 if(!mine.team.tl)return {html:'<div class="notewarn">Your team ('+esc(mine.team.company)+') has no Team Leader yet. Assign one in My Team - only the TL can book.</div>',mine:mine};
-if(mine.team.tl!==S.user.sid)return {html:'<div class="noteinfo">Only the Team Leader (<b>'+esc(stu(mine.team.tl).name)+'</b> ) can make bookings for your team. You can view your team\'s bookings below.</div>',mine:mine,view:true};
+if(mine.team.tl!==S.user.sid)return {html:'<div class="noteinfo">Only the Team Leader (<b>'+esc(stu(mine.team.tl).name)+'</b> &#9733;) can make bookings for your team. You can view your team\'s bookings below.</div>',mine:mine,view:true};
 return {mine:mine,ok:true};
 }
 function pastBookingView(kind){
@@ -790,7 +604,7 @@ h+='<div class="card"><h3>Mentor Bookings made by your team</h3>';
 if(!bs.length)h+='<div class="sub">Your team did not book a mentor in this activity.</div>';
 else{h+='<table class="tbl"><tr><th>Mentor</th><th>Date</th><th>During</th><th>Questions Asked</th><th>Calendly</th></tr>'
 +bs.map(function(b){var m=S.mentors.filter(function(x){return x.id===b.mentorId;})[0]||{name:'-'};
-return '<tr><td>'+esc(m.name)+'</td><td>'+b.date+'</td><td>'+(b.rev||'-')+'</td><td style="max-width:280px">'+esc(b.questions)+'</td><td>'+(b.calendly?'<span class="chip chip-g"> Calendly</span>':'-')+'</td></tr>';}).join('')+'</table>';}
+return '<tr><td>'+esc(m.name)+'</td><td>'+b.date+'</td><td>'+(b.rev||'-')+'</td><td style="max-width:280px">'+esc(b.questions)+'</td><td>'+(b.calendly?'<span class="chip chip-g">&#10003; Calendly</span>':'-')+'</td></tr>';}).join('')+'</table>';}
 return h+'</div>';
 }
 var eb=S.expertBookings.filter(function(b){return b.key===key&&b.team===mine.team.team;});
@@ -803,7 +617,7 @@ return '<tr><td>'+(rl?rl[1]:'-')+'</td><td>'+esc(ex.name||'-')+'</td><td>Panel '
 return h+'</div>';
 }
 function sMentor(){
-var h='<h2>Mentor Booking</h2><div class="sub">Team Leader only &middot; Book a mentor when your team is not clear about the challenge. Mentors are entered by the Project Coordinator. Mentor bookings are <b>not limited</b> - book based on the mentor\'s available dates. Use the activity filter to see how past bookings worked.</div>';
+var h='<h2>Mentor Booking</h2><div class="sub">Team Leader only &middot; Book a mentor when your team is not clear about the problem statement. Mentors are entered by the Project Coordinator. Mentor bookings are <b>not limited</b> - book based on the mentor\'s available dates. Use the activity filter to see how past bookings worked.</div>';
 h+=seg([['BS','Business Simulation'],['LP','Live Project']],'bookType');
 if(S.user.sem===1){S.bookNum=5;}
 else{
@@ -827,7 +641,7 @@ h+='</div><div class="card"><h3>Book a Mentor (TL only)</h3>'
 +'<label>Mentor</label><select id="mbMentor" onchange="mbDates()">'+S.mentors.map(function(m){return '<option value="'+m.id+'">'+esc(m.name)+' ('+esc(m.spec)+')</option>';}).join('')+'</select>'
 +'<label>Available Date</label><select id="mbDate"></select>'
 +'<label>Specialization Needed</label><select id="mbSpec">'+SPECS.map(function(s){return '<option>'+s+'</option>';}).join('')+'</select>'
-+'<label>Challenge</label><input id="mbProb" value="'+esc(g.mine.team.company+' - '+g.mine.team.statement)+'">'
++'<label>Problem Statement</label><input id="mbProb" value="'+esc(g.mine.team.company+' - '+g.mine.team.statement)+'">'
 +'<label>What questions are we going to ask?</label><textarea id="mbQ" rows="3" placeholder="List the doubts / questions for the mentor"></textarea>'
 +'<div style="margin-top:12px"><button class="btn" onclick="bookMentor(\''+key+'\',\''+teamName+'\')">Book Mentor</button></div></div></div>';
 setTimeout(mbDates,0);
@@ -839,7 +653,7 @@ myBookings.forEach(function(b){
 var m=S.mentors.filter(function(x){return x.id===b.mentorId;})[0]||{name:'?'};
 h+='<tr><td>'+esc(m.name)+'</td><td>'+b.date+'</td><td>'+SPECSHORT[b.spec]||b.spec;
 h+='</td><td style="max-width:260px">'+esc(b.questions)+'</td><td>'
-+(b.calendly?'<span class="chip chip-g"> Added to Calendly</span>':'<button class="btn2" onclick="addCalendly('+b.id+')">Add to Calendly</button>')+'</td></tr>';
++(b.calendly?'<span class="chip chip-g">&#10003; Added to Calendly</span>':'<button class="btn2" onclick="addCalendly('+b.id+')">Add to Calendly</button>')+'</td></tr>';
 });
 h+='</table>';}
 h+='</div>';
@@ -863,7 +677,7 @@ var b=S.mentorBookings.filter(function(x){return x.id===id;})[0];
 if(b){b.calendly=true;toast('Schedule added to Calendly - invites sent to the mentor and all team members.');if(window.syncState) window.syncState(); go(S.tab);}
 }
 /* ---- Review Expert booking (own tab, TL only, 0/2 per expert) ---- */
-function sExpert(){ if(!S.evalAuth.expertAppr) return '<h2>Review Expert Booking</h2><div class=\"notewarn\">Expert booking is currently locked by the Director.</div>';
+function sExpert(){
 var h='<h2>Review Expert Booking</h2><div class="sub">Team Leader only &middot; 3 panels &middot; Each expert can be booked by <b>2 teams</b> (0/2). Once 2 teams book an expert, that panel greys out. Experts are posted by the Project Coordinator on the review morning. Use the activity filter to see how past reviews were assessed.</div>';
 h+=seg([['BS','Business Simulation'],['LP','Live Project']],'bookType');
 if(S.user.sem===1){S.bookNum=5;}
@@ -889,7 +703,7 @@ h+='<div class="teamcard'+(isMine?' mine':(fullEx?' grey':''))+'">'
 +'<h3 style="margin-top:8px">'+esc(ex.name)+'</h3>'
 +'<div class="sub">'+esc(ex.spec)+'<br>'+ex.exp+' years industry experience<br>Working at: <b>'+esc(ex.company)+'</b></div>'
 +'<div style="font-size:11.5px;color:var(--mut)">Booked by: '+(ex.bookedBy.length?ex.bookedBy.map(esc).join(', '):'-')+'</div>'
-+'<div style="margin-top:10px">'+(isMine?'<span class="chip chip-g"> Booked by your team</span>':(fullEx?'<span class="chip chip-gr">FULL - LOCKED</span>':(g.ok&&!myBooking?'<button class="btn" onclick="bookExpert('+ex.id+',\''+key+'\',\''+teamName+'\')">Book This Expert</button>':'<span class="chip chip-gr">'+(myBooking?'Your team already booked':'TL only')+'</span>')))+'</div></div>';
++'<div style="margin-top:10px">'+(isMine?'<span class="chip chip-g">&#10003; Booked by your team</span>':(fullEx?'<span class="chip chip-gr">FULL - LOCKED</span>':(g.ok&&!myBooking?'<button class="btn" onclick="bookExpert('+ex.id+',\''+key+'\',\''+teamName+'\')">Book This Expert</button>':'<span class="chip chip-gr">'+(myBooking?'Your team already booked':'TL only')+'</span>')))+'</div></div>';
 });
 return h+'</div>';
 }
@@ -919,7 +733,7 @@ var total=0,maxT=0;
 mine.team.members.forEach(function(m){if(rec.entries[m.sid]!=null){total+=rec.entries[m.sid];maxT+=100;}});
 h+='<div class="grid2" style="max-width:640px">'
 +'<div class="stat"><div class="n">'+(myMark!=null?myMark+' / 100':'-')+'</div><div class="l">Your individual mark</div></div>'
-+'<div class="stat"><div class="n">'+(maxT?Math.round((total/maxT)*100):0)+' / 100</div><div class="l">Overall team mark ('+mine.team.team+')</div></div></div>'
++'<div class="stat"><div class="n">'+total+' / '+maxT+'</div><div class="l">Overall team mark ('+mine.team.team+')</div></div></div>'
 +'<div class="noteinfo" style="margin-top:12px">For privacy, teammates\' individual marks are not shown - only your own mark and the overall team mark are visible.</div></div>';
 return h;
 }
@@ -1015,7 +829,7 @@ h+='<div class="card"><h3>Mentor Bookings - '+TYPES[S.fType]+' '+S.fNum+' ('+S.f
 if(!mb.length)h+='<div class="sub">No mentor bookings for this filter.</div>';
 else{h+='<table class="tbl"><tr><th>Team</th><th>Booked By (TL)</th><th>Mentor</th><th>Date</th><th>During</th><th>Questions To Ask</th><th>Calendly</th></tr>';
 mb.forEach(function(b){var m=S.mentors.filter(function(x){return x.id===b.mentorId;})[0]||{name:'?'};var by=stu(b.by);
-h+='<tr><td>'+b.team+'</td><td>'+esc(by.name)+' <br><span class="pill">'+by.sid+'</span></td><td>'+esc(m.name)+'</td><td><b>'+b.date+'</b></td><td>'+(b.rev||'-')+'</td><td style="max-width:260px">'+esc(b.questions)+'</td><td>'+(b.calendly?'<span class="chip chip-g"> On Calendly</span>':'<span class="chip chip-gr">Pending</span>')+'</td></tr>';});
+h+='<tr><td>'+b.team+'</td><td>'+esc(by.name)+' &#9733;<br><span class="pill">'+by.sid+'</span></td><td>'+esc(m.name)+'</td><td><b>'+b.date+'</b></td><td>'+(b.rev||'-')+'</td><td style="max-width:260px">'+esc(b.questions)+'</td><td>'+(b.calendly?'<span class="chip chip-g">&#10003; On Calendly</span>':'<span class="chip chip-gr">Pending</span>')+'</td></tr>';});
 h+='</table>';}
 h+='</div>';
 var eb=S.expertBookings.filter(function(b){return b.key===key&&revOk(b);});
@@ -1032,10 +846,10 @@ return h+'</div>';
 function aDashboard(){
 var totalProblems=Object.keys(S.problems).reduce(function(a,k){return a+S.problems[k].length;},0)+S.questions.length;
 var savedCount=0;Object.keys(S.marks).forEach(function(k){REVIEWS.forEach(function(r){var o=S.marks[k][r[0]]||{};Object.keys(o).forEach(function(ti){if(o[ti].status==='saved')savedCount++;});});});
-return '<h2>Admin Dashboard</h2><div class="sub">Accounts &amp; credentials. Mark entry, challenge posting, team change, critical resource, team split and student marks are now handled in the <b>Project Coordinator</b> login; evaluation start authority stays with the <b>Director</b>.</div>'
+return '<h2>Admin Dashboard</h2><div class="sub">Accounts &amp; credentials. Mark entry, question posting, team change, critical resource, team split and student marks are now handled in the <b>Project Coordinator</b> login; evaluation start authority stays with the <b>Director</b>.</div>'
 +'<div class="grid4">'
 +'<div class="stat"><div class="n">64</div><div class="l">Students (32 RTC + 32 RGU)</div></div>'
-+'<div class="stat"><div class="n">'+totalProblems+'</div><div class="l">Challenges Posted</div></div>'
++'<div class="stat"><div class="n">'+totalProblems+'</div><div class="l">Problem Statements Posted</div></div>'
 +'<div class="stat"><div class="n">'+S.teamChanges.length+'</div><div class="l">Team Changes Made</div></div>'
 +'<div class="stat"><div class="n">'+S.critical.length+'</div><div class="l">Critical Resources Deployed</div></div>'
 +'<div class="stat"><div class="n">'+savedCount+'</div><div class="l">Mark Sheets Saved (awaiting Director)</div></div>'
@@ -1060,7 +874,7 @@ return '<button class="'+(a.review===r[0]?'btn':'btn2')+'" onclick="S.ame.review
 if(!a.review)return h;
 var eKey=actKey(a.type,5,S.fCampus)+'-'+a.review;
 if(!S.evalAuth[eKey]){
-return h+'<div class="notewarn"> <b>LOCKED</b> - Evaluation for '+TYPES[a.type]+' 5 &middot; '+REVIEWS.filter(function(r){return r[0]===a.review;})[0][1]+' ('+S.fCampus+') has not been started by the Director. The Director must click <b>Approve &amp; Start Evaluation</b> (Director login &rarr; Evaluation Control); only then this Mark Entry opens. This is the centralized evaluation authority.</div>';
+return h+'<div class="notewarn">&#128274; <b>LOCKED</b> - Evaluation for '+TYPES[a.type]+' 5 &middot; '+REVIEWS.filter(function(r){return r[0]===a.review;})[0][1]+' ('+S.fCampus+') has not been started by the Director. The Director must click <b>Approve &amp; Start Evaluation</b> (Director login &rarr; Evaluation Control); only then this Mark Entry opens. This is the centralized evaluation authority.</div>';
 }
 var teams=getTeams(a.type,5,S.fCampus);
 h+='<div class="noteinfo">&#9989; Evaluation approved by the Director. For founders attending <b>remotely</b>: copy a team\'s Remote Evaluation Link and email it to them - the link opens ONLY that team\'s mark entry page (nothing else is accessible).</div>';
@@ -1069,7 +883,7 @@ teams.forEach(function(t,ti){
 var rec=(S.marks[actKey(a.type,5,S.fCampus)]&&S.marks[actKey(a.type,5,S.fCampus)][a.review])?S.marks[actKey(a.type,5,S.fCampus)][a.review][ti]:null;
 var locked=!!rec; /* once the expert saves, the card greys out - no edits, no re-entry (only the Director can edit) */
 h+='<div class="teamcard'+(locked?' grey':'')+'"><b>'+t.team+'</b> '+(rec?markChip(rec.status):'<span class="chip chip-gr">Not assessed</span>')+'<div class="sub" style="margin:6px 0">'+esc(t.company)+'</div>'
-+(locked?'<span class="chip chip-gr"> Marks saved &amp; closed - locked. Only the Director can edit.</span>':'<button class="btn" onclick="openSession('+ti+')">Open Mark Entry &rarr;</button><div style="margin-top:6px"><button class="btn2" onclick="copyEvalLink('+ti+')"> Copy Remote Evaluation Link</button></div>')+'</div>';
++(locked?'<span class="chip chip-gr">&#128274; Marks saved &amp; closed - locked. Only the Director can edit.</span>':'<button class="btn" onclick="openSession('+ti+')">Open Mark Entry &rarr;</button><div style="margin-top:6px"><button class="btn2" onclick="copyEvalLink('+ti+')">&#128279; Copy Remote Evaluation Link</button></div>')+'</div>';
 });
 return h+'</div></div>';
 }
@@ -1083,14 +897,14 @@ var revLbl=REVIEWS.filter(function(r){return r[0]===a.review;})[0][1];
 var running=a.pRunning||a.mRunning;
 var h='<h2>'+TYPES[a.type]+' 5 &middot; '+revLbl+' &middot; '+t.team+' ('+a.campus+' RSmart)</h2>';
 if(!running&&S.role!=='evaluator')h+='<span class="crumb" onclick="stopTimer();S.ame={active:false,type:S.ame.type,review:S.ame.review};go(\'markentry\')">&larr; Back (choose another team)</span>';
-h+='<div class="card" style="border-color:#bcd0f5;background:var(--pl)"><h3> Challenge (for the reviewing experts &amp; founders)</h3>'
+h+='<div class="card" style="border-color:#bcd0f5;background:var(--pl)"><h3>&#128203; Problem Statement (for the reviewing experts &amp; founders)</h3>'
 +'<b>'+esc(t.company)+'</b><div style="margin:6px 0">'+esc(t.statement)+'</div><div class="sub">'+esc(t.details)+'</div></div>';
 h+='<div class="grid2">'
 +'<div class="timerbox"><div style="font-weight:800;color:var(--mut);letter-spacing:.5px">PRESENTATION &middot; 25 MINUTES</div>'
 +'<div class="timerbig" id="ptmr">'+fmtT(Math.max(a.pRemaining,0))+'</div>'
 +'<div style="margin-top:10px">'+(a.pRunning
 ?'<button class="btnr" onclick="stopPresentation()">&#9632; Stop Presentation (finished early)</button>'
-:(a.pDone?'<span class="chip chip-g"> Presentation completed</span>'
+:(a.pDone?'<span class="chip chip-g">&#10003; Presentation completed</span>'
 :'<button class="btng bigbtn" style="max-width:260px" onclick="startPresentation()">&#9654; Start Presentation</button>'))+'</div></div>'
 +'<div class="timerbox"><div style="font-weight:800;color:var(--mut);letter-spacing:.5px">MARK ENTRY &middot; 10 MINUTES</div>'
 +'<div class="timerbig'+(a.mRunning?' late':'')+'" id="mtmr">'+fmtT(Math.max(a.mRemaining,0))+'</div>'
@@ -1107,7 +921,7 @@ var st2=stu(m.sid);var v=existing&&existing.entries[m.sid]!=null?existing.entrie
 h+='<tr><td>'+esc(st2.name)+tlStar(m.sid,t.tl)+(m.cr?' <span class="chip chip-r">Critical Resource (+bonus)</span>':'')+'</td><td>'+st2.sid+'</td><td>'+(SPECSHORT[st2.spec]||'-')+'</td>'
 +'<td style="width:130px"><input type="number" min="0" max="100" id="mark_'+m.sid+'" value="'+v+'" placeholder="0-100"></td></tr>';
 });
-h+='</table><div style="margin-top:14px"><button class="btng" onclick="saveSession(false)"> Save Marks &amp; Close</button></div></div>';
+h+='</table><div style="margin-top:14px"><button class="btng" onclick="saveSession(false)">&#128190; Save Marks &amp; Close</button></div></div>';
 }else{
 h+='<div class="noteinfo">The student-wise mark grid will appear here when <b>Start Mark Entry</b> is clicked (10-minute window).</div>';
 }
@@ -1164,24 +978,24 @@ return;
 toast(auto?'10 minutes over - marks AUTO-SAVED & CLOSED. Sent to the Director for review & publishing.':'Marks saved & closed. Sent to the Director for review & publishing.');
 go('markentry');
 }
-/* ---- Challenge Posting (drag & drop specializations) ---- */
+/* ---- Question Posting (drag & drop specializations) ---- */
 function aQuestions(){
 var ed=S.qp.editing?S.questions.filter(function(q){return q.id===S.qp.editing;})[0]:null;
-var h='<h2>Challenge Posting</h2><div class="sub">Post new challenges for Business Simulations and Live Projects. Drag the 5 specialization seats - only students of those specializations can choose the problem. <b>Each challenge is saved independently</b> (editing one never changes another).</div>';
-h+='<div class="grid2"><div class="card"><h3>'+(ed?'Edit Challenge':'New Challenge')+'</h3>'
+var h='<h2>Question Posting</h2><div class="sub">Post new problem statements for Business Simulations and Live Projects. Drag the 5 specialization seats - only students of those specializations can choose the problem. <b>Each problem statement is saved independently</b> (editing one never changes another).</div>';
+h+='<div class="grid2"><div class="card"><h3>'+(ed?'Edit Problem Statement':'New Problem Statement')+'</h3>'
 +'<div style="display:flex;gap:8px"><div style="flex:1"><label>Type</label><select id="qType"><option value="BS"'+((ed?ed.type:'BS')==='BS'?' selected':'')+'>Business Simulation</option><option value="LP"'+((ed?ed.type:'')==='LP'?' selected':'')+'>Live Project</option></select></div>'
 +'<div style="flex:1"><label>Number</label><select id="qNum">'+[5,6,7,8].map(function(n){return '<option'+((ed?ed.num:6)===n?' selected':'')+'>'+n+'</option>';}).join('')+'</select></div>'
 +'<div style="flex:1"><label>Programme</label><select id="qCampus"><option'+((ed?ed.campus:'RTC')==='RTC'?' selected':'')+'>RTC</option><option'+((ed?ed.campus:'')==='RGU'?' selected':'')+'>RGU</option></select></div></div>'
 +'<label>Company Name</label><input id="qCompany" value="'+(ed?esc(ed.company):'')+'" placeholder="e.g. Freshworks">'
-+'<label>Challenge</label><textarea id="qStatement" rows="2" placeholder="The business problem the team must solve">'+(ed?esc(ed.statement):'')+'</textarea>'
++'<label>Problem Statement</label><textarea id="qStatement" rows="2" placeholder="The business problem the team must solve">'+(ed?esc(ed.statement):'')+'</textarea>'
 +'<label>Company Details</label><textarea id="qDetails" rows="2" placeholder="Short background about the company">'+(ed?esc(ed.details):'')+'</textarea>'
 +'<label>Specialization Seats - drag &amp; drop 5 seats (a specialization may repeat, e.g. BA twice)</label>'
 +'<div class="palette">'+SPECS.map(function(sp){return '<span class="pchip" draggable="true" ondragstart="dragSpec(event,\''+sp+'\')" onclick="clickSpec(\''+sp+'\')">'+SPECSHORT[sp]+' - '+sp+'</span>';}).join('')+'</div>'
 +'<div class="dslots" id="qSlots"></div>'
-+'<div style="margin-top:12px;display:flex;gap:8px"><button class="btn" onclick="saveQuestion()">'+(ed?'Update Challenge':'Add Challenge')+'</button>'
++'<div style="margin-top:12px;display:flex;gap:8px"><button class="btn" onclick="saveQuestion()">'+(ed?'Update Problem Statement':'Add Problem Statement')+'</button>'
 +(ed?'<button class="btn2" onclick="S.qp={editing:null,slots:[null,null,null,null,null]};go(\'questions\')">Cancel Edit</button>':'')+'</div></div>';
 /* drafts list */
-h+='<div class="card"><h3>Posted Challenges ('+S.questions.length+')</h3>';
+h+='<div class="card"><h3>Posted Problem Statements ('+S.questions.length+')</h3>';
 if(!S.questions.length)h+='<div class="sub">Nothing posted yet.</div>';
 S.questions.forEach(function(q){
 h+='<div class="member" style="display:block;padding:10px 0"><b>'+esc(q.company)+'</b> <span class="pill">'+q.type+' '+q.num+'</span> <span class="pill">'+q.campus+'</span> '+(q.published?'<span class="chip chip-g">Published</span>':'<span class="chip chip-a">Draft</span>')
@@ -1191,8 +1005,8 @@ h+='<div class="member" style="display:block;padding:10px 0"><b>'+esc(q.company)
 +'<button class="btn2" style="color:var(--red);border-color:var(--red)" onclick="delQuestion('+q.id+')">Delete</button></div>';
 });
 var drafts=S.questions.filter(function(q){return !q.published;}).length;
-h+='<div style="margin-top:14px"><button class="btng" '+(drafts?'':'disabled ')+'onclick="publishQuestions()"> Overall Publish</button></div>'
-+'<div class="sub" style="margin-top:6px">After you give all challenges, one Overall Publish makes them visible to students in one go.</div></div></div>';
+h+='<div style="margin-top:14px"><button class="btng" '+(drafts?'':'disabled ')+'onclick="publishQuestions()">&#128640; Overall Publish - push all drafts to Student login ('+drafts+')</button></div>'
++'<div class="sub" style="margin-top:6px">After you give all problem statements, one Overall Publish makes them visible to students in one go.</div></div></div>';
 setTimeout(renderQSlots,0);
 return h;
 }
@@ -1209,7 +1023,7 @@ function clearSlot(i){if(S.qp.slots[i]){S.qp.slots[i]=null;renderQSlots();}}
 function saveQuestion(){
 var company=document.getElementById('qCompany').value.trim();
 var stmt=document.getElementById('qStatement').value.trim();
-if(!company||!stmt){toast('Enter the company name and challenge.');return;}
+if(!company||!stmt){toast('Enter the company name and problem statement.');return;}
 if(S.qp.slots.filter(Boolean).length<5){toast('Drag & drop all 5 specialization seats.');return;}
 var data={type:document.getElementById('qType').value,num:+document.getElementById('qNum').value,campus:document.getElementById('qCampus').value,company:company,statement:stmt,details:document.getElementById('qDetails').value.trim(),slots:S.qp.slots.slice()};
 if(S.qp.editing){
@@ -1229,13 +1043,13 @@ S.qp={editing:id,slots:q.slots.slice()};
 go('questions');
 }
 function delQuestion(id){
-if(!confirm('Delete this challenge?'))return;
+if(!confirm('Delete this problem statement?'))return;
 S.questions=S.questions.filter(function(x){return x.id!==id;});
 go('questions');
 }
 function publishQuestions(){
 var n=0;S.questions.forEach(function(q){if(!q.published){q.published=true;n++;}});
-toast(n+' challenge(s) published to the Student login.');
+toast(n+' problem statement(s) published to the Student login.');
 go('questions');
 }
 /* ---- Student Team Change ---- */
@@ -1311,7 +1125,7 @@ teams.forEach(function(t,ti){t.members.forEach(function(m){if(!m.cr){var s=stu(m
 h+='<div class="card"><div class="grid3">'
 +'<div><label>Critical Resource (student)</label><select id="crPick">'+opts+'</select></div>'
 +'<div><label>Deploy To Team (the team needing support)</label><select id="crTo">'+teams.map(function(t,i){return '<option value="'+i+'">'+t.team+' - '+esc(t.company)+' ('+t.members.length+')</option>';}).join('')+'</select></div>'
-+'<div style="align-self:end"><button class="btn" onclick="deployCR()"> Deploy Critical Resource</button></div></div>'
++'<div style="align-self:end"><button class="btn" onclick="deployCR()">&#128640; Deploy Critical Resource</button></div></div>'
 +'<div class="noteinfo">The student stays in their own team AND is added to the supported team as its 6th member, tagged <span class="chip chip-r">Critical Resource</span> with +5 bonus marks.</div></div>';
 }else{
 h+='<div class="notewarn">'+TYPES[S.fType]+' '+S.fNum+' is COMPLETED - past deployments shown for reference only.</div>';
@@ -1415,7 +1229,7 @@ return '<h2>Director Dashboard</h2><div class="sub">Everything at a glance - pur
 +seg([['BS','Business Simulation'],['LP','Live Project']],'fType')
 +seg([[1,'1'],[2,'2'],[3,'3'],[4,'4'],[5,'5 (Ongoing)']],'fNum')
 +seg([['RTC','RTC RSmart'],['RGU','RGU RSmart']],'fCampus')
-+'<h3 style="margin:8px 0"> Marks Dashboard - '+lbl+'</h3>'
++'<h3 style="margin:8px 0">&#127942; Marks Dashboard - '+lbl+'</h3>'
 +'<div class="grid2">'
 +'<div class="chartcard"><h4>Average Mark by Specialization (who scored high?)</h4><canvas id="chM1"></canvas></div>'
 +'<div class="chartcard"><h4>Average Mark by Challenge / Company (which industry performed?)</h4><canvas id="chM2"></canvas></div>'
@@ -1430,7 +1244,7 @@ return '<h2>Director Dashboard</h2><div class="sub">Everything at a glance - pur
 +'<div class="chartcard"><h4>Expert Bookings per Review - '+lbl+'</h4><canvas id="ch5"></canvas></div>'
 +'<div class="chartcard"><h4>Team Changes &amp; Critical Resources - '+lbl+'</h4><canvas id="ch6"></canvas></div>'
 +'<div class="chartcard"><h4>Mentors Added per Month (Project Coordinator)</h4><canvas id="ch2"></canvas></div>'
-+'<div class="chartcard"><h4>Challenges Posted (Admin)</h4><canvas id="ch3"></canvas></div>'
++'<div class="chartcard"><h4>Problem Statements Posted (Admin)</h4><canvas id="ch3"></canvas></div>'
 +'</div>'
 +'<div class="noteinfo" style="margin-top:14px">Critical resources in '+lbl+': '+(S.critical.filter(function(c){return c.key===actKey(S.fType,S.fNum,S.fCampus);}).map(function(c){return '<b>'+esc(stu(c.sid).name)+'</b> ('+c.from+' &rarr; supporting '+c.to+')';}).join(' &middot; ')||'none')+'</div>';
 }
@@ -1543,17 +1357,17 @@ h+='</table><div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap">';
 if(rec.status!=='published'){
 if(editing)h+='<button class="btng" onclick="dSaveEdit('+ti+')">Save Changes</button><button class="btn2" onclick="S.editTi=-1;go(\'dpublish\')">Cancel</button>';
 else h+='<button class="btn2" onclick="dEdit('+ti+')">&#9998; Edit Marks</button>'
-+(rec.status==='saved'?'<button class="btn" onclick="dReady('+ti+')"> Confirm &amp; Ready for Publish</button>':'<span class="chip chip-a">Ready - waiting for Overall Publish</span>');
-}else h+='<span class="chip chip-g">Published to students </span>';
++(rec.status==='saved'?'<button class="btn" onclick="dReady('+ti+')">&#10003; Confirm &amp; Ready for Publish</button>':'<span class="chip chip-a">Ready - waiting for Overall Publish</span>');
+}else h+='<span class="chip chip-g">Published to students &#10003;</span>';
 h+='</div>';
 }
 h+='</div>';
 });
 h+='</div>';
 var canPublish=withMarks>0&&ready>0&&(ready+published===withMarks);
-h+='<div class="card" style="border-color:#bcd0f5;background:var(--pl)"><h3> Overall Publish - '+TYPES[S.fType]+' '+S.fNum+' &middot; '+revLbl+' ('+S.fCampus+')</h3>'
+h+='<div class="card" style="border-color:#bcd0f5;background:var(--pl)"><h3>&#128640; Overall Publish - '+TYPES[S.fType]+' '+S.fNum+' &middot; '+revLbl+' ('+S.fCampus+')</h3>'
 +'<div class="sub">'+withMarks+' team(s) with marks &middot; '+ready+' ready &middot; '+published+' already published. Confirm every team (Ready for Publish) first; the Overall Publish then releases '+revLbl+' marks for ALL teams at the same time to their individual student logins (and to the Admin copy).</div>'
-+'<button class="btng" '+(canPublish?'':'disabled ')+'onclick="dPublishAll()">Publish</button></div>';
++'<button class="btng" '+(canPublish?'':'disabled ')+'onclick="dPublishAll()">Overall Publish '+revLbl+' Marks to Students</button></div>';
 return h;
 }
 function dCreate(ti){
@@ -1618,61 +1432,3 @@ document.getElementById('content').innerHTML=aSession();
 return true;
 }
 loadSupabaseState();
-</script>
-<script>
-  const originalRenderLogin = renderLogin;
-  renderLogin = function() {
-    originalRenderLogin();
-    if (!document.getElementById('erpVideoBg')) {
-      document.body.insertAdjacentHTML('afterbegin', `
-        <video id="erpVideoBg" autoplay loop muted playsinline style="position:fixed;top:0;left:0;width:100vw;height:100vh;object-fit:cover;z-index:-1;background:#0f172a;">
-          <source src="https://assets.mixkit.co/videos/preview/mixkit-digital-animation-of-a-network-with-a-dark-blue-background-31189-large.mp4" type="video/mp4">
-        </video>
-      `);
-      
-      const wrap = document.querySelector('.login-wrap');
-      if(wrap) {
-        wrap.style.setProperty('background', 'transparent', 'important');
-      }
-      
-      const card = document.querySelector('.login-card');
-      if(card) {
-        card.style.position = 'relative';
-        card.style.zIndex = '10';
-        card.style.background = 'rgba(255, 255, 255, 0.85)';
-        card.style.backdropFilter = 'blur(16px)';
-        card.style.webkitBackdropFilter = 'blur(16px)';
-        card.style.boxShadow = '0 25px 50px -12px rgba(0, 0, 0, 0.25)';
-      }
-      document.body.style.margin = '0';
-    }
-  };
-</script>
-</body>
-</html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
