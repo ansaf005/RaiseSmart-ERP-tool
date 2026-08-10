@@ -161,6 +161,24 @@ body::after {
 
 .login-wrap {
 }
+
+/* ERP Sidebar Layout */
+.erp-container { display: flex; flex-direction: row; min-height: calc(100vh - 120px); align-items: stretch; }
+.erp-sidebar { width: 260px; min-width: 260px; background: #fff; border-right: 1px solid var(--line); padding: 20px 0; display: flex; flex-direction: column; gap: 4px; overflow-y: auto; max-height: calc(100vh - 120px); }
+.erp-sidebar::-webkit-scrollbar { width: 5px; }
+.erp-sidebar::-webkit-scrollbar-track { background: transparent; }
+.erp-sidebar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+.erp-sidebar::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+.erp-sidebar-item { padding: 12px 16px; margin: 0 12px; font-size: 14px; color: var(--mut); cursor: pointer; border-radius: 8px; font-weight: 500; transition: all 0.2s; display: flex; align-items: center; gap: 12px; }
+.erp-sidebar-item:hover { background: #f4f6f8; color: var(--txt); }
+.erp-sidebar-item.active { background: #f1f5f9; color: var(--txt); font-weight: 600; }
+.erp-main { flex: 1; padding: 20px 24px; background: var(--bg); max-width: 100%; overflow-y: auto; }
+@media(max-width:800px) {
+  .erp-container { flex-direction: column; }
+  .erp-sidebar { width: 100%; min-width: 100%; border-right: none; border-bottom: 1px solid var(--line); padding: 10px 0; flex-direction: row; flex-wrap: wrap; }
+  .erp-sidebar-item { padding: 8px 12px; margin: 0; }
+  .erp-main { padding: 16px; }
+}
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
@@ -538,8 +556,25 @@ enterApp();
 }
 function logout(){S.user=null;S.role=null;S.myTeamType=null;S.ame={active:false};stopTimer();L={role:null,campus:null};renderLogin();}
 /* ============ APP SHELL ============ */
+var SIDEBARS = {
+  lp: [
+    ['lp', 'Choose the Challenge', '&#127919;'],
+    ['myteam', 'My Team', '&#128101;'],
+    ['mentor', 'Mentor Booking', '&#128197;'],
+    ['expert', 'Review Expert Booking', '&#128100;'],
+    ['smarks', 'Review & Marks', '&#128221;']
+  ],
+  bs: [
+    ['bs', 'Choose the Challenge', '&#127919;'],
+    ['myteam', 'My Team', '&#128101;'],
+    ['mentor', 'Mentor Booking', '&#128197;'],
+    ['expert', 'Review Expert Booking', '&#128100;'],
+    ['smarks', 'Review & Marks', '&#128221;']
+  ]
+};
+
 var NAVS={
-student:[['sdash','Dashboard'],['lp','Live Project'],['bs','Business Simulation'],['myteam','My Team'],['mentor','Mentor Booking'],['expert','Review Expert Booking'],['smarks','Review & Marks']],
+student:[['sdash','Dashboard'],['lp','Live Project'],['bs','Business Simulation'],['profile','Profile']],
 coordinator:[['cdash','Dashboard'],['mentorentry','Mentor Entry'],['expertentry','Expert Entry'],['cbookings','Bookings Received'],['markentry','Mark Entry'],['questions','Challenge Posting'],['teamchange','Student Team Change'],['critical','Critical Resource'],['teamsplit','Team Split'],['astumarks','Student Marks']],
 admin:[['adash','Dashboard'],['creds','Credentials']],
 director:[['ddash','Dashboard'],['devalctl','Evaluation Control'],['dpublish','Marks Review & Publish'],['dstumarks','Student Marks']]
@@ -565,16 +600,48 @@ nav.innerHTML=NAVS[S.role].map(function(t){
 return '<button class="navbtn'+(S.tab===t[0]?' active':'')+'" onclick="navGo(\''+t[0]+'\')">'+t[1]+'</button>';
 }).join('');
 }
+function renderSidebar(){
+  if(S.role!=='student') return;
+  var sb = document.getElementById('sidebar');
+  if(!sb) return;
+  var items = SIDEBARS[S.tab] || [];
+  sb.innerHTML = items.map(function(item){
+    return '<div class="erp-sidebar-item'+(S.subTab===item[0]?' active':'')+'" onclick="goSub(\''+item[0]+'\')">'+item[1]+'</div>';
+  }).join('');
+}
+
+function goSub(subTab){
+  S.subTab = subTab;
+  if(S.tab==='lp'){ S.myTeamType = 'LP'; }
+  if(S.tab==='bs'){ S.myTeamType = 'BS'; }
+  renderSidebar();
+  destroyCharts();
+  var fn = ROUTES[subTab];
+  document.getElementById('erp-main').innerHTML = fn ? fn() : '<div class="card" style="margin:20px"><h3>Coming Soon</h3><div class="sub">This ERP module feature is under development.</div></div>';
+}
+
 function navGo(tab){S.chooseKey=null;S.editTi=-1;go(tab);}
 function go(tab){
-if(tab!==S.tab){S.chooseKey=null;S.editTi=-1;}
-S.tab=tab;
-renderNav();
-destroyCharts();
-var fn=ROUTES[tab];
-document.getElementById('content').innerHTML=fn?fn():'<div class="card">Page not found.</div>';
-if(tab==='ddash'&&typeof buildDirectorCharts==='function'){buildDirectorCharts();}
-if(tab==='sdash'&&S.role==='student'&&typeof buildStudentCharts==='function'){buildStudentCharts();}
+  if(tab!==S.tab){S.chooseKey=null;S.editTi=-1;S.subTab=null;}
+  S.tab=tab;
+  renderNav();
+  destroyCharts();
+  
+  var c = document.getElementById('content');
+  if(S.role==='student' && (tab==='lp' || tab==='bs')){
+    if(!S.subTab){ S.subTab = SIDEBARS[tab][0][0]; }
+    if(tab==='lp'){ S.myTeamType = 'LP'; }
+    if(tab==='bs'){ S.myTeamType = 'BS'; }
+    c.innerHTML = '<div class="erp-container"><div class="erp-sidebar" id="sidebar"></div><div class="erp-main" id="erp-main"></div></div>';
+    renderSidebar();
+    var fn = ROUTES[S.subTab];
+    document.getElementById('erp-main').innerHTML = fn ? fn() : '<div class="card" style="margin:20px"><h3>Coming Soon</h3><div class="sub">This ERP module feature is under development.</div></div>';
+  } else {
+    var fn=ROUTES[tab];
+    c.innerHTML=fn?fn():'<div class="card">Page not found.</div>';
+    if(tab==='ddash'&&typeof buildDirectorCharts==='function'){buildDirectorCharts();}
+    if(tab==='sdash'&&S.role==='student'&&typeof buildStudentCharts==='function'){setTimeout(buildStudentCharts, 50);}
+  }
 }
 function destroyCharts(){S.charts.forEach(function(c){try{c.destroy();}catch(e){}});S.charts=[];}
 function setHTML(html){document.getElementById('content').innerHTML=html;}
@@ -719,46 +786,61 @@ else{toast('You joined '+p.company+' ('+count+'/5).');}
 if(window.syncState) window.syncState(); go(S.tab);
 }
 function sMyTeam(){
-if(!S.myTeamType){
-return '<h2>My Team</h2><div class="sub">Which team do you want to view?</div><div class="grid2" style="max-width:700px">'
-+'<button class="btn bigbtn" onclick="S.myTeamType=\'BS\';go(\'myteam\')">Business Simulation<br><span style="font-weight:400;font-size:12.5px">My BS 5 team</span></button>'
-+'<button class="btn bigbtn" style="background:var(--green)" onclick="S.myTeamType=\'LP\';go(\'myteam\')">Live Project<br><span style="font-weight:400;font-size:12.5px">My LP 5 team</span></button></div>';
-}
+if(!S.myTeamType) S.myTeamType='BS';
 var type=S.myTeamType;
-var h='<span class="crumb" onclick="S.myTeamType=null;go(\'myteam\')">&larr; Change (Business Simulation / Live Project)</span>'
-+'<h2>My Team - '+TYPES[type]+'</h2>';
+var h='<div style="margin-bottom:12px"><span class="crumb" onclick="S.myTeamType=(S.myTeamType===\'BS\'?\'LP\':\'BS\');go(\'myteam\')" style="color:#1a56db;cursor:pointer;font-weight:600;font-size:13px">&mdash; Change (Business Simulation / Live Project)</span></div>'
++'<h2 style="margin-bottom:4px">My Team - '+TYPES[type]+'</h2>';
+
 if(S.user.sem===1){S.myNum=5;}
 else{
-h+='<div class="sub">Filter by activity - '+TYPES[type]+'s 1-4 show the past teams you worked in.</div>'
-+seg([[1,TYPES[type]+' 1'],[2,'2'],[3,'3'],[4,'4'],[5,'5 (Ongoing)']],'myNum');
+h+='<div class="sub" style="margin-bottom:20px;font-size:13px">Filter by activity - '+TYPES[type]+'s 1-4 show the past teams you worked in.</div>'
++'<div style="display:flex;gap:16px;align-items:center;margin-bottom:24px">';
+[1,2,3,4,5].forEach(function(n){
+var isActive = (+S.myNum === n);
+var label = (n===5) ? '5 (Ongoing)' : ((n===1) ? TYPES[type]+' 1' : String(n));
+if(isActive) {
+  h+='<button style="background:#1a56db;color:#fff;border:none;padding:6px 16px;border-radius:8px;font-weight:600;font-size:13px;cursor:pointer" onclick="ctl(\'myNum\','+n+')">'+label+'</button>';
+} else {
+  h+='<button style="background:transparent;color:#6b7280;border:none;font-weight:500;font-size:13px;cursor:pointer;padding:6px 0;" onclick="ctl(\'myNum\','+n+')">'+label+'</button>';
 }
-var mine=(+S.myNum===5)?curTeam(type):teamOfUser(type,S.myNum,S.user.sid);
-if(+S.myNum!==5){
-if(!mine)return h+'<div class="notewarn">No team record found for you in '+TYPES[type]+' '+S.myNum+'.</div>';
-var pp=mine.team;
-h+='<div class="noteinfo">Past record - '+TYPES[type]+' '+S.myNum+' (Semester '+semOf(S.myNum)+') '+statusChip('Completed')+'</div>'
-+'<div class="card"><h3>'+esc(pp.company)+' &middot; '+pp.team+'</h3><div class="sub">'+esc(pp.statement)+'</div>'
-+'<table class="tbl"><tr><th>Member</th><th>Register ID</th><th>Specialization</th><th>Role</th></tr>'
-+pp.members.map(function(m){var s=stu(m.sid);return '<tr'+(m.sid===S.user.sid?' style="background:var(--pl)"':'')+'><td>'+esc(s.name)+tlStar(m.sid,pp.tl)+'</td><td>'+s.sid+'</td><td>'+SPECSHORT[s.spec]+'</td><td>'+(m.sid===pp.tl?'<span class="chip chip-gold"> Team Leader</span>':'Member')+'</td></tr>';}).join('')
-+'</table></div>';
-return h;
-}
-if(!mine){return h+'<div class="notewarn">You have not chosen a '+TYPES[type]+' challenge yet. Choose one first - your team is created automatically from the 5 members who choose the same challenge.</div>';}
-var p=mine.team;var count=p.members.filter(function(m){return !m.cr;}).length;
-h+='<div class="sub">'+esc(p.company)+' &middot; '+p.team+' &middot; '+count+'/5 members</div>';
-if(p.tl===S.user.sid){h+='<div class="goldbar"><span style="font-size:22px"></span> You are the TEAM LEADER of this team. Mentor Booking &amp; Review Expert Booking tabs are enabled for you.</div>';}
-h+='<div class="card"><h3>Challenge</h3><div>'+esc(p.statement)+'</div><div class="sub" style="margin-top:4px">'+esc(p.details)+'</div></div>';
-h+='<div class="card"><h3>Team Members</h3>';
-if(!p.tl&&count>=5){h+='<div class="notewarn"> Your team must now assign ONE Team Leader. All 5 members choose together - click "Assign as Team Leader" on the chosen person.</div>';}
-if(!p.tl&&count<5){h+='<div class="noteinfo">Team Leader assignment opens once the team is complete (5/5).</div>';}
-h+='<table class="tbl"><tr><th>Member</th><th>Register ID</th><th>Specialization</th><th>Role</th><th></th></tr>';
-p.members.forEach(function(m){
-var s=stu(m.sid);
-h+='<tr><td>'+esc(s.name)+tlStar(m.sid,p.tl)+(m.cr?' <span class="chip chip-r">Critical Resource (+bonus)</span>':'')+'</td><td>'+s.sid+'</td><td>'+SPECSHORT[s.spec]+'</td>'
-+'<td>'+(m.sid===p.tl?'<span class="chip chip-gold"> Team Leader</span>':'Member')+'</td>'
-+'<td>'+((!p.tl&&count>=5&&!m.cr)?'<button class="btn2" onclick="assignTL(\''+mine.key+'\','+mine.ti+',\''+m.sid+'\')">Assign as Team Leader</button>':'')+'</td></tr>';
 });
+h+='</div>';
+}
+
+var mine=(+S.myNum===5)?curTeam(type):teamOfUser(type,S.myNum,S.user.sid);
+
+if(!mine){return h+'<div class="notewarn">No team record found.</div>';}
+var pp=mine.team;
+var count=pp.members.filter(function(m){return !m.cr;}).length;
+
+h+='<div style="font-size:13px;color:#6b7280;margin-bottom:20px">'+esc(pp.company)+' &middot; Team '+pp.team+' &middot; '+count+'/5 members</div>';
+
+if(pp.tl===S.user.sid){
+h+='<div style="background:#fef9c3;color:#854d0e;padding:12px 16px;border:1px solid #fde047;border-radius:8px;font-weight:600;font-size:14px;margin-bottom:24px;display:flex;align-items:center;gap:8px"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg> You are the TEAM LEADER of this team. Mentor Booking &amp; Review Expert Booking tabs are enabled for you.</div>';
+}
+else {
+h+='<div style="background:#f3f4f6;color:#374151;padding:12px 16px;border-radius:8px;font-weight:600;font-size:14px;margin-bottom:24px">You are a team member.</div>';
+}
+
+h+='<div class="card" style="margin-bottom:24px"><h3>Problem Statement</h3><div style="font-size:14px;color:#111;margin-bottom:6px">'+esc(pp.statement)+'</div><div class="sub" style="font-size:13px">'+esc(pp.details)+'</div></div>';
+
+h+='<div class="card" style="margin-bottom:24px"><h3>Team Members</h3><table class="tbl" style="width:100%;border-collapse:collapse;margin-top:16px"><tr style="border-bottom:1px solid #e5e7eb"><th style="font-size:11px;color:#9ca3af;text-transform:uppercase;padding-bottom:12px;text-align:left">Member</th><th style="font-size:11px;color:#9ca3af;text-transform:uppercase;padding-bottom:12px;text-align:left">Roll Number</th><th style="font-size:11px;color:#9ca3af;text-transform:uppercase;padding-bottom:12px;text-align:left">Specialization</th><th style="font-size:11px;color:#9ca3af;text-transform:uppercase;padding-bottom:12px;text-align:left">Role</th></tr>';
+
+pp.members.forEach(function(m){
+var s=stu(m.sid);
+var isTL = (m.sid===pp.tl);
+var badge = isTL ? '<span style="border:1px solid #fcd34d;color:#d97706;padding:2px 8px;border-radius:999px;font-size:11px;font-weight:600;background:#fffbeb;display:inline-flex;align-items:center;gap:4px"><svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg> Team Leader</span>' : '<span style="color:#6b7280;font-size:13px">Member</span>';
+var nameStr = esc(s.name) + (isTL ? ' <span style="border:1px solid #fcd34d;color:#d97706;padding:2px 8px;border-radius:999px;font-size:11px;font-weight:600;background:#fffbeb;display:inline-flex;align-items:center;gap:4px;margin-left:8px"><svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg> Team Leader</span>' : '');
+
+h+='<tr style="border-bottom:1px solid #f3f4f6"><td style="padding:16px 0;font-size:13px;font-weight:600;color:#374151">'+nameStr+'</td><td style="padding:16px 0;font-size:13px;color:#4b5563">'+s.sid+'</td><td style="padding:16px 0;font-size:13px;color:#4b5563">'+SPECSHORT[s.spec]+'</td><td style="padding:16px 0">'+badge+'</td></tr>';
+});
+
 h+='</table></div>';
+h+='<div class="card" style="margin-bottom:24px"><h3>Project Progress</h3><div class="sub">Progress information will appear here.</div></div>';
+h+='<div class="card" style="margin-bottom:24px"><h3>Assigned Tasks</h3><div class="sub">Tasks information will appear here.</div></div>';
+h+='<div class="card" style="margin-bottom:24px"><h3>Documents</h3><div class="sub">Project documents will appear here.</div></div>';
+h+='<div class="card" style="margin-bottom:24px"><h3>Attendance</h3><div class="sub">Attendance records will appear here.</div></div>';
+h+='<div class="card"><h3>Timeline</h3><div class="sub">Project timeline will appear here.</div></div>';
 return h;
 }
 function assignTL(key,ti,sid){
@@ -1597,7 +1679,7 @@ return '<h2>Student Marks (Published)</h2><div class="sub">Every published mark,
 /* ============ ROUTES & BOOT (v2 - past data + filters update) ============ */
 var ROUTES={
 sdash:sDashboard,lp:function(){return sActivity('LP');},bs:function(){return sActivity('BS');},
-myteam:sMyTeam,mentor:sMentor,expert:sExpert,smarks:sMarks,
+myteam:sMyTeam,mentor:sMentor,expert:sExpert,smarks:sMarks,profile:function(){return '<div class="card" style="margin:20px"><h3>Profile</h3><div class="sub">Profile details coming soon.</div></div>';},
 cdash:cDashboard,mentorentry:cMentorEntry,expertentry:cExpertEntry,cbookings:cBookings,
 adash:aDashboard,markentry:aMarkEntry,questions:aQuestions,teamchange:aTeamChange,critical:aCritical,teamsplit:aTeamSplit,astumarks:aStudentMarks,creds:aCreds,
 ddash:dDashboard,devalctl:dEvalCtl,dpublish:dPublish,dstumarks:dStudentMarks
