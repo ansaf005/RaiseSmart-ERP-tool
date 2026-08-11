@@ -1869,6 +1869,7 @@ loadSupabaseState();
   const mouse = { x: undefined, y: undefined, active: false };
   const cursorGlow = { x: 0, y: 0 };
   const lerpSpeed = 0.08;
+  const VIBGYOR = ['148, 0, 211', '75, 0, 130', '59, 130, 246', '0, 255, 102', '250, 204, 21', '249, 115, 22', '239, 68, 68'];
 
   /* =========================================================
      Autorender Interactive Box Grid Engine
@@ -1947,8 +1948,7 @@ loadSupabaseState();
       this.radius = Math.random() * 2.5 + 1.5;
       this.alpha = 1;
       this.decay = Math.random() * 0.03 + 0.02;
-      const colors = ['0, 255, 102', '168, 85, 247', '59, 130, 246'];
-      this.color = colors[Math.floor(Math.random() * colors.length)];
+      this.color = VIBGYOR[Math.floor(Math.random() * VIBGYOR.length)];
     }
     update() {
       this.x += this.vx;
@@ -2003,8 +2003,9 @@ loadSupabaseState();
       mouse.y = e.clientY;
       mouse.active = true;
       spawnSparks(e.clientX, e.clientY);
-      // Trigger vibrant solid green grid block (Autorender style)
-      window.triggerGridCell(e.clientX, e.clientY, '0, 255, 102', 0.95);
+      // Trigger vibrant VIBGYOR solid grid block (Autorender style)
+      const c = VIBGYOR[Math.floor(Math.random() * VIBGYOR.length)];
+      window.triggerGridCell(e.clientX, e.clientY, c, 0.95);
     });
 
     window.addEventListener('mouseleave', function() {
@@ -2075,8 +2076,7 @@ loadSupabaseState();
     if (Math.random() < 0.2) {
       const randX = Math.random() * canvas.width;
       const randY = Math.random() * canvas.height;
-      const colors = ['0, 255, 102', '59, 130, 246', '168, 85, 247'];
-      const c = colors[Math.floor(Math.random() * colors.length)];
+      const c = VIBGYOR[Math.floor(Math.random() * VIBGYOR.length)];
       window.triggerGridCell(randX, randY, c, Math.random() * 0.4 + 0.2);
     }
 
