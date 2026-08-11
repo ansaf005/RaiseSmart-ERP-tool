@@ -1865,10 +1865,51 @@ loadSupabaseState();
   let canvas, ctx, animationFrameId;
   let particles = [];
   let sparks = [];
-  const particleCount = 70;
+  const particleCount = 60;
   const mouse = { x: undefined, y: undefined, active: false };
   const cursorGlow = { x: 0, y: 0 };
   const lerpSpeed = 0.08;
+
+  /* =========================================================
+     Autorender Interactive Box Grid Engine
+     ========================================================= */
+  const GRID_SIZE = 45; // Grid cell size in px
+  const activeGridCells = new Map();
+
+  window.triggerGridCell = function(x, y, color = '0, 255, 102', maxOpacity = 0.95) {
+    const col = Math.floor(x / GRID_SIZE);
+    const row = Math.floor(y / GRID_SIZE);
+    if (col < 0 || row < 0) return;
+    const key = `${col}_${row}`;
+    
+    activeGridCells.set(key, {
+      col, row,
+      color,
+      opacity: maxOpacity,
+      decay: 0.022
+    });
+  };
+
+  window.triggerGridArea = function(minX, minY, maxX, maxY, color = '0, 255, 102') {
+    const startCol = Math.floor(minX / GRID_SIZE);
+    const endCol = Math.floor(maxX / GRID_SIZE);
+    const startRow = Math.floor(minY / GRID_SIZE);
+    const endRow = Math.floor(maxY / GRID_SIZE);
+
+    for (let c = startCol; c <= endCol; c++) {
+      for (let r = startRow; r <= endRow; r++) {
+        if (c >= 0 && r >= 0) {
+          const key = `${c}_${r}`;
+          activeGridCells.set(key, {
+            col: c, row: r,
+            color,
+            opacity: 0.9,
+            decay: 0.028
+          });
+        }
+      }
+    }
+  };
 
   class Particle {
     constructor() {
@@ -1879,7 +1920,7 @@ loadSupabaseState();
       this.vx = (Math.random() - 0.5) * 0.4;
       this.vy = (Math.random() - 0.5) * 0.4;
       this.radius = Math.random() * 2 + 1;
-      this.color = Math.random() > 0.5 ? 'rgba(168, 85, 247, 0.35)' : 'rgba(59, 130, 246, 0.35)'; // purple or blue
+      this.color = Math.random() > 0.5 ? 'rgba(168, 85, 247, 0.35)' : 'rgba(59, 130, 246, 0.35)';
     }
     update() {
       this.x += this.vx;
@@ -1906,7 +1947,7 @@ loadSupabaseState();
       this.radius = Math.random() * 2.5 + 1.5;
       this.alpha = 1;
       this.decay = Math.random() * 0.03 + 0.02;
-      const colors = ['168, 85, 247', '59, 130, 246', '236, 72, 153'];
+      const colors = ['0, 255, 102', '168, 85, 247', '59, 130, 246'];
       this.color = colors[Math.floor(Math.random() * colors.length)];
     }
     update() {
@@ -1952,18 +1993,18 @@ loadSupabaseState();
     window.addEventListener('resize', resize);
     resize();
 
-    // Create background particles
     particles = [];
     for (let i = 0; i < particleCount; i++) {
       particles.push(new Particle());
     }
 
-    // Mouse listeners
     window.addEventListener('mousemove', function(e) {
       mouse.x = e.clientX;
       mouse.y = e.clientY;
       mouse.active = true;
       spawnSparks(e.clientX, e.clientY);
+      // Trigger vibrant solid green grid block (Autorender style)
+      window.triggerGridCell(e.clientX, e.clientY, '0, 255, 102', 0.95);
     });
 
     window.addEventListener('mouseleave', function() {
@@ -1983,14 +2024,61 @@ loadSupabaseState();
   function animate() {
     if (!canvas || !ctx) return;
 
-    // Deep midnight slate background
+    // Deep midnight background
     const grad = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
-    grad.addColorStop(0, '#0a0f1d'); // very dark blue-grey
-    grad.addColorStop(1, '#030712'); // black-blue
+    grad.addColorStop(0, '#0a0f1d');
+    grad.addColorStop(1, '#030712');
     ctx.fillStyle = grad;
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
     ctx.globalCompositeOperation = 'screen';
+
+    // 1. Draw Grid Mesh Lines
+    ctx.strokeStyle = 'rgba(255, 255, 255, 0.04)';
+    ctx.lineWidth = 1;
+    for (let x = 0; x < canvas.width; x += GRID_SIZE) {
+      ctx.beginPath();
+      ctx.moveTo(x, 0);
+      ctx.lineTo(x, canvas.height);
+      ctx.stroke();
+    }
+    for (let y = 0; y < canvas.height; y += GRID_SIZE) {
+      ctx.beginPath();
+      ctx.moveTo(0, y);
+      ctx.lineTo(canvas.width, y);
+      ctx.stroke();
+    }
+
+    // 2. Draw Solid Glowing Active Grid Square Blocks (Autorender Box Grid Effect)
+    activeGridCells.forEach((cell, key) => {
+      const cellX = cell.col * GRID_SIZE + 1;
+      const cellY = cell.row * GRID_SIZE + 1;
+      const size = GRID_SIZE - 2;
+
+      ctx.shadowBlur = 12;
+      ctx.shadowColor = `rgba(${cell.color}, 0.8)`;
+      ctx.fillStyle = `rgba(${cell.color}, ${cell.opacity})`;
+      ctx.fillRect(cellX, cellY, size, size);
+
+      ctx.strokeStyle = `rgba(255, 255, 255, ${cell.opacity * 0.9})`;
+      ctx.lineWidth = 1;
+      ctx.strokeRect(cellX, cellY, size, size);
+
+      cell.opacity -= cell.decay;
+      if (cell.opacity <= 0) {
+        activeGridCells.delete(key);
+      }
+    });
+    ctx.shadowBlur = 0;
+
+    // 3. Random Ambient Grid Block Pops
+    if (Math.random() < 0.2) {
+      const randX = Math.random() * canvas.width;
+      const randY = Math.random() * canvas.height;
+      const colors = ['0, 255, 102', '59, 130, 246', '168, 85, 247'];
+      const c = colors[Math.floor(Math.random() * colors.length)];
+      window.triggerGridCell(randX, randY, c, Math.random() * 0.4 + 0.2);
+    }
 
     // Ambient glow top-left
     const purpleGlow = ctx.createRadialGradient(canvas.width * 0.2, canvas.height * 0.3, 0, canvas.width * 0.2, canvas.height * 0.3, 500);
@@ -2016,7 +2104,7 @@ loadSupabaseState();
       cursorGlow.y += (mouse.y - cursorGlow.y) * lerpSpeed;
 
       const mouseGlow = ctx.createRadialGradient(cursorGlow.x, cursorGlow.y, 0, cursorGlow.x, cursorGlow.y, 220);
-      mouseGlow.addColorStop(0, 'rgba(139, 92, 246, 0.22)'); // vibrant violet
+      mouseGlow.addColorStop(0, 'rgba(0, 255, 102, 0.2)'); // vibrant green cursor glow
       mouseGlow.addColorStop(0.5, 'rgba(59, 130, 246, 0.08)');
       mouseGlow.addColorStop(1, 'rgba(0,0,0,0)');
       ctx.fillStyle = mouseGlow;
@@ -2041,7 +2129,7 @@ loadSupabaseState();
       }
     }
 
-    // Constellation effect & mouse connection
+    // Constellation lines
     ctx.lineWidth = 1;
     for (let i = 0; i < particles.length; i++) {
       for (let j = i + 1; j < particles.length; j++) {
@@ -2055,11 +2143,10 @@ loadSupabaseState();
         }
       }
 
-      // Connect particle to mouse
       if (mouse.active) {
         const distToMouse = Math.hypot(particles[i].x - cursorGlow.x, particles[i].y - cursorGlow.y);
         if (distToMouse < 200) {
-          ctx.strokeStyle = `rgba(99, 102, 241, ${0.22 * (1 - distToMouse / 200)})`;
+          ctx.strokeStyle = `rgba(0, 255, 102, ${0.22 * (1 - distToMouse / 200)})`;
           ctx.beginPath();
           ctx.moveTo(particles[i].x, particles[i].y);
           ctx.lineTo(cursorGlow.x, cursorGlow.y);
@@ -2256,6 +2343,10 @@ loadSupabaseState();
       box.style.height = `${height}px`;
 
       badge.textContent = `${Math.round(width)} × ${Math.round(height)} px`;
+
+      if (window.triggerGridArea) {
+        window.triggerGridArea(x, y, x + width, y + height, '0, 255, 102');
+      }
 
       const marqueeRect = { left: x, top: y, right: x + width, bottom: y + height };
       const selectables = getSelectableElements();
