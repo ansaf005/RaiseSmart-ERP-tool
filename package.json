@@ -1,0 +1,10 @@
+{
+  "name": "raisesmart-erp-tool",
+  "version": "1.0.0",
+  "description": "RSmart ERP Tool | RAISE SMART ERP Portal",
+  "main": "index.html",
+  "scripts": {
+    "dev": "npx http-server -p 4000 -c-1"
+  },
+  "dependencies": {}
+}

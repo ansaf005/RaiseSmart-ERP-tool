@@ -235,8 +235,7 @@ var LASTS=['Menon','Iyer','Sharma','Reddy','Nair','Pillai','Rao','Das'];
 var PW=['Nova','Zen','Iris','Echo','Onyx','Luna','Vega','Aster'];
 var STAFF=[
 {id:'COORD',pw:'Coord@2026',role:'coordinator',name:'Prof. Kavitha Raman',sub:'Project Coordinator'},
-{id:'DIRECTOR',pw:'Direct@2026',role:'director',name:'Dr. R. Mahalingam',sub:'Director'},
-{id:'ADMIN',pw:'Admin@2026',role:'admin',name:'Admin Office',sub:'Administrator'}
+{id:'DIRECTOR',pw:'Direct@2026',role:'director',name:'Dr. R. Mahalingam',sub:'Director'}
 ];
 function makeStudents(){
 var arr=[];var campuses=['RTC','RGU'];
@@ -295,7 +294,7 @@ mentors:[],mentorBookings:[],
 experts:[],expertBookings:[],
 marks:{}, /* key -> {R1:{teamIdx:{status,entries}}} */
 teamChanges:[],critical:[],
-questions:[], /* admin-posted new challenges */
+questions:[], /* coordinator-posted new challenges */
 fType:'BS',fNum:5,fCampus:'RTC',fRev:'R1',fSem:'all',viewMode:'team',
 myTeamType:null,bookType:'BS',myNum:5,bookNum:5,bRev:'all',sdSem:1,sdType:'BS',evalAuth:{},
 ame:{active:false},qp:{editing:null,slots:[null,null,null,null,null]},
@@ -419,8 +418,8 @@ return S.experts.filter(function(e){return e.type===t&&e.num===n&&e.campus===c&&
 var tms=pastTeams(x[0],x[1],'RTC');
 S.critical.push({sid:tms[0].members[1].sid,from:'Team 1',to:'Team 3',key:actKey(x[0],x[1],'RTC'),date:pastDate(x[1],1),note:'+5 bonus marks (worked for two teams)'});
 });
-S.teamChanges.push({sid:pastTeams('BS',2,'RTC')[2].members[2].sid,from:'Team 3',to:'Team 5',key:'BS2-RTC',date:'2025-10-12',note:'Re-allocated by Admin (past record)'});
-S.teamChanges.push({sid:pastTeams('LP',4,'RTC')[1].members[3].sid,from:'Team 2',to:'Team 6',key:'LP4-RTC',date:'2026-03-09',note:'Admin override - added as 6th member'});
+S.teamChanges.push({sid:pastTeams('BS',2,'RTC')[2].members[2].sid,from:'Team 3',to:'Team 5',key:'BS2-RTC',date:'2025-10-12',note:'Re-allocated by Coordinator (past record)'});
+S.teamChanges.push({sid:pastTeams('LP',4,'RTC')[1].members[3].sid,from:'Team 2',to:'Team 6',key:'LP4-RTC',date:'2026-03-09',note:'Coordinator override - added as 6th member'});
 /* seed marks for completed activities: 1-3 published, 4 saved (awaiting Director) */
 ['RTC','RGU'].forEach(function(c){['BS','LP'].forEach(function(t){
 for(var n=1;n<=4;n++){
@@ -444,13 +443,13 @@ var p=S.problems['BS5-RTC'];
 var crSid=p[0].members[1].sid;
 p[1].members.push({sid:crSid,cr:true});
 S.critical.push({sid:crSid,from:'Team 1',to:'Team 2',key:'BS5-RTC',date:'2026-07-08',note:'+5 bonus marks (working for two teams)'});
-S.teamChanges.push({sid:S.problems['LP5-RTC'][4].members[3].sid,from:'Team 5',to:'Team 5',key:'LP5-RTC',date:'2026-07-06',note:'Re-allocated by Admin (seed demo record)'});
+S.teamChanges.push({sid:S.problems['LP5-RTC'][4].members[3].sid,from:'Team 5',to:'Team 5',key:'LP5-RTC',date:'2026-07-06',note:'Re-allocated by Coordinator (seed demo record)'});
 S.mentorBookings.push({id:1,key:'BS5-RTC',team:'Team 1',by:p[0].tl,mentorId:1,date:'2026-07-14',rev:'R1',spec:'Marketing',problem:p[0].company+' - '+p[0].statement,questions:'How do we size the SEA market? Which entry mode fits a SaaS product?',calendly:true});
 S.mentorBookings.push({id:2,key:'BS5-RTC',team:'Team 2',by:p[1].tl,mentorId:5,date:'2026-07-18',rev:'R1',spec:'Business Analytics',problem:p[1].company+' - '+p[1].statement,questions:'Which footfall datasets should we analyse first?',calendly:false});
 var curEx=findExpert('BS',5,'RTC','R1',1);
 curEx.bookedBy.push('Team 1 (BS5-RTC)');
 S.expertBookings.push({key:'BS5-RTC',team:'Team 1',expertId:curEx.id,by:p[0].tl,date:'2026-07-12',rev:'R1'});
-/* one sample admin-drafted question for BS6 */
+/* one sample coordinator-drafted question for BS6 */
 S.questions.push({id:1,type:'BS',num:6,campus:'RTC',company:'Freshworks',statement:'Design a churn-reduction playbook for SMB customers in the US market.',details:'Chennai-born NASDAQ-listed SaaS company.',slots:['Marketing','Business Analytics','Business Analytics','Finance','HR'],published:false});
 })();
 /* ============ SMALL HELPERS ============ */
@@ -505,7 +504,7 @@ inner='<span class="crumb" onclick="'+(isStu?'L.campus=null':'L.role=null')+';re
 +'<label>Password</label><input id="liPw" type="password" placeholder="Password" onkeydown="if(event.key===\'Enter\')doLogin()">'
 +'<div style="margin-top:16px"><button class="btn" style="width:100%" onclick="doLogin()">Login</button></div>';
 }
-el.innerHTML='<div style="position:absolute; top:20px; right:20px;"><button class="btn2" style="background:rgba(255,255,255,0.8); border:none; box-shadow:0 2px 8px rgba(0,0,0,0.1);" onclick="pickRole(\'admin\')">&#9881; Admin Login</button></div><div class="login-wrap"><div class="login-card">'+inner+'</div></div>';
+el.innerHTML='<div class="login-wrap"><div class="login-card">'+inner+'</div></div>';
 }
 function pickRole(r){L.role=r;L.campus=null;renderLogin();}
 function pickCampus(c){L.campus=c;renderLogin();}
@@ -576,10 +575,9 @@ var SIDEBARS = {
 var NAVS={
 student:[['sdash','Dashboard'],['lp','Live Project'],['bs','Business Simulation'],['profile','Profile']],
 coordinator:[['cdash','Dashboard'],['mentorentry','Mentor Entry'],['expertentry','Expert Entry'],['cbookings','Bookings Received'],['markentry','Mark Entry'],['questions','Challenge Posting'],['teamchange','Student Team Change'],['critical','Critical Resource'],['teamsplit','Team Split'],['astumarks','Student Marks']],
-admin:[['adash','Dashboard'],['creds','Credentials']],
 director:[['ddash','Dashboard'],['devalctl','Evaluation Control'],['dpublish','Marks Review & Publish'],['dstumarks','Student Marks']]
 };
-var ROLELBL={student:'STUDENT',coordinator:'PROJECT COORDINATOR',director:'DIRECTOR',admin:'ADMIN'};
+var ROLELBL={student:'STUDENT',coordinator:'PROJECT COORDINATOR',director:'DIRECTOR'};
 function enterApp(){
 document.getElementById('loginScreen').classList.add('hidden');
 document.getElementById('app').classList.remove('hidden');
@@ -1113,20 +1111,7 @@ h+='<tr><td>'+(rl?rl[1]:'-')+'</td><td>'+b.team+'</td><td>'+esc(ex.name)+'</td><
 h+='</table>';}
 return h+'</div>';
 }
-/* ============ ADMIN PAGES ============ */
-function aDashboard(){
-var totalProblems=Object.keys(S.problems).reduce(function(a,k){return a+S.problems[k].length;},0)+S.questions.length;
-var savedCount=0;Object.keys(S.marks).forEach(function(k){REVIEWS.forEach(function(r){var o=S.marks[k][r[0]]||{};Object.keys(o).forEach(function(ti){if(o[ti].status==='saved')savedCount++;});});});
-return '<h2>Admin Dashboard</h2><div class="sub">Accounts &amp; credentials. Mark entry, challenge posting, team change, critical resource, team split and student marks are now handled in the <b>Project Coordinator</b> login; evaluation start authority stays with the <b>Director</b>.</div>'
-+'<div class="grid4">'
-+'<div class="stat"><div class="n">64</div><div class="l">Students (32 RTC + 32 RGU)</div></div>'
-+'<div class="stat"><div class="n">'+totalProblems+'</div><div class="l">Challenges Posted</div></div>'
-+'<div class="stat"><div class="n">'+S.teamChanges.length+'</div><div class="l">Team Changes Made</div></div>'
-+'<div class="stat"><div class="n">'+S.critical.length+'</div><div class="l">Critical Resources Deployed</div></div>'
-+'<div class="stat"><div class="n">'+savedCount+'</div><div class="l">Mark Sheets Saved (awaiting Director)</div></div>'
-+'<div class="stat"><div class="n">BS 5 / LP 5</div><div class="l">Ongoing (Semester 3)</div></div></div>'
-+'<div class="noteinfo" style="margin-top:14px"><b>Demo Day mark entry:</b> experts &amp; founders enter marks on this Admin login only. 25 min presentation + 10 min Q&amp;A; marks can be entered from the first second; auto save &amp; close at the 35th minute (or Save &amp; Close earlier).</div>';
-}
+/* ============ STAFF/COORDINATOR PAGES ============ */
 /* ---- Mark Entry ---- */
 function fmtT(s){var m=Math.floor(s/60),x=s%60;return (m<10?'0':'')+m+':'+(x<10?'0':'')+x;}
 function aMarkEntry(){
@@ -1326,7 +1311,7 @@ go('questions');
 /* ---- Student Team Change ---- */
 function aTeamChange(){
 if(S.tcFrom==null)S.tcFrom=0;if(S.tcTo==null)S.tcTo=1;
-var h='<h2>Student Team Change</h2><div class="sub">Re-allocate a student to another team. <b>Students can only form teams of 5; only the Admin can add a 6th member to a team.</b> Teams already at 6 cannot take more - even Admin.</div>'
+var h='<h2>Student Team Change</h2><div class="sub">Re-allocate a student to another team. <b>Students can only form teams of 5; only the Project Coordinator can add a 6th member to a team.</b> Teams already at 6 cannot take more - even Project Coordinator.</div>'
 +'<div class="noteinfo">Currently ongoing: <b>Business Simulation 5</b> and <b>Live Project 5</b> (Semester 3). Team changes are possible only for the ongoing activity; 1-4 are past reference.</div>';
 h+=seg([['BS','Business Simulation'],['LP','Live Project']],'fType')
 +seg([[1,'1'],[2,'2'],[3,'3'],[4,'4'],[5,'5 (Ongoing)']],'fNum')
@@ -1370,8 +1355,8 @@ var key=actKey(S.fType,5,S.fCampus);var teams=S.problems[key];
 var sid=document.getElementById('tcSid').value;
 var from=teams[S.tcFrom],to=teams[S.tcTo];
 if(S.tcFrom===S.tcTo){toast('Choose two different teams.');return;}
-if(to.members.length>=6){toast('This team already has 6 members - even the Admin cannot exceed 6.');return;}
-var note=to.members.length>=5?'Admin override - added as 6th member':'Re-allocated by Admin';
+if(to.members.length>=6){toast('This team already has 6 members - even the Project Coordinator cannot exceed 6.');return;}
+var note=to.members.length>=5?'Coordinator override - added as 6th member':'Re-allocated by Coordinator';
 from.members=from.members.filter(function(m){return m.sid!==sid;});
 from.slots.forEach(function(sl){if(sl.sid===sid)sl.sid=null;});
 if(from.tl===sid)from.tl=null;
@@ -1443,8 +1428,8 @@ h+='<div class="teamcard'+(isPast?' grey':'')+'"><b>'+t.team+'</b> <span class="
 });
 return h+'</div>';
 }
-/* ---- Student Marks (admin copy of Director-published marks) ---- */
-function marksTableFor(role){
+/* ---- Student Marks (copy of Director-published marks) ---- */
+function marksTableFor(){
 var h=seg([['BS','Business Simulation'],['LP','Live Project']],'fType')
 +seg([[1,'1'],[2,'2'],[3,'3'],[4,'4'],[5,'5']],'fNum')
 +seg(REVIEWS.map(function(r){return [r[0],r[1]];}),'fRev')
@@ -1479,20 +1464,9 @@ h+='</table></div>';
 return h;
 }
 function aStudentMarks(){
-return '<h2>Student Marks (Published Copy)</h2><div class="sub">A copy of every mark published by the Director - team-wise and individual - lands here automatically for office records (Coordinator login).</div>'+marksTableFor('admin');
+return '<h2>Student Marks (Published Copy)</h2><div class="sub">A copy of every mark published by the Director - team-wise and individual - lands here automatically for office records (Coordinator login).</div>'+marksTableFor();
 }
-/* ---- Credentials ---- */
-function aCreds(){
-var h='<h2>Credentials</h2><div class="sub">All 64 individual student logins (each with a different password) + staff logins.</div>';
-h+=seg([['RTC','RTC RSmart (32)'],['RGU','RGU RSmart (32)']],'fCampus');
-h+='<div class="card"><h3>Staff Logins</h3><table class="tbl"><tr><th>Role</th><th>User ID</th><th>Password</th></tr>'
-+STAFF.map(function(s){return '<tr><td>'+s.sub+'</td><td><b>'+s.id+'</b></td><td>'+s.pw+'</td></tr>';}).join('')+'</table></div>';
-h+='<div class="card"><h3>'+S.fCampus+' RSmart Students</h3><table class="tbl"><tr><th>#</th><th>Name</th><th>Register ID</th><th>Specialization</th><th>Password</th></tr>';
-S.students.filter(function(s){return s.campus===S.fCampus;}).forEach(function(s,i){
-h+='<tr><td>'+(i+1)+'</td><td>'+esc(s.name)+'</td><td><b>'+s.sid+'</b></td><td>'+SPECSHORT[s.spec]+'</td><td>'+s.pw+'</td></tr>';
-});
-return h+'</table></div>';
-}
+
 /* ============ DIRECTOR PAGES ============ */
 function dDashboard(){
 var lbl=TYPES[S.fType]+' '+S.fNum+' ('+S.fCampus+')';
@@ -1515,7 +1489,7 @@ return '<h2>Director Dashboard</h2><div class="sub">Everything at a glance - pur
 +'<div class="chartcard"><h4>Expert Bookings per Review - '+lbl+'</h4><canvas id="ch5"></canvas></div>'
 +'<div class="chartcard"><h4>Team Changes &amp; Critical Resources - '+lbl+'</h4><canvas id="ch6"></canvas></div>'
 +'<div class="chartcard"><h4>Mentors Added per Month (Project Coordinator)</h4><canvas id="ch2"></canvas></div>'
-+'<div class="chartcard"><h4>Challenges Posted (Admin)</h4><canvas id="ch3"></canvas></div>'
++'<div class="chartcard"><h4>Challenges Posted (Project Coordinator)</h4><canvas id="ch3"></canvas></div>'
 +'</div>'
 +'<div class="noteinfo" style="margin-top:14px">Critical resources in '+lbl+': '+(S.critical.filter(function(c){return c.key===actKey(S.fType,S.fNum,S.fCampus);}).map(function(c){return '<b>'+esc(stu(c.sid).name)+'</b> ('+c.from+' &rarr; supporting '+c.to+')';}).join(' &middot; ')||'none')+'</div>';
 }
@@ -1599,7 +1573,7 @@ go('devalctl');
 }
 /* ---- Marks Review & Publish ---- */
 function dPublish(){
-var h='<h2>Marks Review &amp; Publish</h2><div class="sub">Marks saved &amp; closed on the Admin login arrive here automatically. Publishing is <b>review-wise</b>: Review 1 is published on Review-1 day, Review 2 four days later, and so on - each has its own Overall Publish. Only the Director can edit marks or enter missing marks.</div>';
+var h='<h2>Marks Review &amp; Publish</h2><div class="sub">Marks saved &amp; closed on the Mark Entry page arrive here automatically. Publishing is <b>review-wise</b>: Review 1 is published on Review-1 day, Review 2 four days later, and so on - each has its own Overall Publish. Only the Director can edit marks or enter missing marks.</div>';
 h+=seg([['BS','Business Simulation'],['LP','Live Project']],'fType')
 +seg([[1,'1'],[2,'2'],[3,'3'],[4,'4 (dummy - try me)'],[5,'5 (Ongoing)']],'fNum')
 +seg(REVIEWS.map(function(r){return [r[0],r[1]];}),'fRev')
@@ -1637,7 +1611,7 @@ h+='</div>';
 h+='</div>';
 var canPublish=withMarks>0&&ready>0&&(ready+published===withMarks);
 h+='<div class="card" style="border-color:#bcd0f5;background:var(--pl)"><h3> Overall Publish - '+TYPES[S.fType]+' '+S.fNum+' &middot; '+revLbl+' ('+S.fCampus+')</h3>'
-+'<div class="sub">'+withMarks+' team(s) with marks &middot; '+ready+' ready &middot; '+published+' already published. Confirm every team (Ready for Publish) first; the Overall Publish then releases '+revLbl+' marks for ALL teams at the same time to their individual student logins (and to the Admin copy).</div>'
++'<div class="sub">'+withMarks+' team(s) with marks &middot; '+ready+' ready &middot; '+published+' already published. Confirm every team (Ready for Publish) first; the Overall Publish then releases '+revLbl+' marks for ALL teams at the same time to their individual student logins (and to the Student Marks copy).</div>'
 +'<button class="btng" '+(canPublish?'':'disabled ')+'onclick="dPublishAll()">Publish</button></div>';
 return h;
 }
@@ -1670,18 +1644,18 @@ var key=actKey(S.fType,S.fNum,S.fCampus);var recs=S.marks[key][S.fRev];
 var revLbl=REVIEWS.filter(function(r){return r[0]===S.fRev;})[0][1];
 if(!confirm('Overall Publish '+revLbl+' marks ('+TYPES[S.fType]+' '+S.fNum+', '+S.fCampus+') to all student logins?'))return;
 var n=0;Object.keys(recs).forEach(function(ti){if(recs[ti].status==='ready'||recs[ti].status==='published'){if(recs[ti].status!=='published')n++;recs[ti].status='published';}});
-toast(revLbl+' marks published! '+n+' team(s) - now visible in every student\'s individual login and in the Admin Student Marks copy.');
+toast(revLbl+' marks published! '+n+' team(s) - now visible in every student\'s individual login and in the Student Marks copy.');
 if(window.syncState) window.syncState(); go('dpublish');
 }
 function dStudentMarks(){
-return '<h2>Student Marks (Published)</h2><div class="sub">Every published mark, review-wise - switch between Team Mark and Individual Mark views.</div>'+marksTableFor('director');
+return '<h2>Student Marks (Published)</h2><div class="sub">Every published mark, review-wise - switch between Team Mark and Individual Mark views.</div>'+marksTableFor();
 }
 /* ============ ROUTES & BOOT (v2 - past data + filters update) ============ */
 var ROUTES={
 sdash:sDashboard,lp:function(){return sActivity('LP');},bs:function(){return sActivity('BS');},
 myteam:sMyTeam,mentor:sMentor,expert:sExpert,smarks:sMarks,profile:function(){return '<div class="card" style="margin:20px"><h3>Profile</h3><div class="sub">Profile details coming soon.</div></div>';},
 cdash:cDashboard,mentorentry:cMentorEntry,expertentry:cExpertEntry,cbookings:cBookings,
-adash:aDashboard,markentry:aMarkEntry,questions:aQuestions,teamchange:aTeamChange,critical:aCritical,teamsplit:aTeamSplit,astumarks:aStudentMarks,creds:aCreds,
+markentry:aMarkEntry,questions:aQuestions,teamchange:aTeamChange,critical:aCritical,teamsplit:aTeamSplit,astumarks:aStudentMarks,
 ddash:dDashboard,devalctl:dEvalCtl,dpublish:dPublish,dstumarks:dStudentMarks
 };
 function bootEval(){
