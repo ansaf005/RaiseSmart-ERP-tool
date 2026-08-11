@@ -96,7 +96,18 @@ h3{font-size:16px;margin-bottom:12px;font-weight:600;letter-spacing:-0.2px}
 .demo{background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:16px;font-size:12.5px;color:var(--mut);margin-top:24px;line-height:1.6}
 .crumb{font-size:13px;color:var(--p);font-weight:600;cursor:pointer;margin-bottom:16px;display:inline-block;padding:4px 8px;border-radius:6px;transition:background 0.2s}
 .crumb:hover{background:var(--pl)}
-canvas{max-height:300px}
+.chartcard canvas{max-height:300px}
+#loginBgCanvas {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  min-height: 100vh !important;
+  max-height: none !important;
+  z-index: -2 !important;
+  pointer-events: none !important;
+}
 .chartcard{background:#fff;border:1px solid var(--line);border-radius:12px;padding:24px;box-shadow:var(--shadow)}
 .chartcard h4{font-size:12px;color:var(--mut);margin-bottom:16px;font-weight:600;text-transform:uppercase;letter-spacing:0.5px}
 .stepnum{display:inline-flex;width:24px;height:24px;border-radius:6px;background:var(--pl);color:var(--pd);align-items:center;justify-content:center;font-weight:700;font-size:12px;margin-right:10px}
@@ -130,6 +141,16 @@ body::after {
 @keyframes float-bg-glow {
   0% { transform: scale(1) translate(0, 0); }
   100% { transform: scale(1.1) translate(-20px, 20px); }
+}
+html {
+  background: #0a0f1d;
+}
+body.login-active {
+  background: transparent !important;
+}
+body.login-active::before,
+body.login-active::after {
+  display: none !important;
 }
 .login-wrap {
   background: transparent !important;
@@ -178,6 +199,166 @@ body::after {
   .erp-sidebar { width: 100%; min-width: 100%; border-right: none; border-bottom: 1px solid var(--line); padding: 10px 0; flex-direction: row; flex-wrap: wrap; }
   .erp-sidebar-item { padding: 8px 12px; margin: 0; }
   .erp-main { padding: 16px; }
+}
+
+/* ===================================================
+   Autorender Drag Marquee Selection Box & Highlighting
+   =================================================== */
+
+#dragMarqueeOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 999999;
+  overflow: hidden;
+}
+
+.drag-selection-box {
+  position: absolute;
+  pointer-events: none;
+  background: rgba(59, 130, 246, 0.14);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+  border: 1.5px solid rgba(59, 130, 246, 0.85);
+  border-radius: 4px;
+  box-shadow: 
+    0 0 20px rgba(59, 130, 246, 0.35),
+    inset 0 0 15px rgba(59, 130, 246, 0.15);
+  opacity: 0;
+  transform: scale(0.98);
+  transition: opacity 0.12s ease, transform 0.12s ease;
+  will-change: transform, left, top, width, height, opacity;
+}
+
+.drag-selection-box.active {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.drag-selection-box::before {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  border: 1.5px dashed rgba(168, 85, 247, 0.9);
+  border-radius: 6px;
+  pointer-events: none;
+  animation: marqueeDashFlow 1.2s linear infinite;
+}
+
+@keyframes marqueeDashFlow {
+  0% { stroke-dashoffset: 0; filter: drop-shadow(0 0 4px rgba(168,85,247,0.6)); }
+  100% { stroke-dashoffset: 20; filter: drop-shadow(0 0 8px rgba(59,130,246,0.8)); }
+}
+
+.drag-corner {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  border-color: #60a5fa;
+  border-style: solid;
+  pointer-events: none;
+}
+.drag-corner-tl { top: -2px; left: -2px; border-width: 2px 0 0 2px; }
+.drag-corner-tr { top: -2px; right: -2px; border-width: 2px 2px 0 0; }
+.drag-corner-bl { bottom: -2px; left: -2px; border-width: 0 0 2px 2px; }
+.drag-corner-br { bottom: -2px; right: -2px; border-width: 0 2px 2px 0; }
+
+.drag-size-badge {
+  position: absolute;
+  bottom: -28px;
+  right: 0;
+  background: #0f172a;
+  color: #38bdf8;
+  border: 1px solid rgba(56, 189, 248, 0.4);
+  padding: 3px 8px;
+  border-radius: 6px;
+  font-family: monospace, 'Inter', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  white-space: nowrap;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.drag-size-badge::before {
+  content: "";
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  background: #38bdf8;
+  border-radius: 50%;
+  box-shadow: 0 0 6px #38bdf8;
+}
+
+.drag-highlighted {
+  position: relative;
+  border-color: #6366f1 !important;
+  box-shadow: 
+    0 0 0 2px rgba(99, 102, 241, 0.5),
+    0 0 25px rgba(99, 102, 241, 0.35),
+    0 10px 25px -5px rgba(0, 0, 0, 0.12) !important;
+  transform: scale(1.025) translateY(-2px) !important;
+  transition: all 0.15s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  z-index: 5 !important;
+}
+
+.drag-highlighted::after {
+  content: "✨ SELECTED";
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  color: #ffffff;
+  font-size: 9.5px;
+  font-weight: 800;
+  padding: 2px 7px;
+  border-radius: 99px;
+  letter-spacing: 0.5px;
+  box-shadow: 0 2px 8px rgba(99, 102, 241, 0.4);
+  pointer-events: none;
+  animation: badgePop 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes badgePop {
+  0% { transform: scale(0.6); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.drag-toast {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  background: rgba(15, 23, 42, 0.92);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(99, 102, 241, 0.4);
+  color: #f8fafc;
+  padding: 10px 18px;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 600;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4), 0 0 15px rgba(99, 102, 241, 0.3);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  z-index: 999999;
+  opacity: 0;
+  transform: translateY(10px) scale(0.95);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  pointer-events: none;
+}
+
+.drag-toast.visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
 }
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -579,6 +760,7 @@ director:[['ddash','Dashboard'],['devalctl','Evaluation Control'],['dpublish','M
 };
 var ROLELBL={student:'STUDENT',coordinator:'PROJECT COORDINATOR',director:'DIRECTOR'};
 function enterApp(){
+document.body.classList.remove('login-active');
 document.getElementById('loginScreen').classList.add('hidden');
 document.getElementById('app').classList.remove('hidden');
 document.getElementById('hRole').textContent=ROLELBL[S.role];
@@ -1667,6 +1849,7 @@ S.role='evaluator';S.user={name:'External Evaluator',sub:'Founder / Expert Panel
 S.fCampus=parts[2];
 S.evalAuth[actKey(parts[0],5,parts[2])+'-'+parts[1]]=true;
 S.ame={active:true,type:parts[0],review:parts[1],ti:+parts[3],campus:parts[2],pRemaining:1500,mRemaining:600,pRunning:false,pDone:false,mRunning:false};
+document.body.classList.remove('login-active');
 document.getElementById('loginScreen').classList.add('hidden');
 document.getElementById('app').classList.remove('hidden');
 document.getElementById('hRole').textContent='EXTERNAL EVALUATOR';
@@ -1679,33 +1862,460 @@ return true;
 loadSupabaseState();
 </script>
 <script>
+  let canvas, ctx, animationFrameId;
+  let particles = [];
+  let sparks = [];
+  const particleCount = 70;
+  const mouse = { x: undefined, y: undefined, active: false };
+  const cursorGlow = { x: 0, y: 0 };
+  const lerpSpeed = 0.08;
+
+  class Particle {
+    constructor() {
+      const w = window.innerWidth;
+      const h = window.innerHeight;
+      this.x = Math.random() * w;
+      this.y = Math.random() * h;
+      this.vx = (Math.random() - 0.5) * 0.4;
+      this.vy = (Math.random() - 0.5) * 0.4;
+      this.radius = Math.random() * 2 + 1;
+      this.color = Math.random() > 0.5 ? 'rgba(168, 85, 247, 0.35)' : 'rgba(59, 130, 246, 0.35)'; // purple or blue
+    }
+    update() {
+      this.x += this.vx;
+      this.y += this.vy;
+      const w = (canvas && canvas.width) ? canvas.width : window.innerWidth;
+      const h = (canvas && canvas.height) ? canvas.height : window.innerHeight;
+      if (this.x < 0 || this.x > w) this.vx *= -1;
+      if (this.y < 0 || this.y > h) this.vy *= -1;
+    }
+    draw() {
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+      ctx.fillStyle = this.color;
+      ctx.fill();
+    }
+  }
+
+  class Spark {
+    constructor(x, y) {
+      this.x = x;
+      this.y = y;
+      this.vx = (Math.random() - 0.5) * 2;
+      this.vy = (Math.random() - 0.5) * 2;
+      this.radius = Math.random() * 2.5 + 1.5;
+      this.alpha = 1;
+      this.decay = Math.random() * 0.03 + 0.02;
+      const colors = ['168, 85, 247', '59, 130, 246', '236, 72, 153'];
+      this.color = colors[Math.floor(Math.random() * colors.length)];
+    }
+    update() {
+      this.x += this.vx;
+      this.y += this.vy;
+      this.radius -= 0.03;
+      this.alpha -= this.decay;
+    }
+    draw() {
+      if (this.alpha <= 0 || this.radius <= 0) return;
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(${this.color}, ${this.alpha})`;
+      ctx.shadowBlur = 8;
+      ctx.shadowColor = `rgba(${this.color}, 1)`;
+      ctx.fill();
+      ctx.shadowBlur = 0;
+    }
+  }
+
+  function spawnSparks(x, y) {
+    for (let i = 0; i < 3; i++) {
+      sparks.push(new Spark(x, y));
+    }
+  }
+
+  function initCanvas() {
+    canvas = document.getElementById('loginBgCanvas');
+    if (!canvas) return;
+    ctx = canvas.getContext('2d');
+    
+    function resize() {
+      if (!canvas) return;
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      if (particles && particles.length) {
+        particles.forEach(p => {
+          if (p.x > canvas.width) p.x = Math.random() * canvas.width;
+          if (p.y > canvas.height) p.y = Math.random() * canvas.height;
+        });
+      }
+    }
+    window.addEventListener('resize', resize);
+    resize();
+
+    // Create background particles
+    particles = [];
+    for (let i = 0; i < particleCount; i++) {
+      particles.push(new Particle());
+    }
+
+    // Mouse listeners
+    window.addEventListener('mousemove', function(e) {
+      mouse.x = e.clientX;
+      mouse.y = e.clientY;
+      mouse.active = true;
+      spawnSparks(e.clientX, e.clientY);
+    });
+
+    window.addEventListener('mouseleave', function() {
+      mouse.active = false;
+    });
+
+    cursorGlow.x = window.innerWidth / 2;
+    cursorGlow.y = window.innerHeight / 2;
+  }
+
+  function startCanvasAnimation() {
+    if (!animationFrameId) {
+      animate();
+    }
+  }
+
+  function animate() {
+    if (!canvas || !ctx) return;
+
+    // Deep midnight slate background
+    const grad = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+    grad.addColorStop(0, '#0a0f1d'); // very dark blue-grey
+    grad.addColorStop(1, '#030712'); // black-blue
+    ctx.fillStyle = grad;
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    ctx.globalCompositeOperation = 'screen';
+
+    // Ambient glow top-left
+    const purpleGlow = ctx.createRadialGradient(canvas.width * 0.2, canvas.height * 0.3, 0, canvas.width * 0.2, canvas.height * 0.3, 500);
+    purpleGlow.addColorStop(0, 'rgba(147, 51, 234, 0.15)');
+    purpleGlow.addColorStop(1, 'rgba(0,0,0,0)');
+    ctx.fillStyle = purpleGlow;
+    ctx.beginPath();
+    ctx.arc(canvas.width * 0.2, canvas.height * 0.3, 500, 0, Math.PI * 2);
+    ctx.fill();
+
+    // Ambient glow bottom-right
+    const blueGlow = ctx.createRadialGradient(canvas.width * 0.8, canvas.height * 0.7, 0, canvas.width * 0.8, canvas.height * 0.7, 600);
+    blueGlow.addColorStop(0, 'rgba(37, 99, 235, 0.12)');
+    blueGlow.addColorStop(1, 'rgba(0,0,0,0)');
+    ctx.fillStyle = blueGlow;
+    ctx.beginPath();
+    ctx.arc(canvas.width * 0.8, canvas.height * 0.7, 600, 0, Math.PI * 2);
+    ctx.fill();
+
+    // Draw active mouse glow
+    if (mouse.active) {
+      cursorGlow.x += (mouse.x - cursorGlow.x) * lerpSpeed;
+      cursorGlow.y += (mouse.y - cursorGlow.y) * lerpSpeed;
+
+      const mouseGlow = ctx.createRadialGradient(cursorGlow.x, cursorGlow.y, 0, cursorGlow.x, cursorGlow.y, 220);
+      mouseGlow.addColorStop(0, 'rgba(139, 92, 246, 0.22)'); // vibrant violet
+      mouseGlow.addColorStop(0.5, 'rgba(59, 130, 246, 0.08)');
+      mouseGlow.addColorStop(1, 'rgba(0,0,0,0)');
+      ctx.fillStyle = mouseGlow;
+      ctx.beginPath();
+      ctx.arc(cursorGlow.x, cursorGlow.y, 220, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+    // Draw particles
+    particles.forEach(p => {
+      p.update();
+      p.draw();
+    });
+
+    // Draw sparks
+    for (let i = sparks.length - 1; i >= 0; i--) {
+      sparks[i].update();
+      if (sparks[i].alpha <= 0 || sparks[i].radius <= 0) {
+        sparks.splice(i, 1);
+      } else {
+        sparks[i].draw();
+      }
+    }
+
+    // Constellation effect & mouse connection
+    ctx.lineWidth = 1;
+    for (let i = 0; i < particles.length; i++) {
+      for (let j = i + 1; j < particles.length; j++) {
+        const dist = Math.hypot(particles[i].x - particles[j].x, particles[i].y - particles[j].y);
+        if (dist < 120) {
+          ctx.strokeStyle = `rgba(168, 85, 247, ${0.08 * (1 - dist / 120)})`;
+          ctx.beginPath();
+          ctx.moveTo(particles[i].x, particles[i].y);
+          ctx.lineTo(particles[j].x, particles[j].y);
+          ctx.stroke();
+        }
+      }
+
+      // Connect particle to mouse
+      if (mouse.active) {
+        const distToMouse = Math.hypot(particles[i].x - cursorGlow.x, particles[i].y - cursorGlow.y);
+        if (distToMouse < 200) {
+          ctx.strokeStyle = `rgba(99, 102, 241, ${0.22 * (1 - distToMouse / 200)})`;
+          ctx.beginPath();
+          ctx.moveTo(particles[i].x, particles[i].y);
+          ctx.lineTo(cursorGlow.x, cursorGlow.y);
+          ctx.stroke();
+        }
+      }
+    }
+
+    ctx.globalCompositeOperation = 'source-over';
+    animationFrameId = requestAnimationFrame(animate);
+  }
+
+  function ensureFullScreenCanvas() {
+    if (!document.getElementById('loginBgCanvas')) {
+      document.body.insertAdjacentHTML('afterbegin', '<canvas id="loginBgCanvas" style="position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:-2;pointer-events:none;"></canvas>');
+      initCanvas();
+      startCanvasAnimation();
+    }
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', ensureFullScreenCanvas);
+  } else {
+    ensureFullScreenCanvas();
+  }
+
   const originalRenderLogin = renderLogin;
   renderLogin = function() {
     originalRenderLogin();
-    if (!document.getElementById('erpVideoBg')) {
-      document.body.insertAdjacentHTML('afterbegin', `
-        <video id="erpVideoBg" autoplay loop muted playsinline style="position:fixed;top:0;left:0;width:100vw;height:100vh;object-fit:cover;z-index:-1;background:#0f172a;">
-          <source src="https://assets.mixkit.co/videos/preview/mixkit-digital-animation-of-a-network-with-a-dark-blue-background-31189-large.mp4" type="video/mp4">
-        </video>
-      `);
+    document.body.classList.add('login-active');
+    ensureFullScreenCanvas();
+    
+    // Apply styling to clean up card into dark glassmorphism
+    const card = document.querySelector('.login-card');
+    if(card) {
+      card.style.position = 'relative';
+      card.style.zIndex = '10';
+      card.style.background = 'rgba(15, 23, 42, 0.55)'; // slate-900 transparent
+      card.style.border = '1px solid rgba(255, 255, 255, 0.12)';
+      card.style.borderRadius = '16px';
+      card.style.backdropFilter = 'blur(20px)';
+      card.style.webkitBackdropFilter = 'blur(20px)';
+      card.style.boxShadow = '0 25px 50px -12px rgba(0, 0, 0, 0.5)';
+      card.style.color = '#f8fafc';
+      card.style.transition = 'all 0.3s ease';
       
-      const wrap = document.querySelector('.login-wrap');
-      if(wrap) {
-        wrap.style.setProperty('background', 'transparent', 'important');
-      }
+      // Customize standard elements inside the card
+      document.querySelectorAll('.login-card h2, .login-card h3').forEach(el => {
+        el.style.color = '#ffffff';
+        el.style.textShadow = '0 2px 4px rgba(0, 0, 0, 0.3)';
+      });
+      document.querySelectorAll('.login-card .sub').forEach(el => el.style.color = '#94a3b8');
+      document.querySelectorAll('.login-card label').forEach(el => el.style.color = '#cbd5e1');
       
-      const card = document.querySelector('.login-card');
-      if(card) {
-        card.style.position = 'relative';
-        card.style.zIndex = '10';
-        card.style.background = 'rgba(255, 255, 255, 0.85)';
-        card.style.backdropFilter = 'blur(16px)';
-        card.style.webkitBackdropFilter = 'blur(16px)';
-        card.style.boxShadow = '0 25px 50px -12px rgba(0, 0, 0, 0.25)';
-      }
-      document.body.style.margin = '0';
+      // Style text inputs
+      document.querySelectorAll('.login-card input').forEach(input => {
+        input.style.background = 'rgba(30, 41, 59, 0.6)'; // slate-800 transparent
+        input.style.border = '1px solid rgba(255, 255, 255, 0.15)';
+        input.style.color = '#ffffff';
+        input.style.borderRadius = '8px';
+      });
+      
+      // Style action buttons
+      document.querySelectorAll('.login-card button.rolebtn').forEach(btn => {
+        btn.style.background = 'rgba(30, 41, 59, 0.5)';
+        btn.style.border = '1px solid rgba(255, 255, 255, 0.1)';
+        btn.style.color = '#f8fafc';
+        
+        // Add hover effects
+        btn.onmouseover = function() {
+          btn.style.background = 'rgba(147, 51, 234, 0.25)'; // glowing violet border-fill
+          btn.style.borderColor = 'rgba(168, 85, 247, 0.5)';
+          btn.style.transform = 'translateY(-2px)';
+        };
+        btn.onmouseout = function() {
+          btn.style.background = 'rgba(30, 41, 59, 0.5)';
+          btn.style.borderColor = 'rgba(255, 255, 255, 0.1)';
+          btn.style.transform = 'translateY(0)';
+        };
+      });
     }
+
+    const wrap = document.querySelector('.login-wrap');
+    if(wrap) {
+      wrap.style.setProperty('background', 'transparent', 'important');
+    }
+    
+    // Start animation loop
+    startCanvasAnimation();
   };
+
+  /* =========================================================
+     Autorender Drag Marquee Selection Box Engine
+     ========================================================= */
+  (function initDragSelectionEngine() {
+    function setupOverlay() {
+      if (document.getElementById('dragMarqueeOverlay')) return;
+      const overlay = document.createElement('div');
+      overlay.id = 'dragMarqueeOverlay';
+      overlay.innerHTML = `
+        <div id="dragSelectionBox" class="drag-selection-box">
+          <div class="drag-corner drag-corner-tl"></div>
+          <div class="drag-corner drag-corner-tr"></div>
+          <div class="drag-corner drag-corner-bl"></div>
+          <div class="drag-corner drag-corner-br"></div>
+          <div id="dragSizeBadge" class="drag-size-badge">0 × 0 px</div>
+        </div>
+        <div id="dragToast" class="drag-toast">
+          <span style="font-size: 16px;">✨</span>
+          <span id="dragToastText">0 items selected</span>
+        </div>
+      `;
+      document.body.appendChild(overlay);
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', setupOverlay);
+    } else {
+      setupOverlay();
+    }
+
+    let isDragging = false;
+    let startX = 0, startY = 0;
+    let currentX = 0, currentY = 0;
+    let toastTimeout = null;
+
+    function isInteractiveElement(target) {
+      if (!target) return false;
+      const tag = target.tagName ? target.tagName.toLowerCase() : '';
+      if (['input', 'textarea', 'select', 'option', 'iframe'].includes(tag)) return true;
+      if (target.isContentEditable || target.closest('input, textarea, select, iframe')) return true;
+      return false;
+    }
+
+    function getSelectableElements() {
+      return Array.from(document.querySelectorAll(
+        '.card, .stat, .teamcard, .rolebtn, .chartcard, .erp-sidebar-item, .pchip, .tbl tr, .dslot, .member, .notewarn, .noteinfo'
+      ));
+    }
+
+    function handleStart(e) {
+      if (e.button !== undefined && e.button !== 0) return;
+      setupOverlay();
+
+      if (isInteractiveElement(e.target)) return;
+
+      const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+      const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+
+      startX = clientX;
+      startY = clientY;
+      currentX = clientX;
+      currentY = clientY;
+      isDragging = false;
+
+      window.addEventListener('mousemove', handleMove, { passive: false });
+      window.addEventListener('mouseup', handleEnd);
+      window.addEventListener('touchmove', handleMove, { passive: false });
+      window.addEventListener('touchend', handleEnd);
+    }
+
+    function handleMove(e) {
+      const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+      const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+
+      const dx = clientX - startX;
+      const dy = clientY - startY;
+      const dist = Math.hypot(dx, dy);
+
+      const box = document.getElementById('dragSelectionBox');
+      const badge = document.getElementById('dragSizeBadge');
+      if (!box || !badge) return;
+
+      if (!isDragging && dist > 6) {
+        isDragging = true;
+        box.classList.add('active');
+        document.querySelectorAll('.drag-highlighted').forEach(el => el.classList.remove('drag-highlighted'));
+      }
+
+      if (!isDragging) return;
+      if (e.cancelable) e.preventDefault();
+
+      currentX = clientX;
+      currentY = clientY;
+
+      const x = Math.min(startX, currentX);
+      const y = Math.min(startY, currentY);
+      const width = Math.abs(currentX - startX);
+      const height = Math.abs(currentY - startY);
+
+      box.style.left = `${x}px`;
+      box.style.top = `${y}px`;
+      box.style.width = `${width}px`;
+      box.style.height = `${height}px`;
+
+      badge.textContent = `${Math.round(width)} × ${Math.round(height)} px`;
+
+      const marqueeRect = { left: x, top: y, right: x + width, bottom: y + height };
+      const selectables = getSelectableElements();
+
+      selectables.forEach(el => {
+        const rect = el.getBoundingClientRect();
+        if (rect.width === 0 || rect.height === 0) return;
+
+        const isIntersecting = !(
+          rect.right < marqueeRect.left ||
+          rect.left > marqueeRect.right ||
+          rect.bottom < marqueeRect.top ||
+          rect.top > marqueeRect.bottom
+        );
+
+        if (isIntersecting) {
+          el.classList.add('drag-highlighted');
+        } else {
+          el.classList.remove('drag-highlighted');
+        }
+      });
+    }
+
+    function handleEnd() {
+      window.removeEventListener('mousemove', handleMove);
+      window.removeEventListener('mouseup', handleEnd);
+      window.removeEventListener('touchmove', handleMove);
+      window.removeEventListener('touchend', handleEnd);
+
+      const box = document.getElementById('dragSelectionBox');
+      const toast = document.getElementById('dragToast');
+      const toastText = document.getElementById('dragToastText');
+
+      if (isDragging && box) {
+        box.classList.remove('active');
+        const highlighted = document.querySelectorAll('.drag-highlighted');
+        const count = highlighted.length;
+
+        if (count > 0 && toast && toastText) {
+          toastText.textContent = `${count} ${count === 1 ? 'element' : 'elements'} highlighted`;
+          toast.classList.add('visible');
+          clearTimeout(toastTimeout);
+          toastTimeout = setTimeout(() => {
+            toast.classList.remove('visible');
+          }, 2200);
+
+          setTimeout(() => {
+            highlighted.forEach(el => el.classList.remove('drag-highlighted'));
+          }, 1800);
+        } else {
+          document.querySelectorAll('.drag-highlighted').forEach(el => el.classList.remove('drag-highlighted'));
+        }
+      }
+
+      isDragging = false;
+    }
+
+    window.addEventListener('mousedown', handleStart);
+    window.addEventListener('touchstart', handleStart, { passive: true });
+  })();
 </script>
 </body>
 </html>
